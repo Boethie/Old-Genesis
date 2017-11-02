@@ -1,0 +1,25 @@
+### USE WHITELIST ###
+
+# Ignore everything
+*
+# But don't skip over subdirectories
+!*/
+
+### FOLDERS ###
+
+# Recursively add everything from these directories
+!/gradle/**
+!/assets/**
+!/src/**
+!/setup/eclipse/**
+
+### FILES ###
+
+# And add all these files individually
+!/.gitignore
+!/build.gradle
+!/gradlew
+!/gradlew.bat
+!/LICENSE.md
+!/README.md
+/bin/

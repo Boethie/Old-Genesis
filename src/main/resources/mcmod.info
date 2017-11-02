@@ -1,0 +1,17 @@
+[
+{
+	"modid": "genesis",
+	"name": "Genesis",
+	"description": "",
+	"version": "0.0.0.0",
+	"mcversion": "${mcversion}",
+	"url": "https://github.com/Boethie/Genesis",
+	"updateUrl": "",
+	"authorList": ["Anaghold"],
+	"credits": "Anaghold",
+	"logoFile": "assets/genesis/textures/gui/logo.png",
+	"screenshots": [],
+	"requiredMods": ["Forge"],
+	"dependencies": ["Forge"]
+}
+]
