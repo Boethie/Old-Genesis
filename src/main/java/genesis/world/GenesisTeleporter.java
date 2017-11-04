@@ -22,31 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis;
+package genesis.world;
 
-import static genesis.GenesisMod.MOD_ID;
-import static genesis.GenesisMod.MOD_VERSION;
 
-import genesis.command.TeleportGenesis;
-import genesis.config.Config;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.world.Teleporter;
+import net.minecraft.world.WorldServer;
 
-@Mod(modid = MOD_ID, version = MOD_VERSION, guiFactory = Config.GUI_FACTORY)
-public class GenesisMod {
+// currently this is dummy class just to get teleporting working
+public class GenesisTeleporter extends Teleporter {
 
-    public static final String MOD_ID = "genesis";        // Cannot change.
-    public static final String MOD_NAME = "Genesis";    // Cannot change.
-    public static final String MOD_VERSION = "@VERSION@";
+    public GenesisTeleporter(WorldServer world) {
+        super(world);
 
-    @Mod.EventHandler public void preInit(FMLPreInitializationEvent event) {
-        Config.init(event.getSuggestedConfigurationFile());
-        Dimensions.register();
+        if (!world.customTeleporters.contains(this)) {
+            world.customTeleporters.add(this);
+        }
     }
 
-    @Mod.EventHandler
-    public void serverLoad(FMLServerStartingEvent event) {
-        event.registerServerCommand(new TeleportGenesis());
+    @Override
+    public void placeInPortal(Entity entity, float rotationYaw) {
+        placeInExistingPortal(entity, rotationYaw);
+    }
+
+    @Override
+    public boolean placeInExistingPortal(Entity entity, float rotationYaw) {
+        entity.setLocationAndAngles(0, 65, 0, entity.rotationYaw, entity.rotationPitch);
+        return true;
+    }
+
+    @Override
+    public boolean makePortal(Entity entity) {
+        return true;
+    }
+
+    @Override
+    public void removeStalePortalLocations(long worldTime) {
     }
 }

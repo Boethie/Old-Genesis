@@ -22,31 +22,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis;
+package genesis.util;
 
-import static genesis.GenesisMod.MOD_ID;
-import static genesis.GenesisMod.MOD_VERSION;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 
-import genesis.command.TeleportGenesis;
-import genesis.config.Config;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-
-@Mod(modid = MOD_ID, version = MOD_VERSION, guiFactory = Config.GUI_FACTORY)
-public class GenesisMod {
-
-    public static final String MOD_ID = "genesis";        // Cannot change.
-    public static final String MOD_NAME = "Genesis";    // Cannot change.
-    public static final String MOD_VERSION = "@VERSION@";
-
-    @Mod.EventHandler public void preInit(FMLPreInitializationEvent event) {
-        Config.init(event.getSuggestedConfigurationFile());
-        Dimensions.register();
-    }
-
-    @Mod.EventHandler
-    public void serverLoad(FMLServerStartingEvent event) {
-        event.registerServerCommand(new TeleportGenesis());
-    }
+/**
+ * Contains instances of commonly used blockstates
+ */
+public class Blockstates {
+    public static IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
+    public static IBlockState STONE = Blocks.STONE.getDefaultState();
+    public static IBlockState DIRT = Blocks.DIRT.getDefaultState();
+    public static IBlockState GRASS = Blocks.GRASS.getDefaultState();
 }

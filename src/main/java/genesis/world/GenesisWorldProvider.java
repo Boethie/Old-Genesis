@@ -22,31 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis;
+package genesis.world;
 
-import static genesis.GenesisMod.MOD_ID;
-import static genesis.GenesisMod.MOD_VERSION;
+import genesis.Dimensions;
+import genesis.world.gen.GenesisChunkGenerator;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.WorldProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 
-import genesis.command.TeleportGenesis;
-import genesis.config.Config;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+public class GenesisWorldProvider extends WorldProvider {
 
-@Mod(modid = MOD_ID, version = MOD_VERSION, guiFactory = Config.GUI_FACTORY)
-public class GenesisMod {
-
-    public static final String MOD_ID = "genesis";        // Cannot change.
-    public static final String MOD_NAME = "Genesis";    // Cannot change.
-    public static final String MOD_VERSION = "@VERSION@";
-
-    @Mod.EventHandler public void preInit(FMLPreInitializationEvent event) {
-        Config.init(event.getSuggestedConfigurationFile());
-        Dimensions.register();
+    @Override public DimensionType getDimensionType() {
+        return Dimensions.GENESIS_DIMENSION;
     }
 
-    @Mod.EventHandler
-    public void serverLoad(FMLServerStartingEvent event) {
-        event.registerServerCommand(new TeleportGenesis());
+    @Override public IChunkGenerator createChunkGenerator() {
+        return new GenesisChunkGenerator(world);
     }
+
 }
