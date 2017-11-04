@@ -22,23 +22,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis;
+package genesis.config;
 
-import static genesis.GenesisMod.MOD_ID;
-import static genesis.GenesisMod.MOD_VERSION;
+import genesis.GenesisMod;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
+import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.config.GuiConfig;
 
-import genesis.config.Config;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+public class ConfigGui extends GuiConfig {
 
-@Mod(modid = MOD_ID, version = MOD_VERSION, guiFactory = Config.GUI_FACTORY)
-public class GenesisMod {
-
-    public static final String MOD_ID = "genesis";        // Cannot change.
-    public static final String MOD_NAME = "Genesis";    // Cannot change.
-    public static final String MOD_VERSION = "@VERSION@";
-
-    @Mod.EventHandler public void preInit(FMLPreInitializationEvent event) {
-        Config.init(event.getSuggestedConfigurationFile());
+    public ConfigGui(GuiScreen parent) {
+        super(parent, new ConfigElement(Config.getConfig().getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(),
+                GenesisMod.MOD_ID, false, false,
+                I18n.format("genesis.configgui.config_title"));
     }
 }
