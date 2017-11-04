@@ -1,0 +1,14 @@
+sudo: required
+dist: trusty
+
+language: java
+cache:
+  directories:
+  - $HOME/.gradle
+jdk:
+  - openjdk8
+  - oraclejdk8
+
+before_install:
+  - ./gradlew setupCiWorkspace
+script: ./gradlew build
