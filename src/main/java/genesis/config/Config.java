@@ -1,5 +1,5 @@
 /*
- * This file is part of ${name}, licensed under the MIT License (MIT).
+ * This file is part of Genesis Mod, licensed under the MIT License (MIT).
  *
  * Copyright (c) 2017 Boethie
  * Copyright (c) 2017 contributors
