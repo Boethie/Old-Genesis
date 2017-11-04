@@ -11,7 +11,11 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.github.hierynomus.license" version "0.14.0"
+}
 apply plugin: 'net.minecraftforge.gradle.forge'
+
 
 version = "0.0.1-SNAPSHOT"
 group = "genesis"
@@ -26,6 +30,13 @@ minecraft {
     mappings = "snapshot_20171003"
     replaceIn "Constants.java"
     replace "@VERSION@", project.version
+}
+
+license {
+    header rootProject.file('HEADER.txt')
+    mapping {
+        java = 'SLASHSTAR_STYLE' // use SLASHSTAR_STYLE because javadoc style makes intellij idea think the license headers are dangling javadocs
+    }
 }
 
 dependencies {
