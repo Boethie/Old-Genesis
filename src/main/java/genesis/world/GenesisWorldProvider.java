@@ -32,11 +32,13 @@ import net.minecraft.world.gen.IChunkGenerator;
 
 public class GenesisWorldProvider extends WorldProvider {
 
-    @Override public DimensionType getDimensionType() {
+    @Override
+    public DimensionType getDimensionType() {
         return Dimensions.GENESIS_DIMENSION;
     }
 
-    @Override public IChunkGenerator createChunkGenerator() {
+    @Override
+    public IChunkGenerator createChunkGenerator() {
         return new GenesisChunkGenerator(world);
     }
 

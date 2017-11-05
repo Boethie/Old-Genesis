@@ -34,15 +34,18 @@ import net.minecraft.server.MinecraftServer;
 
 public class TeleportGenesis extends CommandBase {
 
-    @Override public String getName() {
+    @Override
+    public String getName() {
         return "tpg";
     }
 
-    @Override public String getUsage(ICommandSender sender) {
+    @Override
+    public String getUsage(ICommandSender sender) {
         return "/tpg";
     }
 
-    @Override public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+    @Override
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (!(sender instanceof EntityPlayer)) {
             return;
         }

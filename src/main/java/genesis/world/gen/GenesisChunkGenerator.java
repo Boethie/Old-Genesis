@@ -49,7 +49,8 @@ public class GenesisChunkGenerator implements IChunkGenerator {
         this.world = world;
     }
 
-    @Override public Chunk generateChunk(int chunkX, int chunkZ) {
+    @Override
+    public Chunk generateChunk(int chunkX, int chunkZ) {
         ChunkPrimer primer = new ChunkPrimer();
         generateBlocks(primer, chunkX, chunkZ);
         Chunk chunk = new Chunk(this.world, primer, chunkX, chunkZ);
@@ -77,27 +78,34 @@ public class GenesisChunkGenerator implements IChunkGenerator {
 
     }
 
-    @Override public void populate(int x, int z) {
+    @Override
+    public void populate(int x, int z) {
 
     }
 
-    @Override public boolean generateStructures(Chunk chunkIn, int x, int z) {
+    @Override
+    public boolean generateStructures(Chunk chunkIn, int x, int z) {
         return true;
     }
 
-    @Override public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
+    @Override
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
         return Collections.emptyList();
     }
 
-    @Nullable @Override public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
+    @Nullable
+    @Override
+    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
         return null;
     }
 
-    @Override public void recreateStructures(Chunk chunkIn, int x, int z) {
+    @Override
+    public void recreateStructures(Chunk chunkIn, int x, int z) {
 
     }
 
-    @Override public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
+    @Override
+    public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
         return false;
     }
 }
