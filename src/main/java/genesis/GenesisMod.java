@@ -40,7 +40,8 @@ public class GenesisMod {
     public static final String MOD_NAME = "Genesis";    // Cannot change.
     public static final String MOD_VERSION = "@VERSION@";
 
-    @Mod.EventHandler public void preInit(FMLPreInitializationEvent event) {
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
         Config.init(event.getSuggestedConfigurationFile());
         Dimensions.register();
     }

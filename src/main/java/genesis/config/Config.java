@@ -45,7 +45,8 @@ public class Config {
         return config;
     }
 
-    @SubscribeEvent public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
         if (!event.getModID().equals(GenesisMod.MOD_ID)) {
             return;
         }
