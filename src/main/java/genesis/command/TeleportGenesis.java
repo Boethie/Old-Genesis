@@ -24,12 +24,11 @@
  */
 package genesis.command;
 
-import genesis.Dimensions;
+import genesis.init.Dimensions;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 
 public class TeleportGenesis extends CommandBase {
@@ -46,9 +45,7 @@ public class TeleportGenesis extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (!(sender instanceof EntityPlayer)) {
-            return;
-        }
-        Dimensions.teleportToDimension((Entity) sender, Dimensions.GENESIS_DIMENSION);
+        Entity entity = getCommandSenderAsPlayer(sender);
+        Dimensions.teleportToDimension(entity, Dimensions.GENESIS);
     }
 }

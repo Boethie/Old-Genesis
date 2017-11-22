@@ -22,33 +22,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.config;
+package genesis.init;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.client.IModGuiFactory;
+import genesis.GenesisMod;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.function.Supplier;
 
-public class ConfigGuiFactory implements IModGuiFactory {
+public class GenesisCreativeTabs extends CreativeTabs {
 
-    @Override
-    public void initialize(Minecraft minecraftInstance) {
+    public static final CreativeTabs BLOCKS = new GenesisCreativeTabs("blocks", () -> ItemStack.EMPTY);
+    public static final CreativeTabs DECORATIONS = new GenesisCreativeTabs("decorations", () -> ItemStack.EMPTY);
+
+    private final Supplier<ItemStack> iconItemSupplier;
+
+    public GenesisCreativeTabs(String label, Supplier<ItemStack> iconItemSupplier) {
+        super(GenesisMod.MOD_ID + "." + label);
+        this.iconItemSupplier = iconItemSupplier;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    public boolean hasConfigGui() {
-        return true;
-    }
-
-    @Override
-    public GuiScreen createConfigGui(GuiScreen parentScreen) {
-        return new ConfigGui(parentScreen);
-    }
-
-    @Override
-    public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
-        return Collections.emptySet();
+    public ItemStack getTabIconItem() {
+        return iconItemSupplier.get();
     }
 }

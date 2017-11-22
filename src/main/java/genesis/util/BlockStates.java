@@ -22,33 +22,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.config;
+package genesis.util;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.client.IModGuiFactory;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 
-import java.util.Collections;
-import java.util.Set;
-
-public class ConfigGuiFactory implements IModGuiFactory {
-
-    @Override
-    public void initialize(Minecraft minecraftInstance) {
-    }
-
-    @Override
-    public boolean hasConfigGui() {
-        return true;
-    }
-
-    @Override
-    public GuiScreen createConfigGui(GuiScreen parentScreen) {
-        return new ConfigGui(parentScreen);
-    }
-
-    @Override
-    public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
-        return Collections.emptySet();
-    }
+/**
+ * Contains instances of commonly used block states
+ */
+public class BlockStates {
+    public static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
+    public static final IBlockState STONE = Blocks.STONE.getDefaultState();
+    public static final IBlockState DIRT = Blocks.DIRT.getDefaultState();
+    public static final IBlockState GRASS = Blocks.GRASS.getDefaultState();
 }

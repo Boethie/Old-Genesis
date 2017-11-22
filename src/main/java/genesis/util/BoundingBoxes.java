@@ -24,15 +24,9 @@
  */
 package genesis.util;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.util.math.AxisAlignedBB;
 
-/**
- * Contains instances of commonly used blockstates
- */
-public class Blockstates {
-    public static IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
-    public static IBlockState STONE = Blocks.STONE.getDefaultState();
-    public static IBlockState DIRT = Blocks.DIRT.getDefaultState();
-    public static IBlockState GRASS = Blocks.GRASS.getDefaultState();
+public class BoundingBoxes {
+    public static final AxisAlignedBB FERN = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
+    public static final AxisAlignedBB SAPLING = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
 }

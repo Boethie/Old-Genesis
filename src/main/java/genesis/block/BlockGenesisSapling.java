@@ -1,13 +1,37 @@
+/*
+ * This file is part of Genesis Mod, licensed under the MIT License (MIT).
+ *
+ * Copyright (c) 2017 Boethie
+ * Copyright (c) 2017 contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package genesis.block;
 
-import genesis.creativetab.GenesisCreativeTabs;
+import genesis.init.GenesisCreativeTabs;
 import genesis.combo.variant.EnumTree;
+import genesis.util.BoundingBoxes;
+import genesis.util.WorldFlags;
 import genesis.world.gen.feature.WorldGenAbstractGenesisTree;
 import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -16,76 +40,77 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.event.terraingen.TerrainGen;
 
 import java.util.Random;
 
 public class BlockGenesisSapling extends BlockBush implements IGrowable {
 
     public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 1);
-    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
+    private static final int STAGE_FLAG = 0b1000; // = 1 << 3 = 8
+
     private final EnumTree treeType;
 
     public BlockGenesisSapling(EnumTree treeType) {
         super();
         this.treeType = treeType;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(STAGE, 0));
-        this.setHardness(0.0F);
-        this.setSoundType(SoundType.PLANT);
-        this.setCreativeTab(GenesisCreativeTabs.DECORATIONS);
+        setDefaultState(blockState.getBaseState().withProperty(STAGE, 0));
+        setHardness(0.0F);
+        setSoundType(SoundType.PLANT);
+        setCreativeTab(GenesisCreativeTabs.DECORATIONS);
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return SAPLING_AABB;
+        return BoundingBoxes.SAPLING;
     }
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
         if (!world.isRemote) {
-            this.checkAndDropBlock(world, pos, state);
+            checkAndDropBlock(world, pos, state);
             if (world.getLightFromNeighbors(pos.up()) >= 9 && random.nextInt(7) == 0) {
-                this.grow(world, pos, state, random);
+                grow(world, pos, state, random);
             }
         }
     }
 
     public void grow(World world, BlockPos pos, IBlockState state, Random rand) {
         if (state.getValue(STAGE) == 0) {
-            world.setBlockState(pos, state.cycleProperty(STAGE), 4);
+            world.setBlockState(pos, state.cycleProperty(STAGE), WorldFlags.PREVENT_RERENDER);
         } else {
-            this.generateTree(world, pos, state, rand);
+            generateTree(world, pos, state, rand);
         }
     }
 
     public void generateTree(World world, BlockPos pos, IBlockState state, Random rand) {
-        if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, pos)) {
+        if (!TerrainGen.saplingGrowTree(world, rand, pos)) {
             return;
         }
-        WorldGenAbstractGenesisTree worldgenerator = this.treeType.getTreeGenerator();
-        if (worldgenerator != null) {
+        WorldGenAbstractGenesisTree generator = treeType.getTreeGenerator(rand);
+        if (generator != null) {
             boolean largeTree = false;
             int x = 0;
             int z = 0;
             IBlockState air = Blocks.AIR.getDefaultState();
 
             if (largeTree) {
-                world.setBlockState(pos.add(x, 0, z), air, 4);
-                world.setBlockState(pos.add(x + 1, 0, z), air, 4);
-                world.setBlockState(pos.add(x, 0, z + 1), air, 4);
-                world.setBlockState(pos.add(x + 1, 0, z + 1), air, 4);
+                world.setBlockState(pos.add(x, 0, z), air, WorldFlags.PREVENT_RERENDER);
+                world.setBlockState(pos.add(x + 1, 0, z), air, WorldFlags.PREVENT_RERENDER);
+                world.setBlockState(pos.add(x, 0, z + 1), air, WorldFlags.PREVENT_RERENDER);
+                world.setBlockState(pos.add(x + 1, 0, z + 1), air, WorldFlags.PREVENT_RERENDER);
             } else {
-                world.setBlockState(pos, air, 4);
+                world.setBlockState(pos, air, WorldFlags.PREVENT_RERENDER);
             }
 
-            if (!worldgenerator.generate(world, rand, pos.add(x, 0, z))) {
+            if (!generator.generate(world, rand, pos.add(x, 0, z))) {
                 if (largeTree) {
-                    world.setBlockState(pos.add(x, 0, z), state, 4);
-                    world.setBlockState(pos.add(x + 1, 0, z), state, 4);
-                    world.setBlockState(pos.add(x, 0, z + 1), state, 4);
-                    world.setBlockState(pos.add(x + 1, 0, z + 1), state, 4);
+                    world.setBlockState(pos.add(x, 0, z), state, WorldFlags.PREVENT_RERENDER);
+                    world.setBlockState(pos.add(x + 1, 0, z), state, WorldFlags.PREVENT_RERENDER);
+                    world.setBlockState(pos.add(x, 0, z + 1), state, WorldFlags.PREVENT_RERENDER);
+                    world.setBlockState(pos.add(x + 1, 0, z + 1), state, WorldFlags.PREVENT_RERENDER);
                 } else {
-                    world.setBlockState(pos, state, 4);
+                    world.setBlockState(pos, state, WorldFlags.PREVENT_RERENDER);
                 }
             }
 
@@ -104,30 +129,31 @@ public class BlockGenesisSapling extends BlockBush implements IGrowable {
 
     @Override
     public boolean canUseBonemeal(World world, Random rand, BlockPos pos, IBlockState state) {
-        return (double) world.rand.nextFloat() < 0.45D;
+        return world.rand.nextFloat() < 0.45D;
     }
 
     @Override
     public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
-        this.grow(world, pos, state, rand);
+        grow(world, pos, state, rand);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(STAGE, (meta & 8) >> 3);
+        IBlockState state = getDefaultState();
+        state = state.withProperty(STAGE, (meta & STAGE_FLAG) / STAGE_FLAG);
+        return state;
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        int i = 0;
-        i = i | (state.getValue(STAGE) << 3);
-        return i;
+        int meta = 0;
+        meta |= state.getValue(STAGE) * STAGE_FLAG;
+        return meta;
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, STAGE);
     }
-
 }
