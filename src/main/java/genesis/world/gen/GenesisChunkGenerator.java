@@ -29,9 +29,11 @@ import static genesis.util.Coords.CHUNK_SIZE;
 import genesis.util.Blockstates;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Biomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.IChunkGenerator;
@@ -43,16 +45,18 @@ import javax.annotation.Nullable;
 
 public class GenesisChunkGenerator implements IChunkGenerator {
 
+    private final BaseTerrainGenerator gen;
     private World world;
 
     public GenesisChunkGenerator(World world) {
         this.world = world;
+        this.gen = new BaseTerrainGenerator(new BiomeProviderSingle(Biomes.EXTREME_HILLS), world.getSeed());
     }
 
     @Override
     public Chunk generateChunk(int chunkX, int chunkZ) {
         ChunkPrimer primer = new ChunkPrimer();
-        generateBlocks(primer, chunkX, chunkZ);
+        gen.generate(primer, chunkX, chunkZ);
         Chunk chunk = new Chunk(this.world, primer, chunkX, chunkZ);
         chunk.generateSkylightMap();
         return chunk;
@@ -78,8 +82,7 @@ public class GenesisChunkGenerator implements IChunkGenerator {
 
     }
 
-    @Override
-    public void populate(int x, int z) {
+    @Override public void populate(int x, int z) {
 
     }
 

@@ -24,8 +24,15 @@
  */
 package genesis.util;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Coords {
-    public static final int CHUNK_SIZE = 16;
+    public static final int CHUNK_BITS = 4;
+    public static final int CHUNK_SIZE = 1 << CHUNK_BITS;
+
+    public static int chunkToMinBlock(int chunkCoord) {
+        return chunkCoord << CHUNK_BITS;
+    }
 
     // TODO: add util methods for converting between local, chunk and block coords
 }
