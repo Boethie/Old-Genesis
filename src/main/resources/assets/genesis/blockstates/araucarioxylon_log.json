@@ -1,8 +1,7 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "cube_column",
-		"textures": { "end": "genesis:blocks/log_araucarioxylon_top" }
+		"model": "genesis:araucarioxylon_log"
 	},
 	"variants": {
 		"axis=y": [
@@ -18,8 +17,8 @@
 			{ "textures": { "side": "genesis:blocks/log_araucarioxylon_1" }, "x": 90, "y": 90 }
 		],
 		"axis=none": [
-			{ "model": "cube_all", "textures": { "all": "genesis:blocks/log_araucarioxylon_0" } },
-			{ "model": "cube_all", "textures": { "all": "genesis:blocks/log_araucarioxylon_1" } }
+			{ "model": "genesis:araucarioxylon_bark", "textures": { "all": "genesis:blocks/log_araucarioxylon_0" } },
+			{ "model": "genesis:araucarioxylon_bark", "textures": { "all": "genesis:blocks/log_araucarioxylon_1" } }
 		]
 	}
 }

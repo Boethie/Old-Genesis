@@ -1,9 +1,5 @@
 {
 	"variants": {
-        "check_decay=true,decayable=true": { "model": "genesis:ficus_leaves" },
-        "check_decay=true,decayable=false": { "model": "genesis:ficus_leaves" },
-        "check_decay=false,decayable=true": { "model": "genesis:ficus_leaves" },
-        "check_decay=false,decayable=false": { "model": "genesis:ficus_leaves" },
 		"normal": { "model": "genesis:ficus_leaves" }
 	}
 }

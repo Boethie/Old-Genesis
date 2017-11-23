@@ -38,7 +38,7 @@ public class BlockGenesisLog extends BlockLog {
     public BlockGenesisLog() {
         super();
         setDefaultState(blockState.getBaseState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
-        setCreativeTab(GenesisCreativeTabs.BLOCKS);
+        setCreativeTab(GenesisCreativeTabs.BUILDING_BLOCKS);
     }
 
     @Override

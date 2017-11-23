@@ -1,6 +1,12 @@
 {
+	"forge_marker": 1,
+	"defaults": {
+		"model": "genesis:ficus_sapling"
+	},
 	"variants": {
-        "stage=0": { "model": "genesis:ficus_sapling" },
-        "stage=1": { "model": "genesis:ficus_sapling" }
+		"stage": {
+			"0": {},
+			"1": {}
+		}
 	}
 }

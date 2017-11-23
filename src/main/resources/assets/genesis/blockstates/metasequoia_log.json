@@ -1,8 +1,14 @@
 {
+	"forge_marker": 1,
+	"defaults": {
+		"model": "genesis:metasequoia_log"
+	},
 	"variants": {
-		"axis=y": { "model": "genesis:metasequoia_log" },
-		"axis=z": { "model": "genesis:metasequoia_log", "x": 90 },
-		"axis=x": { "model": "genesis:metasequoia_log", "x": 90, "y": 90 },
-		"axis=none": { "model": "genesis:metasequoia_bark" }
+		"axis": {
+			"y": {},
+			"z": { "x": 90 },
+			"x": { "x": 90, "y": 90 },
+			"none": { "model": "genesis:metasequoia_bark" }
+		}
 	}
 }

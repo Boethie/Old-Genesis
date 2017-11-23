@@ -34,9 +34,18 @@ import genesis.combo.variant.EnumTree;
 import genesis.item.ItemGenesisLeaves;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.world.ColorizerFoliage;
+import net.minecraft.world.ColorizerGrass;
+import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
@@ -145,6 +154,50 @@ public class GenesisBlocks {
     public static void registerModels(final ModelRegistryEvent event) {
         for (final Item item : ITEMS) {
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+        }
+        for (final Block block : BLOCKS) {
+            if (block instanceof BlockLeaves) {
+                ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build());
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void registerColorHandlers(final BlockColors blockColors, final ItemColors itemColors) {
+        final IBlockColor grassColor = (state, world, pos, tintIndex) -> {
+            if (world != null && pos != null) {
+                return BiomeColorHelper.getGrassColorAtPos(world, pos);
+            } else {
+                return ColorizerGrass.getGrassColor(0.5D, 1.0D);
+            }
+        };
+
+        final IBlockColor foliageColor = (state, world, pos, tintIndex) -> {
+            if (world != null && pos != null) {
+                return BiomeColorHelper.getFoliageColorAtPos(world, pos);
+            } else {
+                return ColorizerFoliage.getFoliageColorBasic();
+            }
+        };
+
+        final IItemColor itemBlockColor = (stack, tintIndex) -> {
+            IBlockState state = Block.getBlockFromItem(stack.getItem()).getStateFromMeta(stack.getMetadata());
+            return blockColors.colorMultiplier(state, null, null, tintIndex);
+        };
+
+        for (final Block block : BLOCKS) {
+            IBlockColor blockColor = null;
+
+            if (block instanceof BlockGenesisFern) {
+                blockColor = grassColor;
+            } else if (block instanceof BlockLeaves) {
+                blockColor = foliageColor;
+            }
+
+            if (blockColor != null) {
+                blockColors.registerBlockColorHandler(blockColor, block);
+                itemColors.registerItemColorHandler(itemBlockColor, block);
+            }
         }
     }
 

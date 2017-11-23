@@ -22,28 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.init;
+package genesis.proxy;
 
-import genesis.GenesisMod;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+public class Proxy {
+    public void preInit() {}
 
-import java.util.function.Supplier;
+    public void init() {}
 
-public class GenesisCreativeTabs {
-
-    public static final CreativeTabs BUILDING_BLOCKS = createTab("buildingBlocks", () -> ItemStack.EMPTY);
-    public static final CreativeTabs DECORATIONS = createTab("decorations", () -> ItemStack.EMPTY);
-
-    private static CreativeTabs createTab(final String label, final Supplier<ItemStack> iconItemSupplier) {
-        return new CreativeTabs(GenesisMod.MOD_ID + "." + label) {
-            @SideOnly(Side.CLIENT)
-            @Override
-            public ItemStack getTabIconItem() {
-                return iconItemSupplier.get();
-            }
-        };
-    }
+    public void postInit() {}
 }

@@ -1,2 +1,35 @@
+#------------- Blocks -------------
+
+# ferns
+tile.genesis.dryopteris.name=Dryopteris
+tile.genesis.phlebopteris.name=Phlebopteris
+tile.genesis.todites.name=Todites
+
+# leaves
+tile.genesis.araucarioxylon_leaves.name=Araucarioxylon Leaves
+tile.genesis.dryophyllum_leaves.name=Dryophyllum Leaves
+tile.genesis.ficus_leaves.name=Ficus Leaves
+tile.genesis.ginkgo_leaves.name=Ginkgo Leaves
+tile.genesis.metasequoia_leaves.name=Metasequoia Leaves
+
+# logs
+tile.genesis.araucarioxylon_log.name=Araucarioxylon Log
+tile.genesis.dryophyllum_log.name=Dryophyllum Log
+tile.genesis.ficus_log.name=Ficus Log
+tile.genesis.ginkgo_log.name=Ginkgo Log
+tile.genesis.metasequoia_log.name=Metasequoia Log
+
+# saplings
+tile.genesis.araucarioxylon_sapling.name=Araucarioxylon Sapling
+tile.genesis.dryophyllum_sapling.name=Dryophyllum Sapling
+tile.genesis.ficus_sapling.name=Ficus Sapling
+tile.genesis.ginkgo_sapling.name=Ginkgo Sapling
+tile.genesis.metasequoia_sapling.name=Metasequoia Sapling
+
+#------------- Creative Tabs -------------
+itemGroup.genesis.buildingBlocks=Genesis Building Blocks
+itemGroup.genesis.decorations=Genesis Decoration Blocks
+
+#------------- Config GUI -------------
 genesis.configgui.config_title=Genesis configuration
 genesis.configgui.dimension_id=Genesis dimension ID

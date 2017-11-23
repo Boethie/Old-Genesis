@@ -25,26 +25,52 @@
 package genesis;
 
 import static genesis.GenesisMod.MOD_ID;
+import static genesis.GenesisMod.MOD_NAME;
 import static genesis.GenesisMod.MOD_VERSION;
 
 import genesis.command.TeleportGenesis;
 import genesis.config.Config;
 import genesis.init.Dimensions;
+import genesis.proxy.Proxy;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = MOD_ID, version = MOD_VERSION, guiFactory = Config.GUI_FACTORY)
+@Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, guiFactory = Config.GUI_FACTORY)
 public class GenesisMod {
 
     public static final String MOD_ID = "genesis";        // Cannot change.
     public static final String MOD_NAME = "Genesis";    // Cannot change.
     public static final String MOD_VERSION = "@VERSION@";
 
+    public static final String CLIENT_PROXY_NAME = "genesis.proxy.ProxyClient";
+    public static final String SERVER_PROXY_NAME = "genesis.proxy.Proxy";
+
+    @SidedProxy(clientSide = CLIENT_PROXY_NAME, serverSide = SERVER_PROXY_NAME)
+    private static Proxy proxy;
+
+    public static Proxy getProxy() {
+        return proxy;
+    }
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         Config.init(event.getSuggestedConfigurationFile());
         Dimensions.register();
+        proxy.preInit();
+    }
+
+    @Mod.EventHandler
+    public void preInit(FMLInitializationEvent event) {
+        proxy.init();
+    }
+
+    @Mod.EventHandler
+    public void preInit(FMLPostInitializationEvent event) {
+        proxy.postInit();
     }
 
     @Mod.EventHandler
