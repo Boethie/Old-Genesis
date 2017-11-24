@@ -33,23 +33,24 @@ import genesis.world.gen.feature.WorldGenTreeGinkgo;
 import net.minecraft.block.Block;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 public enum EnumTree {
 
-    ARAUCARIOXYLON(GenesisBlocks.ARAUCARIOXYLON_SAPLING),
-    DRYOPHYLLUM(GenesisBlocks.DRYOPHYLLUM_SAPLING),
-    FICUS(GenesisBlocks.FICUS_SAPLING),
-    GINKGO(GenesisBlocks.GINKGO_SAPLING),
-    METASEQUOIA(GenesisBlocks.METASEQUOIA_SAPLING);
+    ARAUCARIOXYLON(() -> GenesisBlocks.ARAUCARIOXYLON_SAPLING),
+    DRYOPHYLLUM(() -> GenesisBlocks.DRYOPHYLLUM_SAPLING),
+    FICUS(() -> GenesisBlocks.FICUS_SAPLING),
+    GINKGO(() -> GenesisBlocks.GINKGO_SAPLING),
+    METASEQUOIA(() -> GenesisBlocks.METASEQUOIA_SAPLING);
 
-    private final Block sapling;
+    private final Supplier<Block> saplingSupplier;
 
-    EnumTree(Block sapling) {
-        this.sapling = sapling;
+    EnumTree(Supplier<Block> saplingSupplier) {
+        this.saplingSupplier = saplingSupplier;
     }
 
     public Block getSapling() {
-        return sapling;
+        return saplingSupplier.get();
     }
 
     public boolean canGrowLargeTree() {
@@ -70,5 +71,4 @@ public enum EnumTree {
         }
         return null;
     }
-
 }

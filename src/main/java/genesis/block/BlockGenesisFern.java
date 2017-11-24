@@ -24,11 +24,11 @@
  */
 package genesis.block;
 
-import genesis.combo.variant.EnumFern;
 import genesis.init.GenesisCreativeTabs;
 import genesis.util.BoundingBoxes;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -44,11 +44,10 @@ import java.util.Random;
 
 public class BlockGenesisFern extends BlockBush implements IGrowable, IShearable {
 
-    private final EnumFern fernType;
-
-    public BlockGenesisFern(EnumFern fernType) {
+    public BlockGenesisFern() {
         super(Material.PLANTS);
-        this.fernType = fernType;
+        setHardness(0.0F);
+        setSoundType(SoundType.PLANT);
         setCreativeTab(GenesisCreativeTabs.DECORATIONS);
     }
 

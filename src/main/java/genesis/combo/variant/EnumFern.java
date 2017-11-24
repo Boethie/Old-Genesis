@@ -27,19 +27,21 @@ package genesis.combo.variant;
 import genesis.init.GenesisBlocks;
 import net.minecraft.block.Block;
 
+import java.util.function.Supplier;
+
 public enum EnumFern {
 
-    DRYOPTERIS(GenesisBlocks.DRYOPTERIS),
-    PHLEBOPTERIS(GenesisBlocks.PHLEBOPTERIS),
-    TODITES(GenesisBlocks.TODITES);
+    DRYOPTERIS(() -> GenesisBlocks.DRYOPTERIS),
+    PHLEBOPTERIS(() -> GenesisBlocks.PHLEBOPTERIS),
+    TODITES(() -> GenesisBlocks.TODITES);
 
-    private final Block block;
+    private final Supplier<Block> blockSupplier;
 
-    EnumFern(Block block) {
-        this.block = block;
+    EnumFern(Supplier<Block> blockSupplier) {
+        this.blockSupplier = blockSupplier;
     }
 
     public Block getBlock() {
-        return block;
+        return blockSupplier.get();
     }
 }

@@ -25,15 +25,12 @@
 package genesis.init;
 
 import genesis.GenesisMod;
-import genesis.block.BlockGenesisFern;
-import genesis.block.BlockGenesisLeaves;
-import genesis.block.BlockGenesisLog;
-import genesis.block.BlockGenesisSapling;
-import genesis.combo.variant.EnumFern;
+import genesis.block.*;
 import genesis.combo.variant.EnumTree;
 import genesis.item.ItemGenesisLeaves;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -90,6 +87,26 @@ public class GenesisBlocks {
     public static final Block GINKGO_SAPLING = null;
     public static final Block METASEQUOIA_SAPLING = null;
 
+    // rocks
+    public static final Block GRANITE = null;
+    public static final Block MOSSY_GRANITE = null;
+    public static final Block KOMATIITE = null;
+    public static final Block ORTHOGNEISS = null;
+    public static final Block LIMESTONE = null;
+    public static final Block PEGMATITE = null;
+    public static final Block CARBONADO = null;
+
+    // silt
+    public static final Block SILT = null;
+    public static final Block RED_SILT = null;
+    public static final Block CRACKED_SILT = null;
+    public static final Block RED_CRACKED_SILT = null;
+    public static final Block SILTSTONE = null;
+    public static final Block RED_SILTSTONE = null;
+
+    // other
+    public static final Block OOZE = null;
+
     private static final Set<Block> BLOCKS = new LinkedHashSet<>();
     private static final Set<Item> ITEMS = new LinkedHashSet<>();
 
@@ -102,9 +119,9 @@ public class GenesisBlocks {
         }
 
         // ferns
-        registerBlock(registry, new BlockGenesisFern(EnumFern.DRYOPTERIS), "dryopteris");
-        registerBlock(registry, new BlockGenesisFern(EnumFern.PHLEBOPTERIS), "phlebopteris");
-        registerBlock(registry, new BlockGenesisFern(EnumFern.TODITES), "todites");
+        registerBlock(registry, new BlockGenesisFern(), "dryopteris");
+        registerBlock(registry, new BlockGenesisFern(), "phlebopteris");
+        registerBlock(registry, new BlockGenesisFern(), "todites");
 
         // leaves
         registerBlock(registry, new BlockGenesisLeaves(EnumTree.ARAUCARIOXYLON), "araucarioxylon_leaves");
@@ -126,6 +143,26 @@ public class GenesisBlocks {
         registerBlock(registry, new BlockGenesisSapling(EnumTree.FICUS), "ficus_sapling");
         registerBlock(registry, new BlockGenesisSapling(EnumTree.GINKGO), "ginkgo_sapling");
         registerBlock(registry, new BlockGenesisSapling(EnumTree.METASEQUOIA), "metasequoia_sapling");
+
+        // rocks
+        registerBlock(registry, new BlockGenesisRock(1.4F, 10.0F), "granite");
+        registerBlock(registry, new BlockGenesisRock(1.4F, 10.0F), "mossy_granite");
+        registerBlock(registry, new BlockGenesisRock(1.25F, 10.0F), "komatiite");
+        registerBlock(registry, new BlockGenesisRock(1.5F, 10.0F), "orthogneiss");
+        registerBlock(registry, new BlockGenesisRock(0.75F, 8.7F), "limestone");
+        registerBlock(registry, new BlockGenesisRock(1.5F, 10.0F), "pegmatite");
+        registerBlock(registry, new BlockGenesisRock(2.15F, 10.0F), "carbonado");
+
+        // silt
+        registerBlock(registry, new BlockSilt(MapColor.SAND), "silt");
+        registerBlock(registry, new BlockSilt(MapColor.ADOBE), "red_silt");
+        registerBlock(registry, new BlockCrackedSilt(MapColor.SAND), "cracked_silt");
+        registerBlock(registry, new BlockCrackedSilt(MapColor.ADOBE), "red_cracked_silt");
+        registerBlock(registry, new BlockSiltstone(MapColor.SAND), "siltstone");
+        registerBlock(registry, new BlockSiltstone(MapColor.ADOBE), "red_siltstone");
+
+        // other
+        registerBlock(registry, new BlockOoze(), "ooze");
     }
 
     @SubscribeEvent
