@@ -38,11 +38,12 @@ minecraft {
 
 license {
     header rootProject.file('HEADER.txt')
-    include "**/*.java"
+    includes(["**/*.java", "**/*.kt"])
     mapping {
         // Use SLASHSTAR_STYLE because Javadoc style makes IntelliJ IDEA
         // think the license headers are dangling Javadocs
         java = 'SLASHSTAR_STYLE'
+        kt = 'SLASHSTAR_STYLE'
     }
 }
 
