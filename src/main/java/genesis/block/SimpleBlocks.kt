@@ -72,7 +72,7 @@ class BlockCrackedSilt(mapColor: MapColor) : BlockGenesis(Material.SAND, mapColo
 
 class BlockSiltstone(mapColor: MapColor) : BlockGenesis(Material.ROCK, mapColor, SoundType.STONE) {
     init {
-        setHardness(0.9F)
+        setHardness(1.4F)
         setHarvestLevel(Harvest.CLASS_PICKAXE, Harvest.LEVEL_WOOD)
     }
 }
