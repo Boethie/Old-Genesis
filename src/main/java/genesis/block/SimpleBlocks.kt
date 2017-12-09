@@ -24,6 +24,7 @@
  */
 package genesis.block
 
+import genesis.combo.variant.EnumRock
 import genesis.init.GenesisCreativeTabs
 import genesis.util.Harvest
 import net.minecraft.block.Block
@@ -42,25 +43,12 @@ open class BlockGenesis(material: Material, mapColor: MapColor, soundType: Sound
     }
 }
 
-open class BlockGenesisRock(hardness: Float, resistance: Float) : Block(Material.ROCK) {
+class BlockGenesisRock(rockType: EnumRock) : BlockGenesis(Material.ROCK, MapColor.STONE, SoundType.STONE) {
     init {
-        setHardness(hardness)
-        setResistance(resistance)
-        setSoundType(SoundType.STONE)
-        setCreativeTab(GenesisCreativeTabs.BUILDING_BLOCKS)
+        setHardness(rockType.hardness)
+        setResistance(rockType.resistance)
         setHarvestLevel(Harvest.CLASS_PICKAXE, Harvest.LEVEL_WOOD)
     }
-}
-
-class BlockSilt(private val mapColor: MapColor) : BlockFalling() {
-    init {
-        setHardness(0.5F)
-        setSoundType(SoundType.SAND)
-        setCreativeTab(GenesisCreativeTabs.BUILDING_BLOCKS)
-        setHarvestLevel(Harvest.CLASS_SHOVEL, Harvest.LEVEL_WOOD)
-    }
-
-    override fun getMapColor(state: IBlockState, world: IBlockAccess, pos: BlockPos) = mapColor
 }
 
 class BlockCrackedSilt(mapColor: MapColor) : BlockGenesis(Material.SAND, mapColor, SoundType.SAND) {
@@ -83,4 +71,15 @@ class BlockOoze : BlockGenesis(Material.CLAY, MapColor.LIME, SoundType.GROUND) {
         setHardness(0.6F)
         setHarvestLevel(Harvest.CLASS_SHOVEL, Harvest.LEVEL_WOOD)
     }
+}
+
+class BlockSilt(private val mapColor: MapColor) : BlockFalling() {
+    init {
+        setHardness(0.5F)
+        setSoundType(SoundType.SAND)
+        setCreativeTab(GenesisCreativeTabs.BUILDING_BLOCKS)
+        setHarvestLevel(Harvest.CLASS_SHOVEL, Harvest.LEVEL_WOOD)
+    }
+
+    override fun getMapColor(state: IBlockState, world: IBlockAccess, pos: BlockPos) = mapColor
 }

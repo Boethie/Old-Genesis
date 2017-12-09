@@ -89,7 +89,7 @@ public class BlockGenesisSapling extends BlockBush implements IGrowable {
         }
         WorldGenAbstractGenesisTree generator = treeType.getTreeGenerator(rand);
         if (generator != null) {
-            boolean largeTree = false;
+            boolean largeTree = treeType.growsIntoLargeTree();
             int x = 0;
             int z = 0;
             IBlockState air = Blocks.AIR.getDefaultState();

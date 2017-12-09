@@ -24,7 +24,6 @@
  */
 package genesis.combo.variant;
 
-import genesis.init.GenesisBlocks;
 import genesis.world.gen.feature.WorldGenAbstractGenesisTree;
 import genesis.world.gen.feature.WorldGenTreeAraucarioxylon;
 import genesis.world.gen.feature.WorldGenTreeDryophyllum;
@@ -32,31 +31,47 @@ import genesis.world.gen.feature.WorldGenTreeDryophyllum.DryophyllumVariant;
 import genesis.world.gen.feature.WorldGenTreeGinkgo;
 import net.minecraft.block.Block;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import static genesis.init.GenesisBlocks.*;
+
 public enum EnumTree {
 
-    ARAUCARIOXYLON(() -> GenesisBlocks.ARAUCARIOXYLON_SAPLING),
-    DRYOPHYLLUM(() -> GenesisBlocks.DRYOPHYLLUM_SAPLING),
-    FICUS(() -> GenesisBlocks.FICUS_SAPLING),
-    GINKGO(() -> GenesisBlocks.GINKGO_SAPLING),
-    METASEQUOIA(() -> GenesisBlocks.METASEQUOIA_SAPLING);
+    ARAUCARIOXYLON(() -> ARAUCARIOXYLON_LEAVES, () -> ARAUCARIOXYLON_LOG, () -> ARAUCARIOXYLON_SAPLING),
+    DRYOPHYLLUM(() -> DRYOPHYLLUM_LEAVES, () -> DRYOPHYLLUM_LOG, () -> DRYOPHYLLUM_SAPLING),
+    FICUS(() -> FICUS_LEAVES, () -> FICUS_LOG, () -> FICUS_SAPLING),
+    GINKGO(() -> GINKGO_LEAVES, () -> GINKGO_LOG, () -> GINKGO_SAPLING),
+    METASEQUOIA(() -> METASEQUOIA_LEAVES, () -> METASEQUOIA_LOG, () -> METASEQUOIA_SAPLING);
 
+    private final Supplier<Block> leavesSupplier;
+    private final Supplier<Block> logSupplier;
     private final Supplier<Block> saplingSupplier;
 
-    EnumTree(Supplier<Block> saplingSupplier) {
+    EnumTree(Supplier<Block> leavesSupplier, Supplier<Block> logSupplier, Supplier<Block> saplingSupplier) {
+        this.leavesSupplier = leavesSupplier;
+        this.logSupplier = logSupplier;
         this.saplingSupplier = saplingSupplier;
+    }
+
+    public Block getLeaves() {
+        return leavesSupplier.get();
+    }
+
+    public Block getLog() {
+        return logSupplier.get();
     }
 
     public Block getSapling() {
         return saplingSupplier.get();
     }
 
-    public boolean canGrowLargeTree() {
+    public boolean growsIntoLargeTree() {
         return false;
     }
 
+    @Nullable
     public WorldGenAbstractGenesisTree getTreeGenerator(Random random) {
         switch (this) {
             case ARAUCARIOXYLON:

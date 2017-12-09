@@ -22,30 +22,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.init;
+package genesis.combo.variant;
 
-import genesis.GenesisMod;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import genesis.init.GenesisBlocks;
+import net.minecraft.block.Block;
 
 import java.util.function.Supplier;
 
-public class GenesisCreativeTabs {
+public enum EnumRock {
 
-    public static final CreativeTabs BUILDING_BLOCKS = createTab("buildingBlocks", () -> ItemStack.EMPTY);
-    public static final CreativeTabs DECORATIONS = createTab("decorations", () -> ItemStack.EMPTY);
-    public static final CreativeTabs MISC = createTab("misc", () -> ItemStack.EMPTY);
-    public static final CreativeTabs MATERIALS = MISC;
+    GRANITE(1.4F, 10.0F, () -> GenesisBlocks.GRANITE),
+    MOSSY_GRANITE(1.4F, 10.0F, () -> GenesisBlocks.MOSSY_GRANITE),
+    KOMATIITE(1.25F, 10.0F, () -> GenesisBlocks.KOMATIITE),
+    ORTHOGNEISS(1.5F, 10.0F, () -> GenesisBlocks.ORTHOGNEISS),
+    LIMESTONE(0.75F, 8.7F, () -> GenesisBlocks.LIMESTONE),
+    PEGMATITE(1.5F, 10.0F, () -> GenesisBlocks.PEGMATITE),
+    CARBONADO(2.15F, 10.0F, () -> GenesisBlocks.CARBONADO);
 
-    private static CreativeTabs createTab(final String label, final Supplier<ItemStack> iconItemSupplier) {
-        return new CreativeTabs(GenesisMod.MOD_ID + "." + label) {
-            @SideOnly(Side.CLIENT)
-            @Override
-            public ItemStack getTabIconItem() {
-                return iconItemSupplier.get();
-            }
-        };
+    private final float hardness;
+    private final float resistance;
+    private final Supplier<Block> blockSupplier;
+
+    EnumRock(float hardness, float resistance, Supplier<Block> blockSupplier) {
+        this.hardness = hardness;
+        this.resistance = resistance;
+        this.blockSupplier = blockSupplier;
+    }
+
+    public float getHardness() {
+        return hardness;
+    }
+
+    public float getResistance() {
+        return resistance;
+    }
+
+    public Block getBlock() {
+        return blockSupplier.get();
     }
 }

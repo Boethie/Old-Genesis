@@ -35,6 +35,12 @@ tile.genesis.limestone.name=Limestone
 tile.genesis.pegmatite.name=Pegmatite
 tile.genesis.carbonado.name=Carbonado
 
+# ores
+tile.genesis.zircon_ore.name=Zircon Ore
+tile.genesis.garnet_ore.name=Garnet Ore
+tile.genesis.malachite_ore.name=Malachite Ore
+tile.genesis.pyrite_ore.name=Pyrite Ore
+
 # silt
 tile.genesis.silt.name=Silt
 tile.genesis.red_silt.name=Red Silt
@@ -46,9 +52,18 @@ tile.genesis.red_siltstone.name=Red Siltstone
 # other
 tile.genesis.ooze.name=Ooze
 
+#------------- Items -------------
+
+# ore drops
+item.genesis.zircon.name=Zircon
+item.genesis.garnet.name=Garnet
+item.genesis.malachite.name=Malachite
+item.genesis.pyrite.name=Pyrite
+
 #------------- Creative Tabs -------------
 itemGroup.genesis.buildingBlocks=Genesis Building Blocks
 itemGroup.genesis.decorations=Genesis Decoration Blocks
+itemGroup.genesis.misc=Genesis Miscellaneous
 
 #------------- Config GUI -------------
 genesis.configgui.config_title=Genesis configuration

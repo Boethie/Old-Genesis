@@ -26,6 +26,9 @@ package genesis.init;
 
 import genesis.GenesisMod;
 import genesis.block.*;
+import genesis.combo.variant.EnumFern;
+import genesis.combo.variant.EnumOre;
+import genesis.combo.variant.EnumRock;
 import genesis.combo.variant.EnumTree;
 import genesis.item.ItemGenesisLeaves;
 import net.minecraft.block.Block;
@@ -52,9 +55,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = GenesisMod.MOD_ID)
@@ -96,6 +99,12 @@ public class GenesisBlocks {
     public static final Block PEGMATITE = null;
     public static final Block CARBONADO = null;
 
+    // ores
+    public static final Block ZIRCON_ORE = null;
+    public static final Block GARNET_ORE = null;
+    public static final Block MALACHITE_ORE = null;
+    public static final Block PYRITE_ORE = null;
+
     // silt
     public static final Block SILT = null;
     public static final Block RED_SILT = null;
@@ -114,44 +123,33 @@ public class GenesisBlocks {
     public static void registerBlocks(final RegistryEvent.Register<Block> event) {
         final IForgeRegistry<Block> registry = event.getRegistry();
 
-        if (registerIfFilled(registry, BLOCKS)) {
-            return;
-        }
+        BLOCKS.clear();
 
         // ferns
-        registerBlock(registry, new BlockGenesisFern(), "dryopteris");
-        registerBlock(registry, new BlockGenesisFern(), "phlebopteris");
-        registerBlock(registry, new BlockGenesisFern(), "todites");
+        for (final EnumFern fernType : EnumFern.values()) {
+            final String fernName = fernType.toString().toLowerCase(Locale.ENGLISH);
+            registerBlock(registry, new BlockGenesisFern(), fernName);
+        }
 
-        // leaves
-        registerBlock(registry, new BlockGenesisLeaves(EnumTree.ARAUCARIOXYLON), "araucarioxylon_leaves");
-        registerBlock(registry, new BlockGenesisLeaves(EnumTree.DRYOPHYLLUM), "dryophyllum_leaves");
-        registerBlock(registry, new BlockGenesisLeaves(EnumTree.FICUS), "ficus_leaves");
-        registerBlock(registry, new BlockGenesisLeaves(EnumTree.GINKGO), "ginkgo_leaves");
-        registerBlock(registry, new BlockGenesisLeaves(EnumTree.METASEQUOIA), "metasequoia_leaves");
-
-        // logs
-        registerBlock(registry, new BlockGenesisLog(), "araucarioxylon_log");
-        registerBlock(registry, new BlockGenesisLog(), "dryophyllum_log");
-        registerBlock(registry, new BlockGenesisLog(), "ficus_log");
-        registerBlock(registry, new BlockGenesisLog(), "ginkgo_log");
-        registerBlock(registry, new BlockGenesisLog(), "metasequoia_log");
-
-        // saplings
-        registerBlock(registry, new BlockGenesisSapling(EnumTree.ARAUCARIOXYLON), "araucarioxylon_sapling");
-        registerBlock(registry, new BlockGenesisSapling(EnumTree.DRYOPHYLLUM), "dryophyllum_sapling");
-        registerBlock(registry, new BlockGenesisSapling(EnumTree.FICUS), "ficus_sapling");
-        registerBlock(registry, new BlockGenesisSapling(EnumTree.GINKGO), "ginkgo_sapling");
-        registerBlock(registry, new BlockGenesisSapling(EnumTree.METASEQUOIA), "metasequoia_sapling");
+        // leaves, logs, saplings
+        for (final EnumTree treeType : EnumTree.values()) {
+            final String treeName = treeType.toString().toLowerCase(Locale.ENGLISH);
+            registerBlock(registry, new BlockGenesisLeaves(treeType), treeName + "_leaves");
+            registerBlock(registry, new BlockGenesisLog(), treeName + "_log");
+            registerBlock(registry, new BlockGenesisSapling(treeType), treeName + "_sapling");
+        }
 
         // rocks
-        registerBlock(registry, new BlockGenesisRock(1.4F, 10.0F), "granite");
-        registerBlock(registry, new BlockGenesisRock(1.4F, 10.0F), "mossy_granite");
-        registerBlock(registry, new BlockGenesisRock(1.25F, 10.0F), "komatiite");
-        registerBlock(registry, new BlockGenesisRock(1.5F, 10.0F), "orthogneiss");
-        registerBlock(registry, new BlockGenesisRock(0.75F, 8.7F), "limestone");
-        registerBlock(registry, new BlockGenesisRock(1.5F, 10.0F), "pegmatite");
-        registerBlock(registry, new BlockGenesisRock(2.15F, 10.0F), "carbonado");
+        for (final EnumRock rockType : EnumRock.values()) {
+            final String rockName = rockType.toString().toLowerCase(Locale.ENGLISH);
+            registerBlock(registry, new BlockGenesisRock(rockType), rockName);
+        }
+
+        // ores
+        for (final EnumOre oreType : EnumOre.values()) {
+            final String oreName = oreType.toString().toLowerCase(Locale.ENGLISH);
+            registerBlock(registry, new BlockGenesisOre(oreType), oreName + "_ore");
+        }
 
         // silt
         registerBlock(registry, new BlockSilt(MapColor.SAND), "silt");
@@ -165,13 +163,18 @@ public class GenesisBlocks {
         registerBlock(registry, new BlockOoze(), "ooze");
     }
 
+    private static void registerBlock(final IForgeRegistry<Block> registry, final Block block, final String name) {
+        block.setRegistryName(GenesisMod.MOD_ID, name);
+        block.setUnlocalizedName(GenesisMod.MOD_ID + "." + name);
+        registry.register(block);
+        BLOCKS.add(block);
+    }
+
     @SubscribeEvent
     public static void registerItems(final RegistryEvent.Register<Item> event) {
         final IForgeRegistry<Item> registry = event.getRegistry();
 
-        if (registerIfFilled(registry, ITEMS)) {
-            return;
-        }
+        ITEMS.clear();
 
         for (final Block block : BLOCKS) {
             final ItemBlock item;
@@ -218,17 +221,19 @@ public class GenesisBlocks {
         };
 
         final IItemColor itemBlockColor = (stack, tintIndex) -> {
-            IBlockState state = Block.getBlockFromItem(stack.getItem()).getStateFromMeta(stack.getMetadata());
+            final IBlockState state = Block.getBlockFromItem(stack.getItem()).getStateFromMeta(stack.getMetadata());
             return blockColors.colorMultiplier(state, null, null, tintIndex);
         };
 
         for (final Block block : BLOCKS) {
-            IBlockColor blockColor = null;
+            final IBlockColor blockColor;
 
             if (block instanceof BlockGenesisFern) {
                 blockColor = grassColor;
             } else if (block instanceof BlockLeaves) {
                 blockColor = foliageColor;
+            } else {
+                blockColor = null;
             }
 
             if (blockColor != null) {
@@ -236,22 +241,5 @@ public class GenesisBlocks {
                 itemColors.registerItemColorHandler(itemBlockColor, block);
             }
         }
-    }
-
-    private static void registerBlock(final IForgeRegistry<Block> registry, final Block block, final String name) {
-        block.setRegistryName(GenesisMod.MOD_ID, name);
-        block.setUnlocalizedName(GenesisMod.MOD_ID + "." + name);
-        registry.register(block);
-        BLOCKS.add(block);
-    }
-
-    private static <T extends IForgeRegistryEntry<T>> boolean registerIfFilled(final IForgeRegistry<T> registry, final Set<T> entries) {
-        if (!entries.isEmpty()) {
-            for (final T entry : entries) {
-                registry.register(entry);
-            }
-            return true;
-        }
-        return false;
     }
 }
