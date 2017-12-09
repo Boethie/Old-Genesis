@@ -1,0 +1,8 @@
+{
+    "parent": "block/farmland",
+    "textures": {
+        "particle": "genesis:blocks/humus",
+        "dirt": "genesis:blocks/humus",
+        "top": "genesis:blocks/humus_farmland_wet"
+    }
+}

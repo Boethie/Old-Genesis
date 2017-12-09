@@ -24,7 +24,7 @@
  */
 package genesis.world;
 
-import genesis.Dimensions;
+import genesis.init.Dimensions;
 import genesis.world.gen.GenesisChunkGenerator;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
@@ -34,12 +34,11 @@ public class GenesisWorldProvider extends WorldProvider {
 
     @Override
     public DimensionType getDimensionType() {
-        return Dimensions.GENESIS_DIMENSION;
+        return Dimensions.GENESIS;
     }
 
     @Override
     public IChunkGenerator createChunkGenerator() {
         return new GenesisChunkGenerator(world);
     }
-
 }

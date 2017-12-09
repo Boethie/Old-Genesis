@@ -30,12 +30,19 @@ import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.config.GuiConfig;
+import net.minecraftforge.fml.client.config.IConfigElement;
+
+import java.util.List;
 
 public class ConfigGui extends GuiConfig {
 
     public ConfigGui(GuiScreen parent) {
-        super(parent, new ConfigElement(Config.getConfig().getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(),
+        super(parent, getChildElements(Config.getConfig(), Configuration.CATEGORY_GENERAL),
                 GenesisMod.MOD_ID, false, false,
                 I18n.format("genesis.configgui.config_title"));
+    }
+
+    private static List<IConfigElement> getChildElements(Configuration config, String category) {
+        return new ConfigElement(config.getCategory(category)).getChildElements();
     }
 }

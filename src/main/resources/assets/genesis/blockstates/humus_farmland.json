@@ -1,0 +1,18 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "genesis:humus_farmland_dry"
+    },
+    "variants": {
+        "moisture": {
+            "0": {},
+            "1": {},
+            "2": {},
+            "3": {},
+            "4": {},
+            "5": {},
+            "6": {},
+            "7": { "model": "genesis:humus_farmland_moist" }
+        }
+    }
+}

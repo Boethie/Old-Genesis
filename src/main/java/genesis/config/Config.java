@@ -37,9 +37,10 @@ import java.io.File;
 public class Config {
 
     public static final String GUI_FACTORY = "genesis.config.ConfigGuiFactory";
-    private static Configuration config;
 
     public static int dimensionId = 37;
+
+    private static Configuration config;
 
     public static Configuration getConfig() {
         return config;
@@ -47,10 +48,9 @@ public class Config {
 
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (!event.getModID().equals(GenesisMod.MOD_ID)) {
-            return;
+        if (event.getModID().equals(GenesisMod.MOD_ID)) {
+            syncConfig();
         }
-        syncConfig();
     }
 
     public static void init(File configFile) {

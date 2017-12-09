@@ -22,17 +22,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.util;
+package genesis.combo.variant;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import genesis.init.GenesisBlocks;
+import net.minecraft.block.Block;
 
-/**
- * Contains instances of commonly used blockstates
- */
-public class Blockstates {
-    public static IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
-    public static IBlockState STONE = Blocks.STONE.getDefaultState();
-    public static IBlockState DIRT = Blocks.DIRT.getDefaultState();
-    public static IBlockState GRASS = Blocks.GRASS.getDefaultState();
+import java.util.function.Supplier;
+
+public enum EnumFern {
+
+    DRYOPTERIS(() -> GenesisBlocks.DRYOPTERIS),
+    PHLEBOPTERIS(() -> GenesisBlocks.PHLEBOPTERIS),
+    TODITES(() -> GenesisBlocks.TODITES);
+
+    private final Supplier<Block> blockSupplier;
+
+    EnumFern(Supplier<Block> blockSupplier) {
+        this.blockSupplier = blockSupplier;
+    }
+
+    public Block getBlock() {
+        return blockSupplier.get();
+    }
 }
