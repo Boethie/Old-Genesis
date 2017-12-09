@@ -64,6 +64,11 @@ import java.util.Set;
 @GameRegistry.ObjectHolder(GenesisMod.MOD_ID)
 public class GenesisBlocks {
 
+    // humus
+    public static final Block HUMUS = null;
+    public static final Block HUMUS_FARMLAND = null;
+    public static final Block HUMUS_PATH = null;
+
     // ferns
     public static final Block DRYOPTERIS = null;
     public static final Block PHLEBOPTERIS = null;
@@ -124,6 +129,11 @@ public class GenesisBlocks {
         final IForgeRegistry<Block> registry = event.getRegistry();
 
         BLOCKS.clear();
+
+        // humus
+        registerBlock(registry, new BlockHumus(), "humus");
+        registerBlock(registry, new BlockHumusFarmland(), "humus_farmland");
+        registerBlock(registry, new BlockHumusPath(), "humus_path");
 
         // ferns
         for (final EnumFern fernType : EnumFern.values()) {

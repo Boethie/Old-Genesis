@@ -1,5 +1,10 @@
 #------------- Blocks -------------
 
+# humus
+tile.genesis.humus.name=Humus
+tile.genesis.humus_farmland.name=Humus Farmland
+tile.genesis.humus_path.name=Humus Path
+
 # ferns
 tile.genesis.dryopteris.name=Dryopteris
 tile.genesis.phlebopteris.name=Phlebopteris

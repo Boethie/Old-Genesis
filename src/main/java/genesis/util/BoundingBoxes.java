@@ -29,4 +29,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 public class BoundingBoxes {
     public static final AxisAlignedBB FERN = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
     public static final AxisAlignedBB SAPLING = new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.8D, 0.9D);
+    public static final AxisAlignedBB PATH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
+    public static final AxisAlignedBB PATH_AIR = new AxisAlignedBB(0.0D, 0.9375D, 0.0D, 1.0D, 1.0D, 1.0D);
 }
