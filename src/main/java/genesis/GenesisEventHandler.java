@@ -42,6 +42,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = GenesisMod.MOD_ID)
@@ -61,6 +62,8 @@ public class GenesisEventHandler {
                 IBlockState farmland = GenesisBlocks.HUMUS_FARMLAND.getDefaultState();
                 world.setBlockState(pos, farmland, WorldFlags.UPDATE_BLOCK_AND_CLIENT_AND_RERENDER_ON_MAIN);
             }
+
+            event.setResult(Event.Result.ALLOW);
         }
     }
 
