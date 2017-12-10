@@ -81,7 +81,7 @@ public class SuperSimplexNoise {
         double ssi = (xsi + ysi) * -0.211324865405187;
         double xi = xsi + ssi, yi = ysi + ssi;
 
-        //Point contributions
+        //NoiseSource contributions
         for (int i = 0; i < 4; i++) {
             LatticePoint2D c = LOOKUP_2D[index + i];
 
@@ -130,7 +130,7 @@ public class SuperSimplexNoise {
                         (+ xr2i - yr2i + zr2i >= 0.5 ? 4*4 : 0) |
                         (+ xr2i + yr2i - zr2i >= 0.5 ? 8*4 : 0);
 
-        //Point contributions for first lattice
+        //NoiseSource contributions for first lattice
         for (int i = 0; i < 4; i++) {
             LatticePoint3D c = LOOKUP_3D[index1 + i];
 
@@ -148,7 +148,7 @@ public class SuperSimplexNoise {
             value += attn * attn * extrapolation;
         }
 
-        //Point contributions for second lattice
+        //NoiseSource contributions for second lattice
         for (int i = 0; i < 4; i++) {
             LatticePoint3D c = LOOKUP_3D[index2 + i];
 
@@ -195,7 +195,7 @@ public class SuperSimplexNoise {
         double ssi = (xsi + ysi) * -0.211324865405187;
         double xi = xsi + ssi, yi = ysi + ssi;
 
-        //Point contributions
+        //NoiseSource contributions
         for (int i = 0; i < 4; i++) {
             LatticePoint2D c = LOOKUP_2D[index + i];
 
@@ -249,7 +249,7 @@ public class SuperSimplexNoise {
         double[] d = destination;
         int di = destinationIndex;
 
-        //Point contributions
+        //NoiseSource contributions
         for (int i = 0; i < 4; i++) {
             LatticePoint2D c = LOOKUP_2D[index + i];
 
@@ -299,7 +299,7 @@ public class SuperSimplexNoise {
                         (+ xr2i - yr2i + zr2i >= 0.5 ? 4*4 : 0) |
                         (+ xr2i + yr2i - zr2i >= 0.5 ? 8*4 : 0);
 
-        //Point contributions for first lattice
+        //NoiseSource contributions for first lattice
         for (int i = 0; i < 4; i++) {
             LatticePoint3D c = LOOKUP_3D[index1 + i];
 
@@ -333,7 +333,7 @@ public class SuperSimplexNoise {
             }
         }
 
-        //Point contributions for second lattice
+        //NoiseSource contributions for second lattice
         for (int i = 0; i < 4; i++) {
             LatticePoint3D c = LOOKUP_3D[index2 + i];
 
@@ -399,7 +399,7 @@ public class SuperSimplexNoise {
         double[] d = destination;
         int di = destinationIndex;
 
-        //Point contributions for first lattice
+        //NoiseSource contributions for first lattice
         for (int i = 0; i < 4; i++) {
             LatticePoint3D c = LOOKUP_3D[index1 + i];
 
@@ -428,7 +428,7 @@ public class SuperSimplexNoise {
             d[di+D3C1.Fxyz] += 48 * (attnSq * (gx * dy * dz + gy * dx * dz + gz * dx * dy) - 4 * dx * dy * dz * attn * extrapolation);
         }
 
-        //Point contributions for second lattice
+        //NoiseSource contributions for second lattice
         for (int i = 0; i < 4; i++) {
             LatticePoint3D c = LOOKUP_3D[index2 + i];
 
@@ -488,7 +488,7 @@ public class SuperSimplexNoise {
         //Shortcut
         int di = destinationIndex;
 
-        //Point contributions for first lattice
+        //NoiseSource contributions for first lattice
         for (int i = 0; i < 4; i++) {
             LatticePoint3D c = LOOKUP_3D[index1 + i];
 
@@ -521,7 +521,7 @@ public class SuperSimplexNoise {
             }
         }
 
-        //Point contributions for second lattice
+        //NoiseSource contributions for second lattice
         for (int i = 0; i < 4; i++) {
             LatticePoint3D c = LOOKUP_3D[index2 + i];
 
@@ -585,7 +585,7 @@ public class SuperSimplexNoise {
         //Shortcut
         int di = destinationIndex;
 
-        //Point contributions for first lattice
+        //NoiseSource contributions for first lattice
         for (int i = 0; i < 4; i++) {
             LatticePoint3D c = LOOKUP_3D[index1 + i];
 
@@ -614,7 +614,7 @@ public class SuperSimplexNoise {
             }
         }
 
-        //Point contributions for second lattice
+        //NoiseSource contributions for second lattice
         for (int i = 0; i < 4; i++) {
             LatticePoint3D c = LOOKUP_3D[index2 + i];
 

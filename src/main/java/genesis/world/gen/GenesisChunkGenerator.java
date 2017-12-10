@@ -50,7 +50,7 @@ public class GenesisChunkGenerator implements IChunkGenerator {
 
     public GenesisChunkGenerator(World world) {
         this.world = world;
-        this.gen = new BaseTerrainGenerator(new BiomeProviderSingle(Biomes.EXTREME_HILLS), world.getSeed());
+        this.gen = new BaseTerrainGenerator(world, world.getBiomeProvider(), world.getSeed());
     }
 
     @Override

@@ -1,46 +1,53 @@
 package genesis.world.gen
 
-import genesis.util.Coords.chunkToMinBlock
-
 import genesis.util.Blockstates
 import genesis.util.Coords
+import genesis.util.Coords.*
 import genesis.util.noise.*
 import genesis.util.noise.gen.SuperSimplexNoise
+import net.minecraft.init.Biomes
+import net.minecraft.init.Blocks
+import net.minecraft.world.World
+import net.minecraft.world.biome.Biome
 import net.minecraft.world.biome.BiomeProvider
 import net.minecraft.world.chunk.ChunkPrimer
 
 import java.util.Random
 
-class BaseTerrainGenerator(biomeProvider: BiomeProvider, private val seed: Long) {
+class BaseTerrainGenerator(private val world: World, private val biomeProvider: BiomeProvider, private val seed: Long) {
 
     private val noiseSource: BufferedNoiseProvider3D
 
     private val noiseBuffer: NoiseBuffer3D
+
+    private val biomes = Array<Biome>(CHUNK_SIZE * CHUNK_SIZE, { Biomes.OCEAN })
 
     init {
 
         val rand = Random(seed)
 
         val low = UnbufferedNoiseProvider3D(DoubleTernaryOperator(SuperSimplexNoise(rand.nextLong())::eval),
-                8, 0.001, 0.0005, 0.001).toBuffered()
+                8, 0.00522 * INTERP_SIZE_X, 0.0, 0.00522 * INTERP_SIZE_Z).toBuffered()
                 .buffered(NOISE_SIZE_X, NOISE_SIZE_Y, NOISE_SIZE_Z)
+
         val high = UnbufferedNoiseProvider3D(DoubleTernaryOperator(SuperSimplexNoise(rand.nextLong())::eval),
-                8, 0.001, 0.0005, 0.001).toBuffered()
+                8, 0.00522 * INTERP_SIZE_X, 0.0, 0.00522 * INTERP_SIZE_Z).toBuffered()
                 .buffered(NOISE_SIZE_X, NOISE_SIZE_Y, NOISE_SIZE_Z)
+
         val selector = UnbufferedNoiseProvider3D(DoubleTernaryOperator(SuperSimplexNoise(rand.nextLong())::eval),
-                4, 0.01, 0.005, 0.01).toBuffered()
+                4, 0.0167 * INTERP_SIZE_X, 0.0, 0.0167 * INTERP_SIZE_Z).toBuffered()
                 .clamp(0.0, 1.0)
                 .buffered(NOISE_SIZE_X, NOISE_SIZE_Y, NOISE_SIZE_Z)
 
         val biomeSrc = BufferedBiomeDataProvider(biomeProvider, NOISE_SIZE_X, NOISE_SIZE_Z)
         val biomeHeight = biomeSrc.biomeHeights()
-        val heightVariationFactor = biomeHeight op { _, y, _, v -> if (y < v * 64) 0.25 else 1.0 }
+        val heightVariationFactor = biomeHeight apply { _, y, _, v -> if (y * INTERP_SIZE_Y < v * HEIGHT_VAR + SEA_LEVEL) 0.25 else 1.0 }
         val biomeHeightVariation = biomeSrc.biomeHeightVariations()
 
         val noise = (selector * (high - low) + low).buffered(NOISE_SIZE_X, NOISE_SIZE_Y, NOISE_SIZE_Z) *
                 biomeHeightVariation * heightVariationFactor + biomeHeight
 
-        this.noiseSource = (noise * 64.0 + 64.0).buffered(NOISE_SIZE_X, NOISE_SIZE_Y, NOISE_SIZE_Z)
+        this.noiseSource = (noise * HEIGHT_VAR + SEA_LEVEL).buffered(NOISE_SIZE_X, NOISE_SIZE_Y, NOISE_SIZE_Z)
         this.noiseBuffer = NoiseBuffer3D(NOISE_SIZE_X, NOISE_SIZE_Y, NOISE_SIZE_Z)
     }
 
@@ -51,8 +58,24 @@ class BaseTerrainGenerator(biomeProvider: BiomeProvider, private val seed: Long)
         interpolate(density, startX, 0, startZ, DensityConsumer({ v, x, y, z ->
             if (v - y > 0) {
                 primer.setBlockState(x - startX, y, z - startZ, Blockstates.STONE)
+            } else if (y < SEA_LEVEL) {
+                primer.setBlockState(x - startX, y, z - startZ, Blocks.WATER.defaultState)
             }
         }))
+        applyBiomeSurface(primer, chunkX, chunkZ)
+    }
+
+    private fun applyBiomeSurface(primer: ChunkPrimer, chunkX: Int, chunkZ: Int) {
+        val biomes = biomeProvider.getBiomes(biomes, chunkToMinBlock(chunkX), chunkToMinBlock(chunkZ), CHUNK_SIZE, CHUNK_SIZE)
+
+        val rand = Random(chunkX.toLong() or (chunkZ.toLong() shr 32))
+
+        for (localX in 0 until CHUNK_SIZE) {
+            for (localZ in 0 until CHUNK_SIZE) {
+                biomes[packLocalXZ(localX, localZ)]
+                        .genTerrainBlocks(world, rand, primer, localToBlock(localX, chunkX), localToBlock(localZ, chunkZ), 0.0)
+            }
+        }
     }
 
     private fun calculateDensity(startX: Int, startY: Int, startZ: Int): NoiseBuffer3D {
@@ -60,8 +83,7 @@ class BaseTerrainGenerator(biomeProvider: BiomeProvider, private val seed: Long)
         return noiseBuffer
     }
 
-    private// while technically pointless here, they make it easier to see the structure (column-aligned)
-    fun interpolate(density: NoiseBuffer3D, offsetX: Int, offsetY: Int, offsetZ: Int, consumer: DensityConsumer) {
+    private fun interpolate(density: NoiseBuffer3D, offsetX: Int, offsetY: Int, offsetZ: Int, consumer: DensityConsumer) {
         val xScale = INTERP_SIZE_X
         val yScale = INTERP_SIZE_Y
         val zScale = INTERP_SIZE_Z
@@ -142,5 +164,8 @@ class BaseTerrainGenerator(biomeProvider: BiomeProvider, private val seed: Long)
         private val NOISE_SIZE_X = SECTIONS_X + 1
         private val NOISE_SIZE_Y = SECTIONS_Y + 1
         private val NOISE_SIZE_Z = SECTIONS_Z + 1
+
+        private val SEA_LEVEL = 64.0
+        private val HEIGHT_VAR = 64.0
     }
 }

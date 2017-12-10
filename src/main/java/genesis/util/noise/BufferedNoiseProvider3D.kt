@@ -45,7 +45,7 @@ abstract class BufferedNoiseProvider3D {
 
     fun clamp(min: Double, max: Double) = NoiseUnaryOperator(this, op = DoubleUnaryOperator { a -> MathHelper.clamp(a, min, max) })
 
-    inline infix fun op(crossinline op: (Int, Int, Int, Double) -> Double) = opImpl(Int3DoubleToDoubleFunction({ x, y, z, v -> op(x, y, z, v) }))
+    inline infix fun apply(crossinline op: (Int, Int, Int, Double) -> Double) = opImpl(Int3DoubleToDoubleFunction({ x, y, z, v -> op(x, y, z, v) }))
 
     fun opImpl(op: Int3DoubleToDoubleFunction) = NoiseXYZUnaryOperator(this, op)
 

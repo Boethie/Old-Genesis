@@ -44,11 +44,11 @@ class BufferedBiomeDataProvider(private val provider: BiomeProvider, private val
 
         val countX = sizeX + 4
         val countZ = sizeX + 4
-        val biomes = provider.getBiomesForGeneration(biomes, startX, startZ, countX, countZ)
+        val biomes = provider.getBiomesForGeneration(biomes, startX - 2, startZ - 2, countX, countZ)
         // vanilla biome smoothing
         for (x in 0 until sizeX) {
             for (z in 0 until sizeZ) {
-                val centerBiome = biomes[(z + 2) + (x + 2) * countZ]
+                val centerBiome = biomes[(x + 2) + (z + 2) * countX]
 
                 var height = 0.0
                 var heightVariation = 0.0
@@ -57,7 +57,7 @@ class BufferedBiomeDataProvider(private val provider: BiomeProvider, private val
                 for (dx in 0..4) {
                     for (dz in 0..4) {
                         var weight = this.biomeWeights[dx + dz * 5]
-                        val biome = biomes[z + dz + (x + dx) * countZ]
+                        val biome = biomes[x + dx + (z + dz) * countX]
                         if (biome.baseHeight > centerBiome.baseHeight) {
                             weight *= 0.5
                         }
