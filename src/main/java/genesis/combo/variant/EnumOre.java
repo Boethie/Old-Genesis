@@ -34,6 +34,7 @@ import java.util.function.Supplier;
 public enum EnumOre {
     ZIRCON(1.5F, 10.0F, 2, 5, () -> GenesisBlocks.ZIRCON_ORE, () -> GenesisItems.ZIRCON),
     GARNET(1.5F, 10.0F, 2, 5, () -> GenesisBlocks.GARNET_ORE, () -> GenesisItems.GARNET),
+    AQUAMARINE(1.5F, 10.0F, 7, 3, () -> GenesisBlocks.AQUAMARINE_ORE, () -> GenesisItems.AQUAMARINE),
     MALACHITE(0.75F, 8.7F, 2, 5, 4, 8, () -> GenesisBlocks.MALACHITE_ORE, () -> GenesisItems.MALACHITE),
     PYRITE(0.75F, 8.7F, 1, 5, () -> GenesisBlocks.PYRITE_ORE, () -> GenesisItems.PYRITE);
 

@@ -107,6 +107,7 @@ public class GenesisBlocks {
     // ores
     public static final Block ZIRCON_ORE = null;
     public static final Block GARNET_ORE = null;
+    public static final Block AQUAMARINE_ORE = null;
     public static final Block MALACHITE_ORE = null;
     public static final Block PYRITE_ORE = null;
 

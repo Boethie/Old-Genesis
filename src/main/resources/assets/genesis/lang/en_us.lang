@@ -43,6 +43,7 @@ tile.genesis.carbonado.name=Carbonado
 # ores
 tile.genesis.zircon_ore.name=Zircon Ore
 tile.genesis.garnet_ore.name=Garnet Ore
+tile.genesis.aquamarine_ore.name=Aquamarine Ore
 tile.genesis.malachite_ore.name=Malachite Ore
 tile.genesis.pyrite_ore.name=Pyrite Ore
 
@@ -62,6 +63,7 @@ tile.genesis.ooze.name=Ooze
 # ore drops
 item.genesis.zircon.name=Zircon
 item.genesis.garnet.name=Garnet
+item.genesis.aquamarine.name=Aquamarine
 item.genesis.malachite.name=Malachite
 item.genesis.pyrite.name=Pyrite
 
