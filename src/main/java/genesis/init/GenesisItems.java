@@ -54,6 +54,9 @@ public class GenesisItems {
     public static final Item MALACHITE = null;
     public static final Item PYRITE = null;
 
+    // other
+    public static final Item RED_CLAY_BALL = null;
+
     private static final Set<Item> ITEMS = new LinkedHashSet<>();
 
     @SubscribeEvent
@@ -67,6 +70,9 @@ public class GenesisItems {
             final String oreName = oreType.toString().toLowerCase(Locale.ENGLISH);
             registerItem(registry, new ItemGenesis(), oreName);
         }
+
+        // other
+        registerItem(registry, new ItemGenesis(), "red_clay_ball");
     }
 
     private static void registerItem(final IForgeRegistry<Item> registry, final Item item, final String name) {

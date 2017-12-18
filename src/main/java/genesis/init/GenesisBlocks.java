@@ -121,6 +121,7 @@ public class GenesisBlocks {
 
     // other
     public static final Block OOZE = null;
+    public static final Block RED_CLAY = null;
 
     private static final Set<Block> BLOCKS = new LinkedHashSet<>();
     private static final Set<Item> ITEMS = new LinkedHashSet<>();
@@ -172,6 +173,7 @@ public class GenesisBlocks {
 
         // other
         registerBlock(registry, new BlockOoze(), "ooze");
+        registerBlock(registry, new BlockRedClay(), "red_clay");
     }
 
     private static void registerBlock(final IForgeRegistry<Block> registry, final Block block, final String name) {

@@ -57,6 +57,7 @@ tile.genesis.red_siltstone.name=Red Siltstone
 
 # other
 tile.genesis.ooze.name=Ooze
+tile.genesis.red_clay.name=Red Clay
 
 #------------- Items -------------
 
@@ -66,6 +67,9 @@ item.genesis.garnet.name=Garnet
 item.genesis.aquamarine.name=Aquamarine
 item.genesis.malachite.name=Malachite
 item.genesis.pyrite.name=Pyrite
+
+# other
+item.genesis.red_clay_ball.name=Red Clay Ball
 
 #------------- Creative Tabs -------------
 itemGroup.genesis.buildingBlocks=Genesis Building Blocks

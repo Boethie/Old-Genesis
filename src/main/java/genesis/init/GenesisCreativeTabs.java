@@ -25,7 +25,9 @@
 package genesis.init;
 
 import genesis.GenesisMod;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,17 +36,25 @@ import java.util.function.Supplier;
 
 public class GenesisCreativeTabs {
 
-    public static final CreativeTabs BUILDING_BLOCKS = createTab("buildingBlocks", () -> ItemStack.EMPTY);
-    public static final CreativeTabs DECORATIONS = createTab("decorations", () -> ItemStack.EMPTY);
-    public static final CreativeTabs MISC = createTab("misc", () -> ItemStack.EMPTY);
+    public static final CreativeTabs BUILDING_BLOCKS = createTabWithBlockIcon("buildingBlocks", () -> GenesisBlocks.GRANITE);
+    public static final CreativeTabs DECORATIONS = createTabWithBlockIcon("decorations", () -> GenesisBlocks.ARAUCARIOXYLON_SAPLING);
+    public static final CreativeTabs MISC = createTabWithItemIcon("misc", () -> GenesisItems.RED_CLAY_BALL);
     public static final CreativeTabs MATERIALS = MISC;
 
-    private static CreativeTabs createTab(final String label, final Supplier<ItemStack> iconItemSupplier) {
+    private static CreativeTabs createTabWithBlockIcon(final String label, final Supplier<Block> iconSupplier) {
+        return createTabWithStackIcon(label, () -> new ItemStack(iconSupplier.get()));
+    }
+
+    private static CreativeTabs createTabWithItemIcon(final String label, final Supplier<Item> iconSupplier) {
+        return createTabWithStackIcon(label, () -> new ItemStack(iconSupplier.get()));
+    }
+
+    private static CreativeTabs createTabWithStackIcon(final String label, final Supplier<ItemStack> iconSupplier) {
         return new CreativeTabs(GenesisMod.MOD_ID + "." + label) {
             @SideOnly(Side.CLIENT)
             @Override
             public ItemStack getTabIconItem() {
-                return iconItemSupplier.get();
+                return iconSupplier.get();
             }
         };
     }

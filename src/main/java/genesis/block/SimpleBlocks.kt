@@ -26,6 +26,7 @@ package genesis.block
 
 import genesis.combo.variant.EnumRock
 import genesis.init.GenesisCreativeTabs
+import genesis.init.GenesisItems
 import genesis.util.Harvest
 import net.minecraft.block.Block
 import net.minecraft.block.BlockFalling
@@ -35,6 +36,7 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import java.util.*
 
 open class BlockGenesis(material: Material, mapColor: MapColor, soundType: SoundType) : Block(material, mapColor) {
     init {
@@ -94,4 +96,15 @@ class BlockHumusPath : BlockHumusPathBase() {
     init {
         setHardness(0.55F)
     }
+}
+
+class BlockRedClay : BlockGenesis(Material.CLAY, MapColor.RED, SoundType.GROUND) {
+    init {
+        setHardness(0.6F)
+        setHarvestLevel(Harvest.CLASS_SHOVEL, Harvest.LEVEL_WOOD)
+    }
+
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int) = GenesisItems.RED_CLAY_BALL
+
+    override fun quantityDropped(random: Random) = 4
 }
