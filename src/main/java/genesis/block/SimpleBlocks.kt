@@ -86,12 +86,6 @@ class BlockSilt(private val mapColor: MapColor) : BlockFalling() {
     override fun getMapColor(state: IBlockState, world: IBlockAccess, pos: BlockPos) = mapColor
 }
 
-class BlockHumus : BlockGenesis(Material.GROUND, MapColor.DIRT, SoundType.GROUND) {
-    init {
-        setHardness(0.5F)
-    }
-}
-
 class BlockHumusPath : BlockHumusPathBase() {
     init {
         setHardness(0.55F)

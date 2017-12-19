@@ -69,6 +69,10 @@ public class GenesisBlocks {
     public static final Block HUMUS_FARMLAND = null;
     public static final Block HUMUS_PATH = null;
 
+    // plants
+    public static final Block SANMIGUELIA = null;
+    public static final Block PALAEOASTER = null;
+
     // ferns
     public static final Block DRYOPTERIS = null;
     public static final Block PHLEBOPTERIS = null;
@@ -136,6 +140,10 @@ public class GenesisBlocks {
         registerBlock(registry, new BlockHumus(), "humus");
         registerBlock(registry, new BlockHumusFarmland(), "humus_farmland");
         registerBlock(registry, new BlockHumusPath(), "humus_path");
+
+        // plants
+        registerBlock(registry, new BlockGenesisFlower(), "sanmiguelia");
+        registerBlock(registry, new BlockGenesisFlower(), "palaeoaster");
 
         // ferns
         for (final EnumFern fernType : EnumFern.values()) {

@@ -5,6 +5,10 @@ tile.genesis.humus.name=Humus
 tile.genesis.humus_farmland.name=Humus Farmland
 tile.genesis.humus_path.name=Humus Path
 
+# plants
+tile.genesis.sanmiguelia.name=Sanmiguelia
+tile.genesis.palaeoaster.name=Palaeoaster
+
 # ferns
 tile.genesis.dryopteris.name=Dryopteris
 tile.genesis.phlebopteris.name=Phlebopteris
