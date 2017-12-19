@@ -1,8 +1,6 @@
 {
 	"forge_marker": 1,
-	"defaults": {
-		"model": "genesis:araucarioxylon_log"
-	},
+	"defaults": { "model": "genesis:araucarioxylon_log" },
 	"variants": {
 		"axis=y": [
 			{ "textures": { "side": "genesis:blocks/log_araucarioxylon_0" } },

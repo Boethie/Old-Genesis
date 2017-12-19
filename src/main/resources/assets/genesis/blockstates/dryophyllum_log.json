@@ -1,8 +1,6 @@
 {
 	"forge_marker": 1,
-	"defaults": {
-		"model": "genesis:dryophyllum_log"
-	},
+	"defaults": { "model": "genesis:dryophyllum_log" },
 	"variants": {
 		"axis": {
 			"y": {},

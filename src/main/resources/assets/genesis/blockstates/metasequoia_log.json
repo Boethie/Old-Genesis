@@ -1,8 +1,6 @@
 {
 	"forge_marker": 1,
-	"defaults": {
-		"model": "genesis:metasequoia_log"
-	},
+	"defaults": { "model": "genesis:metasequoia_log" },
 	"variants": {
 		"axis": {
 			"y": {},

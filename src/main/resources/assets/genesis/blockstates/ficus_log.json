@@ -1,8 +1,6 @@
 {
 	"forge_marker": 1,
-	"defaults": {
-		"model": "genesis:ficus_log"
-	},
+	"defaults": { "model": "genesis:ficus_log" },
 	"variants": {
 		"axis": {
 			"y": {},

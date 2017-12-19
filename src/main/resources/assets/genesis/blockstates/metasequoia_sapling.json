@@ -1,8 +1,6 @@
 {
 	"forge_marker": 1,
-	"defaults": {
-		"model": "genesis:metasequoia_sapling"
-	},
+	"defaults": { "model": "genesis:metasequoia_sapling" },
 	"variants": {
 		"stage": {
 			"0": {},

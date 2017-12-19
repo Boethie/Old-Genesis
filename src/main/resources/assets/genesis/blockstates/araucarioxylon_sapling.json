@@ -1,8 +1,6 @@
 {
 	"forge_marker": 1,
-	"defaults": {
-		"model": "genesis:araucarioxylon_sapling"
-	},
+	"defaults": { "model": "genesis:araucarioxylon_sapling" },
 	"variants": {
 		"stage": {
 			"0": {},

@@ -1,8 +1,6 @@
 {
 	"forge_marker": 1,
-	"defaults": {
-		"model": "genesis:silt"
-	},
+	"defaults": { "model": "genesis:silt" },
 	"variants": {
 		"normal": [
 			{ "y": 0 },
