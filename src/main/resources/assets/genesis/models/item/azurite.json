@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "genesis:items/malachite"
+        "layer0": "genesis:items/azurite"
     }
 }

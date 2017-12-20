@@ -35,7 +35,6 @@ public enum EnumRock {
     MOSSY_GRANITE(1.4F, 10.0F, () -> GenesisBlocks.MOSSY_GRANITE),
     KOMATIITE(1.25F, 10.0F, () -> GenesisBlocks.KOMATIITE),
     ORTHOGNEISS(1.5F, 10.0F, () -> GenesisBlocks.ORTHOGNEISS),
-    LIMESTONE(0.75F, 8.7F, () -> GenesisBlocks.LIMESTONE),
     PEGMATITE(1.5F, 10.0F, () -> GenesisBlocks.PEGMATITE),
     CARBONADO(2.15F, 10.0F, () -> GenesisBlocks.CARBONADO);
 

@@ -104,15 +104,16 @@ public class GenesisBlocks {
     public static final Block MOSSY_GRANITE = null;
     public static final Block KOMATIITE = null;
     public static final Block ORTHOGNEISS = null;
-    public static final Block LIMESTONE = null;
     public static final Block PEGMATITE = null;
     public static final Block CARBONADO = null;
 
     // ores
     public static final Block ZIRCON_ORE = null;
     public static final Block GARNET_ORE = null;
+    public static final Block TOURMALINE_ORE = null;
     public static final Block AQUAMARINE_ORE = null;
-    public static final Block MALACHITE_ORE = null;
+    public static final Block SIDERITE_ORE = null;
+    public static final Block AZURITE_ORE = null;
     public static final Block PYRITE_ORE = null;
 
     // silt

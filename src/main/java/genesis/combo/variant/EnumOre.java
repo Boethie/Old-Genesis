@@ -32,11 +32,13 @@ import net.minecraft.item.Item;
 import java.util.function.Supplier;
 
 public enum EnumOre {
-    ZIRCON(1.5F, 10.0F, 2, 5, () -> GenesisBlocks.ZIRCON_ORE, () -> GenesisItems.ZIRCON),
-    GARNET(1.5F, 10.0F, 2, 5, () -> GenesisBlocks.GARNET_ORE, () -> GenesisItems.GARNET),
-    AQUAMARINE(1.5F, 10.0F, 7, 3, () -> GenesisBlocks.AQUAMARINE_ORE, () -> GenesisItems.AQUAMARINE),
-    MALACHITE(0.75F, 8.7F, 2, 5, 4, 8, () -> GenesisBlocks.MALACHITE_ORE, () -> GenesisItems.MALACHITE),
-    PYRITE(0.75F, 8.7F, 1, 5, () -> GenesisBlocks.PYRITE_ORE, () -> GenesisItems.PYRITE);
+    ZIRCON(3.0F, 5.0F, 2, 5, () -> GenesisBlocks.ZIRCON_ORE, () -> GenesisItems.ZIRCON),
+    GARNET(3.0F, 5.0F, 2, 5, () -> GenesisBlocks.GARNET_ORE, () -> GenesisItems.GARNET),
+    TOURMALINE(3.0F, 5.0F, 2, 5, () -> GenesisBlocks.TOURMALINE_ORE, () -> GenesisItems.TOURMALINE),
+    AQUAMARINE(3.0F, 5.0F, 2, 5, () -> GenesisBlocks.AQUAMARINE_ORE, () -> GenesisItems.AQUAMARINE),
+    SIDERITE(3.0F, 5.0F, 1, 5, () -> GenesisBlocks.SIDERITE_ORE, () -> GenesisItems.SIDERITE),
+    AZURITE(3.0F, 5.0F, 2, 5, 4, 8, () -> GenesisBlocks.AZURITE_ORE, () -> GenesisItems.AZURITE),
+    PYRITE(3.0F, 5.0F, 1, 5, () -> GenesisBlocks.PYRITE_ORE, () -> GenesisItems.PYRITE);
 
     private final float hardness;
     private final float resistance;

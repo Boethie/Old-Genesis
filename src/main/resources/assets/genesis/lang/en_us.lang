@@ -40,15 +40,16 @@ tile.genesis.granite.name=Granite
 tile.genesis.mossy_granite.name=Mossy Granite
 tile.genesis.komatiite.name=Komatiite
 tile.genesis.orthogneiss.name=Orthogneiss
-tile.genesis.limestone.name=Limestone
 tile.genesis.pegmatite.name=Pegmatite
 tile.genesis.carbonado.name=Carbonado
 
 # ores
 tile.genesis.zircon_ore.name=Zircon Ore
 tile.genesis.garnet_ore.name=Garnet Ore
+tile.genesis.tourmaline_ore.name=Tourmaline Ore
 tile.genesis.aquamarine_ore.name=Aquamarine Ore
-tile.genesis.malachite_ore.name=Malachite Ore
+tile.genesis.siderite_ore.name=Siderite Ore
+tile.genesis.azurite_ore.name=Azurite Ore
 tile.genesis.pyrite_ore.name=Pyrite Ore
 
 # silt
@@ -68,8 +69,10 @@ tile.genesis.red_clay.name=Red Clay
 # ore drops
 item.genesis.zircon.name=Zircon
 item.genesis.garnet.name=Garnet
+item.genesis.tourmaline.name=Tourmaline
 item.genesis.aquamarine.name=Aquamarine
-item.genesis.malachite.name=Malachite
+item.genesis.siderite.name=Siderite
+item.genesis.azurite.name=Azurite
 item.genesis.pyrite.name=Pyrite
 
 # other
