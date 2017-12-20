@@ -3,6 +3,6 @@
     "textures": {
         "particle": "genesis:blocks/humus",
         "dirt": "genesis:blocks/humus",
-        "top": "genesis:blocks/humus_path"
+        "top": "genesis:blocks/humus_path_0"
     }
 }

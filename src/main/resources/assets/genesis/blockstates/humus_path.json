@@ -1,5 +1,12 @@
 {
+    "forge_marker": 1,
+    "defaults": { "model": "genesis:humus_path" },
     "variants": {
-        "normal": { "model": "genesis:humus_path" }
+        "normal": [
+            { "textures": { "top": "genesis:blocks/humus_path_0" } },
+            { "textures": { "top": "genesis:blocks/humus_path_1" } },
+            { "textures": { "top": "genesis:blocks/humus_path_2" } },
+            { "textures": { "top": "genesis:blocks/humus_path_3" } }
+        ]
     }
 }
