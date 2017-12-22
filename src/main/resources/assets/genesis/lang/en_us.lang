@@ -46,11 +46,11 @@ tile.genesis.carbonado.name=Carbonado
 # ores
 tile.genesis.zircon_ore.name=Zircon Ore
 tile.genesis.garnet_ore.name=Garnet Ore
+tile.genesis.siderite_ore.name=Siderite Ore
 tile.genesis.tourmaline_ore.name=Tourmaline Ore
 tile.genesis.aquamarine_ore.name=Aquamarine Ore
-tile.genesis.siderite_ore.name=Siderite Ore
-tile.genesis.azurite_ore.name=Azurite Ore
 tile.genesis.pyrite_ore.name=Pyrite Ore
+tile.genesis.azurite_ore.name=Azurite Ore
 
 # silt
 tile.genesis.silt.name=Silt
@@ -69,11 +69,11 @@ tile.genesis.red_clay.name=Red Clay
 # ore drops
 item.genesis.zircon.name=Zircon
 item.genesis.garnet.name=Garnet
+item.genesis.siderite.name=Siderite
 item.genesis.tourmaline.name=Tourmaline
 item.genesis.aquamarine.name=Aquamarine
-item.genesis.siderite.name=Siderite
-item.genesis.azurite.name=Azurite
 item.genesis.pyrite.name=Pyrite
+item.genesis.azurite.name=Azurite
 
 # other
 item.genesis.red_clay_ball.name=Red Clay Ball

@@ -50,11 +50,11 @@ public class GenesisItems {
     // ore drops
     public static final Item ZIRCON = null;
     public static final Item GARNET = null;
+    public static final Item SIDERITE = null;
     public static final Item TOURMALINE = null;
     public static final Item AQUAMARINE = null;
-    public static final Item SIDERITE = null;
-    public static final Item AZURITE = null;
     public static final Item PYRITE = null;
+    public static final Item AZURITE = null;
 
     // other
     public static final Item RED_CLAY_BALL = null;

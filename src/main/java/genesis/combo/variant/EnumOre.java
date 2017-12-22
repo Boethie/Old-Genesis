@@ -34,11 +34,11 @@ import java.util.function.Supplier;
 public enum EnumOre {
     ZIRCON(3.0F, 5.0F, 2, 5, () -> GenesisBlocks.ZIRCON_ORE, () -> GenesisItems.ZIRCON),
     GARNET(3.0F, 5.0F, 2, 5, () -> GenesisBlocks.GARNET_ORE, () -> GenesisItems.GARNET),
+    SIDERITE(3.0F, 5.0F, 1, 5, () -> GenesisBlocks.SIDERITE_ORE, () -> GenesisItems.SIDERITE),
     TOURMALINE(3.0F, 5.0F, 2, 5, () -> GenesisBlocks.TOURMALINE_ORE, () -> GenesisItems.TOURMALINE),
     AQUAMARINE(3.0F, 5.0F, 2, 5, () -> GenesisBlocks.AQUAMARINE_ORE, () -> GenesisItems.AQUAMARINE),
-    SIDERITE(3.0F, 5.0F, 1, 5, () -> GenesisBlocks.SIDERITE_ORE, () -> GenesisItems.SIDERITE),
-    AZURITE(3.0F, 5.0F, 2, 5, 4, 8, () -> GenesisBlocks.AZURITE_ORE, () -> GenesisItems.AZURITE),
-    PYRITE(3.0F, 5.0F, 1, 5, () -> GenesisBlocks.PYRITE_ORE, () -> GenesisItems.PYRITE);
+    PYRITE(3.0F, 5.0F, 1, 5, () -> GenesisBlocks.PYRITE_ORE, () -> GenesisItems.PYRITE),
+    AZURITE(3.0F, 5.0F, 2, 5, 4, 8, () -> GenesisBlocks.AZURITE_ORE, () -> GenesisItems.AZURITE);
 
     private final float hardness;
     private final float resistance;

@@ -110,11 +110,11 @@ public class GenesisBlocks {
     // ores
     public static final Block ZIRCON_ORE = null;
     public static final Block GARNET_ORE = null;
+    public static final Block SIDERITE_ORE = null;
     public static final Block TOURMALINE_ORE = null;
     public static final Block AQUAMARINE_ORE = null;
-    public static final Block SIDERITE_ORE = null;
-    public static final Block AZURITE_ORE = null;
     public static final Block PYRITE_ORE = null;
+    public static final Block AZURITE_ORE = null;
 
     // silt
     public static final Block SILT = null;
