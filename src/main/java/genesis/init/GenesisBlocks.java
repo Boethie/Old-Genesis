@@ -72,6 +72,7 @@ public class GenesisBlocks {
     // plants
     public static final Block SANMIGUELIA = null;
     public static final Block PALAEOASTER = null;
+    public static final Block AQUILAPOLLENITES = null;
 
     // ferns
     public static final Block DRYOPTERIS = null;
@@ -145,6 +146,7 @@ public class GenesisBlocks {
         // plants
         registerBlock(registry, new BlockGenesisFlower(), "sanmiguelia");
         registerBlock(registry, new BlockGenesisFlower(), "palaeoaster");
+        registerBlock(registry, new BlockGenesisFlower(), "aquilapollenites");
 
         // ferns
         for (final EnumFern fernType : EnumFern.values()) {
