@@ -59,6 +59,7 @@ public class GenesisChunkGenerator implements IChunkGenerator {
         gen.generate(primer, chunkX, chunkZ);
         Chunk chunk = new Chunk(this.world, primer, chunkX, chunkZ);
         chunk.generateSkylightMap();
+        gen.fillLastBiomes(chunk.getBiomeArray());
         return chunk;
     }
 

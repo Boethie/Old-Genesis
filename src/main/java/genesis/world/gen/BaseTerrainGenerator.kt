@@ -65,15 +65,22 @@ class BaseTerrainGenerator(private val world: World, private val biomeProvider: 
         applyBiomeSurface(primer, chunkX, chunkZ)
     }
 
+    fun fillLastBiomes(data: ByteArray) {
+        for (i in 0 until CHUNK_SIZE * CHUNK_SIZE) {
+            data[i] = Biome.REGISTRY.getIDForObject(biomes[i]).toByte()
+        }
+    }
+
     private fun applyBiomeSurface(primer: ChunkPrimer, chunkX: Int, chunkZ: Int) {
-        val biomes = biomeProvider.getBiomes(biomes, chunkToMinBlock(chunkX), chunkToMinBlock(chunkZ), CHUNK_SIZE, CHUNK_SIZE)
+        biomeProvider.getBiomes(biomes, chunkToMinBlock(chunkX), chunkToMinBlock(chunkZ), CHUNK_SIZE, CHUNK_SIZE)
 
         val rand = Random(chunkX.toLong() or (chunkZ.toLong() shr 32))
 
         for (localX in 0 until CHUNK_SIZE) {
             for (localZ in 0 until CHUNK_SIZE) {
+                // localX with chunkZ because vanilla is broken
                 biomes[packLocalXZ(localX, localZ)]
-                        .genTerrainBlocks(world, rand, primer, localToBlock(localX, chunkX), localToBlock(localZ, chunkZ), 0.0)
+                        .genTerrainBlocks(world, rand, primer, localToBlock(localZ, chunkX), localToBlock(localX, chunkZ), 0.0)
             }
         }
     }
