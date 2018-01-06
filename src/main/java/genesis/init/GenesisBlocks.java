@@ -160,6 +160,7 @@ public class GenesisBlocks {
             registerBlock(registry, new BlockGenesisLeaves(treeType), treeName + "_leaves");
             registerBlock(registry, new BlockGenesisLog(), treeName + "_log");
             registerBlock(registry, new BlockGenesisSapling(treeType), treeName + "_sapling");
+            registerBlock(registry, new BlockWattleFence(), treeName + "_wattle_fence");
         }
 
         // rocks

@@ -1,0 +1,19 @@
+{
+	"__comment": "This model was created with freundTech's Blender2Minecraft converter (BETA)",
+	"ambientocclusion": true,
+	"elements": [
+		{
+			"__comment": "Post",
+			"from": [6, 0, 6],
+			"to": [10, 16, 10],
+			"faces": {
+				"west": {"uv": [12, 0, 16, 16], "texture": "#log"},
+				"north": {"uv": [8, 0, 12, 16], "texture": "#log"},
+				"east": {"uv": [4, 0, 8, 16], "texture": "#log"},
+				"south": {"uv": [0, 0, 4, 16], "texture": "#log"},
+				"down": {"uv": [0, 0, 4, 4], "texture": "#stick", "cullface": "down"},
+				"up": {"uv": [4, 0, 0, 4], "texture": "#stick", "rotation": 180, "cullface": "up"}
+			}
+		}
+	]
+}
