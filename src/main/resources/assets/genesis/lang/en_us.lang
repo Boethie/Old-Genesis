@@ -36,6 +36,13 @@ tile.genesis.ficus_sapling.name=Ficus Sapling
 tile.genesis.ginkgo_sapling.name=Ginkgo Sapling
 tile.genesis.metasequoia_sapling.name=Metasequoia Sapling
 
+# wattle fences
+tile.genesis.araucarioxylon_wattle_fence.name=Araucarioxylon Wattle Fence
+tile.genesis.dryophyllum_wattle_fence.name=Dryophyllum Wattle Fence
+tile.genesis.ficus_wattle_fence.name=Ficus Wattle Fence
+tile.genesis.ginkgo_wattle_fence.name=Ginkgo Wattle Fence
+tile.genesis.metasequoia_wattle_fence.name=Metasequoia Wattle Fence
+
 # rocks
 tile.genesis.granite.name=Granite
 tile.genesis.mossy_granite.name=Mossy Granite
