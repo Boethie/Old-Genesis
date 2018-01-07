@@ -170,7 +170,6 @@ public class GenesisBlocks {
             registerBlock(registry, new BlockGenesisSapling(treeType), treeName + "_sapling");
             registerBlock(registry, new BlockWattleFence(), treeName + "_wattle_fence");
         }
-        registerBlock(registry, new BlockWattleFence(), "laurophyllum_wattle_fence");
 
         // rocks
         for (final EnumRock rockType : EnumRock.values()) {
