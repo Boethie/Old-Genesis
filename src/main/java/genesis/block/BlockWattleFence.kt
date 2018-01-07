@@ -27,7 +27,9 @@ package genesis.block
 
 import genesis.init.GenesisCreativeTabs
 import genesis.util.Harvest
-import net.minecraft.block.*
+import net.minecraft.block.Block
+import net.minecraft.block.BlockFence
+import net.minecraft.block.SoundType
 import net.minecraft.block.material.MapColor
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyEnum
@@ -41,6 +43,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
+//This doesn't extend BlockFence because it makes it even hackier to try and prevent normal fences from connecting with wattle fences
+//This doesn't use a variant property because nothing else in the mod does, nor the vanilla fences
 @Suppress("OverridingDeprecatedMember")
 class BlockWattleFence : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WOOD) {
 
@@ -49,9 +53,7 @@ class BlockWattleFence : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WO
         enum class EnumConnectState : IStringSerializable {
             NONE, SIDE, SIDE_BOTTOM, SIDE_TOP, SIDE_TOP_BOTTOM;
 
-            override fun getName(): String {
-                return name.toLowerCase()
-            }
+            override fun getName() = name.toLowerCase()
         }
 
         private val NORTH = PropertyEnum.create("north", EnumConnectState::class.java)
@@ -71,43 +73,11 @@ class BlockWattleFence : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WO
         setHardness(2F)
         setResistance(5F)
         setCreativeTab(GenesisCreativeTabs.DECORATIONS)
-        defaultState = blockState.baseState.withProperty(NORTH, EnumConnectState.NONE).withProperty(EAST, EnumConnectState.NONE).withProperty(SOUTH, EnumConnectState.NONE).withProperty(WEST, EnumConnectState.NONE)
+        defaultState = this.blockState.baseState.withProperty(NORTH, EnumConnectState.NONE).withProperty(EAST, EnumConnectState.NONE).withProperty(SOUTH, EnumConnectState.NONE).withProperty(WEST, EnumConnectState.NONE)
         setHarvestLevel(Harvest.CLASS_AXE, Harvest.LEVEL_WOOD)
     }
 
-    private fun canConnectTo(worldIn: IBlockAccess, pos: BlockPos, facing: EnumFacing): Boolean {
-        val state = worldIn.getBlockState(pos)
-
-        if (state.block is BlockFence || state.block is BlockWall) return false
-
-        val faceShape = state.getBlockFaceShape(worldIn, pos, facing)
-        val flag = faceShape == BlockFaceShape.MIDDLE_POLE && (state.material === this.blockMaterial || state.block is BlockFenceGate)
-        return faceShape == BlockFaceShape.SOLID || flag
-    }
-
-    override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: List<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean) {
-        val state = if (isActualState) state else state.getActualState(worldIn, pos)
-
-        Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockFence.PILLAR_AABB)
-
-        if (state.getValue(NORTH) != EnumConnectState.NONE) Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockFence.NORTH_AABB)
-        if (state.getValue(EAST) != EnumConnectState.NONE)  Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockFence.EAST_AABB)
-        if (state.getValue(SOUTH) != EnumConnectState.NONE) Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockFence.SOUTH_AABB)
-        if (state.getValue(WEST) != EnumConnectState.NONE)  Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockFence.WEST_AABB)
-
-    }
-
-    override fun getBoundingBox(state: IBlockState, world: IBlockAccess, pos: BlockPos): AxisAlignedBB {
-        val state = state.getActualState(world, pos)
-        var box = SELECTION_BOXES[0]
-        // This joins the bounding boxes for each side that has a connection
-        if (state.getValue(NORTH) != EnumConnectState.NONE) box = box.union(SELECTION_BOXES[1])
-        if (state.getValue(EAST) != EnumConnectState.NONE)  box = box.union(SELECTION_BOXES[2])
-        if (state.getValue(SOUTH) != EnumConnectState.NONE) box = box.union(SELECTION_BOXES[3])
-        if (state.getValue(WEST) != EnumConnectState.NONE)  box = box.union(SELECTION_BOXES[4])
-
-        return box
-    }
+    override fun canPlaceTorchOnTop(state: IBlockState, world: IBlockAccess, pos: BlockPos) = true
 
     override fun createBlockState(): BlockStateContainer {
         return BlockStateContainer(this, NORTH, EAST, SOUTH, WEST)
@@ -138,22 +108,43 @@ class BlockWattleFence : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WO
     }
 
     override fun getActualState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
-        val above = shouldConnectVertical(world, pos.up())
-        val below = shouldConnectVertical(world, pos.down())
+        val above = world.getBlockState(pos.up()).block is BlockWattleFence
+        val below = world.getBlockState(pos.down()).block is BlockWattleFence
 
-        return state.withProperty(NORTH, getSideState(world, pos, EnumFacing.NORTH, above, below))
-                .withProperty(EAST, getSideState(world, pos, EnumFacing.EAST, above, below))
-                .withProperty(SOUTH, getSideState(world, pos, EnumFacing.SOUTH, above, below))
-                .withProperty(WEST, getSideState(world, pos, EnumFacing.WEST, above, below))
+        val north = getSideState(world, pos, EnumFacing.NORTH, above, below)
+        val east = getSideState(world, pos, EnumFacing.EAST, above, below)
+        val south = getSideState(world, pos, EnumFacing.SOUTH, above, below)
+        val west = getSideState(world, pos, EnumFacing.WEST, above, below)
+        return state.withProperty(NORTH, north)
+                .withProperty(EAST, east)
+                .withProperty(SOUTH, south)
+                .withProperty(WEST, west)
     }
 
-    private fun shouldConnectVertical(world: IBlockAccess, pos: BlockPos): Boolean {
-        val state = world.getBlockState(pos)
-        return state.block is BlockWattleFence
+    override fun getMetaFromState(state: IBlockState) = 0
+
+    override fun getBoundingBox(state: IBlockState, world: IBlockAccess, pos: BlockPos): AxisAlignedBB {
+        val state = state.getActualState(world, pos)
+        var box = SELECTION_BOXES[0]
+        // This joins the bounding boxes for each side that has a connection
+        if (state.getValue(NORTH) != EnumConnectState.NONE) box = box.union(SELECTION_BOXES[1])
+        if (state.getValue(EAST) != EnumConnectState.NONE)  box = box.union(SELECTION_BOXES[2])
+        if (state.getValue(SOUTH) != EnumConnectState.NONE) box = box.union(SELECTION_BOXES[3])
+        if (state.getValue(WEST) != EnumConnectState.NONE)  box = box.union(SELECTION_BOXES[4])
+
+        return box
     }
 
-    override fun getMetaFromState(state: IBlockState): Int {
-        return 0
+    override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: List<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean) {
+        val state = if (isActualState) state else state.getActualState(worldIn, pos)
+
+        Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockFence.PILLAR_AABB)
+
+        if (state.getValue(NORTH) != EnumConnectState.NONE) Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockFence.NORTH_AABB)
+        if (state.getValue(EAST) != EnumConnectState.NONE)  Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockFence.EAST_AABB)
+        if (state.getValue(SOUTH) != EnumConnectState.NONE) Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockFence.SOUTH_AABB)
+        if (state.getValue(WEST) != EnumConnectState.NONE)  Block.addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockFence.WEST_AABB)
+
     }
 
     override fun withMirror(state: IBlockState, mirrorIn: Mirror): IBlockState {
@@ -173,39 +164,38 @@ class BlockWattleFence : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WO
         }
     }
 
-    override fun getBlockLayer(): BlockRenderLayer {
-        return BlockRenderLayer.CUTOUT_MIPPED
-    }
+    override fun getBlockLayer() = BlockRenderLayer.CUTOUT_MIPPED
 
-    override fun isOpaqueCube(state: IBlockState): Boolean {
-        return false
-    }
+    override fun isOpaqueCube(state: IBlockState) = false
 
-    override fun isFullCube(state: IBlockState): Boolean {
-        return false
-    }
+    override fun isFullCube(state: IBlockState) = false
 
-    override fun isPassable(worldIn: IBlockAccess, pos: BlockPos): Boolean {
-        return false
-    }
+    override fun isPassable(worldIn: IBlockAccess, pos: BlockPos) = false
 
     override fun shouldSideBeRendered(blockState: IBlockState, world: IBlockAccess, pos: BlockPos, side: EnumFacing): Boolean {
         return world.getBlockState(pos.offset(side)).block !is BlockWattleFence && super.shouldSideBeRendered(blockState, world, pos, side)
     }
 
     override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing): BlockFaceShape {
-        if (worldIn.getBlockState(pos.offset(face)).block is BlockFence) return BlockFaceShape.UNDEFINED //I hate it, but I think it's the only way to stop normal fences from trying to connect
-        return if (face != EnumFacing.UP && face != EnumFacing.DOWN) BlockFaceShape.MIDDLE_POLE else BlockFaceShape.CENTER
+        return if (worldIn.getBlockState(pos.offset(face)).block is BlockFence) BlockFaceShape.UNDEFINED
+        else if (face != EnumFacing.UP && face != EnumFacing.DOWN) BlockFaceShape.MIDDLE_POLE
+        else BlockFaceShape.CENTER
     }
 
     override fun canBeConnectedTo(world: IBlockAccess, pos: BlockPos, facing: EnumFacing): Boolean {
-        val connector = world.getBlockState(pos.offset(facing)).block
-        return connector is BlockWattleFence || connector is BlockFenceGate
+        return world.getBlockState(pos.offset(facing)).block is BlockWattleFence
+    }
+
+    private fun canConnectTo(worldIn: IBlockAccess, pos: BlockPos, facing: EnumFacing): Boolean {
+        val state = worldIn.getBlockState(pos)
+
+        val faceShape = state.getBlockFaceShape(worldIn, pos, facing)
+        return faceShape == BlockFaceShape.SOLID || state.block is BlockWattleFence
     }
 
     private fun canFenceConnectTo(world: IBlockAccess, pos: BlockPos, facing: EnumFacing): Boolean {
         val other = pos.offset(facing)
         val block = world.getBlockState(other).block
-        return block.canBeConnectedTo(world, other, facing.opposite) || canConnectTo(world, other, facing.opposite)
+        return block.canBeConnectedTo(world, other, facing.opposite) && block !is BlockFence || canConnectTo(world, other, facing.opposite)
     }
 }

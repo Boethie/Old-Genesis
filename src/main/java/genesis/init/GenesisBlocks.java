@@ -100,6 +100,14 @@ public class GenesisBlocks {
     public static final Block GINKGO_SAPLING = null;
     public static final Block METASEQUOIA_SAPLING = null;
 
+    // fences
+    public static final Block ARAUCARIOXYLON_WATTLE_FENCE = null;
+    public static final Block DRYOPHYLLUM_WATTLE_FENCE = null;
+    public static final Block FICUS_WATTLE_FENCE = null;
+    public static final Block GINKGO_WATTLE_FENCE = null;
+    public static final Block METASEQUOIA_WATTLE_FENCE = null;
+    public static final Block LAUROPHYLLUM_WATTLE_FENCE = null;
+
     // rocks
     public static final Block GRANITE = null;
     public static final Block MOSSY_GRANITE = null;
@@ -162,6 +170,7 @@ public class GenesisBlocks {
             registerBlock(registry, new BlockGenesisSapling(treeType), treeName + "_sapling");
             registerBlock(registry, new BlockWattleFence(), treeName + "_wattle_fence");
         }
+        registerBlock(registry, new BlockWattleFence(), "laurophyllum_wattle_fence");
 
         // rocks
         for (final EnumRock rockType : EnumRock.values()) {
