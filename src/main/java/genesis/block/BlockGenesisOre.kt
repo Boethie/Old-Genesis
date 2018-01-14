@@ -41,7 +41,7 @@ class BlockGenesisOre(private val oreType: EnumOre) : BlockOre() {
     init {
         setHardness(oreType.hardness)
         setResistance(oreType.resistance)
-        setSoundType(SoundType.STONE)
+        soundType = SoundType.STONE
         setCreativeTab(GenesisCreativeTabs.BUILDING_BLOCKS)
         setHarvestLevel(Harvest.CLASS_PICKAXE, Harvest.LEVEL_STONE)
     }

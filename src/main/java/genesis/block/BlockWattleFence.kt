@@ -56,10 +56,10 @@ class BlockWattleFence : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WO
             override fun getName() = name.toLowerCase()
         }
 
-        private val NORTH = PropertyEnum.create("north", EnumConnectState::class.java)
-        private val EAST = PropertyEnum.create("east", EnumConnectState::class.java)
-        private val SOUTH = PropertyEnum.create("south", EnumConnectState::class.java)
-        private val WEST = PropertyEnum.create("west", EnumConnectState::class.java)
+        val NORTH: PropertyEnum<EnumConnectState> = PropertyEnum.create("north", EnumConnectState::class.java)
+        val EAST: PropertyEnum<EnumConnectState> = PropertyEnum.create("east", EnumConnectState::class.java)
+        val SOUTH: PropertyEnum<EnumConnectState> = PropertyEnum.create("south", EnumConnectState::class.java)
+        val WEST: PropertyEnum<EnumConnectState> = PropertyEnum.create("west", EnumConnectState::class.java)
 
         private val SELECTION_BOXES = arrayOf(
                 AxisAlignedBB(0.375, 0.0, 0.375, 0.625, 1.0, 0.625),    //Pillar

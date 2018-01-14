@@ -42,12 +42,12 @@ import java.util.*
 class BlockHumusFarmland : BlockHumusPathBase() {
     companion object {
         @JvmStatic
-        val MOISTURE = PropertyInteger.create("moisture", 0, 7)
+        val MOISTURE: PropertyInteger = PropertyInteger.create("moisture", 0, 7)
     }
 
     init {
         setHardness(0.5F)
-        setTickRandomly(true)
+        tickRandomly = true
     }
 
     override fun updateTick(world: World, pos: BlockPos, state: IBlockState, rand: Random) {
@@ -86,7 +86,7 @@ class BlockHumusFarmland : BlockHumusPathBase() {
 
     override fun getStateFromMeta(meta: Int) = defaultState.withProperty(MOISTURE, meta and 7)
 
-    override fun getMetaFromState(state: IBlockState) = state.getValue(MOISTURE)
+    override fun getMetaFromState(state: IBlockState): Int = state.getValue(MOISTURE)
 
     override fun createBlockState() = BlockStateContainer(this, MOISTURE)
 

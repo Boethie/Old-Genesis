@@ -78,7 +78,7 @@ class BlockOoze : BlockGenesis(Material.CLAY, MapColor.LIME, SoundType.GROUND) {
 class BlockSilt(private val mapColor: MapColor) : BlockFalling() {
     init {
         setHardness(0.5F)
-        setSoundType(SoundType.SAND)
+        soundType = SoundType.SAND
         setCreativeTab(GenesisCreativeTabs.BUILDING_BLOCKS)
         setHarvestLevel(Harvest.CLASS_SHOVEL, Harvest.LEVEL_WOOD)
     }

@@ -29,6 +29,6 @@ import net.minecraft.item.Item
 
 open class ItemGenesis : Item() {
     init {
-        setCreativeTab(GenesisCreativeTabs.MATERIALS)
+        creativeTab = GenesisCreativeTabs.MATERIALS
     }
 }

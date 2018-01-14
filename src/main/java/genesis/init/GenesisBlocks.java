@@ -26,10 +26,7 @@ package genesis.init;
 
 import genesis.GenesisMod;
 import genesis.block.*;
-import genesis.combo.variant.EnumFern;
-import genesis.combo.variant.EnumOre;
-import genesis.combo.variant.EnumRock;
-import genesis.combo.variant.EnumTree;
+import genesis.combo.variant.*;
 import genesis.item.ItemGenesisLeaves;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
@@ -70,9 +67,10 @@ public class GenesisBlocks {
     public static final Block HUMUS_PATH = null;
 
     // plants
-    public static final Block SANMIGUELIA = null;
-    public static final Block PALAEOASTER = null;
+    public static final Block SANMIGUELIA      = null;
+    public static final Block PALAEOASTER      = null;
     public static final Block AQUILAPOLLENITES = null;
+    public static final Block ZINGIBEROPSIS    = null;
 
     // ferns
     public static final Block DRYOPTERIS = null;
@@ -156,6 +154,12 @@ public class GenesisBlocks {
         registerBlock(registry, new BlockGenesisFlower(), "palaeoaster");
         registerBlock(registry, new BlockGenesisFlower(), "aquilapollenites");
 
+
+        for (EnumCrop crop : EnumCrop.values())
+            if (crop.isDoubleCrop())
+                registerBlock(registry, new BlockDoubleCrop(crop), crop.name().toLowerCase(Locale.ENGLISH));
+
+
         // ferns
         for (final EnumFern fernType : EnumFern.values()) {
             final String fernName = fernType.toString().toLowerCase(Locale.ENGLISH);
@@ -213,6 +217,8 @@ public class GenesisBlocks {
             final ItemBlock item;
             if (block instanceof BlockGenesisLeaves) {
                 item = new ItemGenesisLeaves((BlockLeaves) block);
+            } else if (block instanceof BlockDoubleCrop) {
+                continue;
             } else {
                 item = new ItemBlock(block);
             }
