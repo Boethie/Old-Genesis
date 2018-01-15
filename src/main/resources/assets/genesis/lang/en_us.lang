@@ -15,6 +15,9 @@ tile.genesis.dryopteris.name=Dryopteris
 tile.genesis.phlebopteris.name=Phlebopteris
 tile.genesis.todites.name=Todites
 
+# crops
+tile.genesis.zingiberopsis.name=Zingiberopsis
+
 # leaves
 tile.genesis.araucarioxylon_leaves.name=Araucarioxylon Leaves
 tile.genesis.dryophyllum_leaves.name=Dryophyllum Leaves
@@ -83,12 +86,16 @@ item.genesis.aquamarine.name=Aquamarine
 item.genesis.pyrite.name=Pyrite
 item.genesis.azurite.name=Azurite
 
+# foodstuffs
+item.genesis.zingiberopsis_rhizome.name=Zingiberopsis Rhizome
+
 # other
 item.genesis.red_clay_ball.name=Red Clay Ball
 
 #------------- Creative Tabs -------------
 itemGroup.genesis.buildingBlocks=Genesis Building Blocks
 itemGroup.genesis.decorations=Genesis Decoration Blocks
+itemGroup.genesis.food=Genesis Foodstuffs
 itemGroup.genesis.misc=Genesis Miscellaneous
 
 #------------- Config GUI -------------

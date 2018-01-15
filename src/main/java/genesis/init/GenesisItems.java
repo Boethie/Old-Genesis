@@ -25,7 +25,7 @@
 package genesis.init;
 
 import genesis.GenesisMod;
-import genesis.combo.variant.EnumCrop;
+import genesis.combo.variant.CropInfo;
 import genesis.combo.variant.EnumOre;
 import genesis.item.ItemGenesis;
 import genesis.item.ItemGenesisSeeds;
@@ -58,7 +58,6 @@ public class GenesisItems {
     public static final Item PYRITE = null;
     public static final Item AZURITE = null;
     public static final Item ZINGIBEROPSIS_RHIZOME = null;
-    public static final Item ZINGIBEROPSIS_RHIZOME_ROTTEN = null;
 
     // other
     public static final Item RED_CLAY_BALL = null;
@@ -79,7 +78,7 @@ public class GenesisItems {
 
         // other
         registerItem(registry, new ItemGenesis(), "red_clay_ball");
-        registerItem(registry, new ItemGenesisSeeds(EnumCrop.ZINGIBEROPSIS, 2, 1.4f), "zingiberopsis_rhizome");
+        registerItem(registry, new ItemGenesisSeeds(CropInfo.ZINGIBEROPSIS, 2, 1.4f), "zingiberopsis_rhizome");
     }
 
     private static void registerItem(final IForgeRegistry<Item> registry, final Item item, final String name) {

@@ -67,10 +67,10 @@ public class GenesisBlocks {
     public static final Block HUMUS_PATH = null;
 
     // plants
-    public static final Block SANMIGUELIA      = null;
-    public static final Block PALAEOASTER      = null;
+    public static final Block SANMIGUELIA = null;
+    public static final Block PALAEOASTER = null;
     public static final Block AQUILAPOLLENITES = null;
-    public static final Block ZINGIBEROPSIS    = null;
+    public static final Block ZINGIBEROPSIS = null;
 
     // ferns
     public static final Block DRYOPTERIS = null;
@@ -154,10 +154,10 @@ public class GenesisBlocks {
         registerBlock(registry, new BlockGenesisFlower(), "palaeoaster");
         registerBlock(registry, new BlockGenesisFlower(), "aquilapollenites");
 
-
-        for (EnumCrop crop : EnumCrop.values())
+        for (CropInfo crop : CropInfo.CROPS)
             if (crop.isDoubleCrop())
-                registerBlock(registry, new BlockDoubleCrop(crop), crop.name().toLowerCase(Locale.ENGLISH));
+                registerBlock(registry, new BlockDoubleCrop(crop), crop.getName());
+        //TODO: Add class for single crops when we need to and register them here
 
 
         // ferns

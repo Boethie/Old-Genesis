@@ -74,14 +74,9 @@ license {
 
 repositories {
     jcenter()
-    maven {
-        name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven"
-    }
-    maven {
-        name = "ModMaven"
-        url = "modmaven.k-4u.nl"
-    }
+    maven { url "http://dvs1.progwml6.com/files/maven" }
+    maven { url "modmaven.k-4u.nl" }
+    maven { url "http://tehnut.info/maven" }
 }
 
 dependencies {
@@ -89,6 +84,7 @@ dependencies {
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version
 
     deobfCompile "mezz.jei:jei_1.12.2:4.8.5.138"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
 }
 
 shadowJar {

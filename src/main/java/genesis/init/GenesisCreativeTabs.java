@@ -39,6 +39,7 @@ public class GenesisCreativeTabs {
     public static final CreativeTabs BUILDING_BLOCKS = createTabWithBlockIcon("buildingBlocks", () -> GenesisBlocks.GRANITE);
     public static final CreativeTabs DECORATIONS = createTabWithBlockIcon("decorations", () -> GenesisBlocks.ARAUCARIOXYLON_SAPLING);
     public static final CreativeTabs MISC = createTabWithItemIcon("misc", () -> GenesisItems.RED_CLAY_BALL);
+    public static final CreativeTabs FOOD = createTabWithItemIcon("food", () -> GenesisItems.ZINGIBEROPSIS_RHIZOME);
     public static final CreativeTabs MATERIALS = MISC;
 
     private static CreativeTabs createTabWithBlockIcon(final String label, final Supplier<Block> iconSupplier) {

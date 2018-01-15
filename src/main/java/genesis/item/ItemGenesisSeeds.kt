@@ -25,13 +25,15 @@
 
 package genesis.item
 
-import genesis.combo.variant.EnumCrop
+import genesis.combo.variant.CropInfo
 import genesis.init.GenesisCreativeTabs
 import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
+import net.minecraft.item.EnumAction
 import net.minecraft.item.ItemFood
+import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
@@ -41,12 +43,22 @@ import net.minecraft.world.World
 import net.minecraftforge.common.EnumPlantType
 import net.minecraftforge.common.IPlantable
 
-class ItemGenesisSeeds(private val crop: EnumCrop, amount: Int, saturation: Float) : ItemFood(amount, saturation, false), IPlantable {
+class ItemGenesisSeeds(private val crop: CropInfo, amount: Int, saturation: Float) : ItemFood(amount, saturation, false), IPlantable {
     init {
-        creativeTab = GenesisCreativeTabs.MATERIALS
+        creativeTab = GenesisCreativeTabs.FOOD
+    }
+
+    constructor(crop: CropInfo): this(crop, 0, 0.0f) {
+        creativeTab = GenesisCreativeTabs.MISC
+    }
+
+    override fun getItemUseAction(stack: ItemStack): EnumAction {
+        return if (getHealAmount(stack) <= 0) EnumAction.NONE else EnumAction.EAT
     }
 
     override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {
+        if (player.canEat(false) && !player.isSneaking) return EnumActionResult.PASS
+
         val stack = player.getHeldItem(hand)
         val state = worldIn.getBlockState(pos)
         return if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, stack) && state.block.canSustainPlant(state, worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(pos.up())) {
@@ -62,9 +74,9 @@ class ItemGenesisSeeds(private val crop: EnumCrop, amount: Int, saturation: Floa
     }
 
     override fun getPlantType(world: IBlockAccess, pos: BlockPos): EnumPlantType {
-        val block = crop.plant().block
+        val block = crop.plant.block
         return if (block is IPlantable) block.getPlantType(world, pos) else EnumPlantType.Plains
     }
 
-    override fun getPlant(world: IBlockAccess, pos: BlockPos): IBlockState = crop.plant()
+    override fun getPlant(world: IBlockAccess, pos: BlockPos): IBlockState = crop.plant
 }
