@@ -26,6 +26,7 @@
 package genesis.block
 
 import genesis.combo.variant.CropInfo
+import genesis.init.GenesisItems
 import net.minecraft.block.*
 import net.minecraft.block.BlockDoublePlant.EnumBlockHalf
 import net.minecraft.block.properties.PropertyEnum
@@ -43,6 +44,7 @@ import net.minecraft.util.NonNullList
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
+import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
@@ -180,6 +182,10 @@ class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
 
     override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item {
         return if (state.getValue(HALF) === EnumBlockHalf.UPPER && isMaxAge(state)) crop.crop else crop.seed
+    }
+
+    override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack {
+        return ItemStack(GenesisItems.ZINGIBEROPSIS_RHIZOME)
     }
 
     override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
