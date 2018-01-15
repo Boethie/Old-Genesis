@@ -163,7 +163,7 @@ class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
         }
 
         //Prevent it from growing if there isn't room
-        if (crop.growthAge in (oldAge+1)..newAge && worldIn.getBlockState(pos.up()).block !== Blocks.AIR) {
+        if (crop.growthAge in (oldAge+1)..newAge && worldIn.getBlockState(pos.up()).block !== Blocks.AIR && worldIn.getBlockState(pos.up()).block !== this) {
             newAge = crop.growthAge - 1
         }
 
@@ -218,11 +218,13 @@ class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
         if (state.block !== this) return super.canBlockStay(worldIn, pos, state)
 
         if (state.getValue(HALF) === EnumBlockHalf.LOWER) {
+            val soil = worldIn.getBlockState(pos.down())
+            val soilValid = (worldIn.getLight(pos) >= 8 || worldIn.canSeeSky(pos)) && soil.block.canSustainPlant(soil, worldIn, pos.down(), EnumFacing.UP, this)
+
             return if (crop.breakTogether && state.getValue(AGE) >= crop.growthAge) {
                 val upperHalf = worldIn.getBlockState(pos.up())
-                super.canBlockStay(worldIn, pos, state) && upperHalf.block === this && getAge(upperHalf) == getAge(state)
-            } else
-                super.canBlockStay(worldIn, pos, state)
+                soilValid && upperHalf.block === this && getAge(upperHalf) == getAge(state)
+            } else soilValid
         }
 
         val lowerHalf = worldIn.getBlockState(pos.down())
@@ -231,7 +233,8 @@ class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
 
     override fun onBlockAdded(worldIn: World, pos: BlockPos, state: IBlockState) {
         if (state.getValue(AGE) >= crop.growthAge && state.getValue(HALF) === EnumBlockHalf.LOWER) {
-            if (worldIn.getBlockState(pos.up()).material.isReplaceable)
+            val block = worldIn.getBlockState(pos.up()).block
+            if (block === this || block === Blocks.AIR)
                 worldIn.setBlockState(pos.up(), state.withProperty(HALF, EnumBlockHalf.UPPER), 2)
             else
                 worldIn.setBlockState(pos, state.withProperty(AGE, crop.growthAge - 1), 2)

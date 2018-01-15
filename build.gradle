@@ -77,6 +77,8 @@ repositories {
     maven { url "http://dvs1.progwml6.com/files/maven" }
     maven { url "modmaven.k-4u.nl" }
     maven { url "http://tehnut.info/maven" }
+    maven { url "http://maven.tterrag.com/" }
+    maven { url "http://maven.covers1624.net" }
 }
 
 dependencies {
@@ -84,6 +86,8 @@ dependencies {
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version
 
     deobfCompile "mezz.jei:jei_1.12.2:4.8.5.138"
+    deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.19-11"
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
 }
 
