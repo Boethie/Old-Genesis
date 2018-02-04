@@ -27,6 +27,14 @@ package genesis.util
 
 import java.util.*
 
+infix fun Double.to(x: Double): DoubleRange {
+    return DoubleRange.create(this, x)
+}
+
+infix fun Float.to(x: Float): FloatRange {
+    return FloatRange.create(this, x)
+}
+
 class DoubleRange(private val min: Double, private val range: Double) {
     companion object {
         @JvmStatic fun create(min: Double, max: Double): DoubleRange {
@@ -34,5 +42,15 @@ class DoubleRange(private val min: Double, private val range: Double) {
         }
     }
 
-    operator fun get(random: Random) = random.nextDouble() * range + min
+    fun get(random: Random) = random.nextDouble() * range + min
+}
+
+class FloatRange(private val min: Float, private val range: Float) {
+    companion object {
+        @JvmStatic fun create(min: Float, max: Float): FloatRange {
+            return FloatRange(min, max-min)
+        }
+    }
+
+    fun get(random: Random) = random.nextFloat() * range + min
 }

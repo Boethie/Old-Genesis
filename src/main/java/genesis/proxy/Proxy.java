@@ -24,7 +24,9 @@
  */
 package genesis.proxy;
 
+import genesis.block.BlockCampfire;
 import genesis.block.tile.campfire.TileEntityCampfire;
+import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 
 public class Proxy {
@@ -32,7 +34,9 @@ public class Proxy {
         TileEntity.register("genesis:campfire", TileEntityCampfire.class);
     }
 
-    public void init() { }
+    public void init() {
+        BlockCampfire.addLighter(Items.FLINT_AND_STEEL);
+    }
 
     public void postInit() {}
 }

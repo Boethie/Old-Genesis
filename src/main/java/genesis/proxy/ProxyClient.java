@@ -41,6 +41,7 @@ public class ProxyClient extends Proxy {
 
     @Override
     public void init() {
+        super.init();
         GenesisBlocks.registerColorHandlers(minecraft.getBlockColors(), minecraft.getItemColors());
     }
 }
