@@ -49,6 +49,8 @@ import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraftforge.fluids.Fluid
+import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.fluids.capability.templates.VoidFluidHandler
 import java.util.*
@@ -88,6 +90,7 @@ class BlockCampfire : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WOOD)
     init {
         tickRandomly = true
         defaultState = blockState.baseState.withProperty(FACING, EnumFacing.NORTH)
+        blockHardness = 1.3f
     }
 
     override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean) {
@@ -127,9 +130,10 @@ class BlockCampfire : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WOOD)
     private fun douse(campfire: TileEntityCampfire, worldIn: World, pos: BlockPos, playerIn: EntityPlayer, held: ItemStack, hand: EnumHand): Boolean {
         val fluidHandler = FluidUtil.getFluidHandler(held)
 
-        if (fluidHandler != null) {
+        if (fluidHandler != null && fluidHandler.drain(Fluid.BUCKET_VOLUME, false)?.fluid == FluidRegistry.WATER) {
             val rand = worldIn.rand
 
+            //TODO: Maybe move these to the class scope and make others constant
             val rangeXZ = 0.25 to 0.75
             val rangeY = 0.2 to 0.5
             val speedXZ = -0.08 to 0.08

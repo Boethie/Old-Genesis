@@ -79,95 +79,33 @@ object ModelHelpers {
 
     private val FORCED_MODELS: MutableList<Pair<BlockStateContainer, ResourceLocation>> = ArrayList()
 
-    private var _blockDispatcher: BlockRendererDispatcher? = null
-    val blockDispatcher: BlockRendererDispatcher
-        get() {
-            if (_blockDispatcher == null)
-                _blockDispatcher = Minecraft.getMinecraft().blockRendererDispatcher
+    val blockDispatcher: BlockRendererDispatcher by lazy { Minecraft.getMinecraft().blockRendererDispatcher }
 
-            return _blockDispatcher!!
-        }
+    val blockModelShapes: BlockModelShapes by lazy { modelManager.blockModelShapes }
 
-    private var _blockModelShapes: BlockModelShapes? = null
-    val blockModelShapes: BlockModelShapes
-        get() {
-            if (_blockModelShapes == null)
-                _blockModelShapes = modelManager.blockModelShapes
+    val blockRenderer: BlockModelRenderer by lazy { blockDispatcher.blockModelRenderer }
 
-            return _blockModelShapes!!
-        }
+    val stateToModelLocationMap: Map<IBlockState, ModelResourceLocation> by lazy {
+        blockModelShapes.blockStateMapper.putAllStateModelLocations()
+    }
 
-    private var _blockRenderer: BlockModelRenderer? = null
-    val blockRenderer: BlockModelRenderer
-        get() {
-            if (_blockRenderer == null)
-                _blockRenderer = blockDispatcher.blockModelRenderer
+    val itemModelLocations: Map<IRegistryDelegate<Item>, TIntObjectHashMap<ModelResourceLocation>> by lazy {
+        ReflectionHelper.getPrivateValue<Map<IRegistryDelegate<Item>, TIntObjectHashMap<ModelResourceLocation>>, ItemModelMesherForge>(ItemModelMesherForge::class.java, modelMesher as ItemModelMesherForge, "locations")
+    }
 
-            return _blockRenderer!!
-        }
+    val vanillaModelWrapper: Class<out IModel> by lazy { getModelLoaderClass<IModel>("VanillaModelWrapper")!! }
 
-    private var _stateToModelLocationMap: Map<IBlockState, ModelResourceLocation>? = null
-    val stateToModelLocationMap: Map<IBlockState, ModelResourceLocation>
-        get() {
-            if (_stateToModelLocationMap == null)
-                _stateToModelLocationMap = blockModelShapes.blockStateMapper.putAllStateModelLocations()
+    val itemModelDefinitions: Map<IRegistryDelegate<Item>, ItemMeshDefinition> by lazy {
+        ReflectionHelper.getPrivateValue<Map<IRegistryDelegate<Item>, ItemMeshDefinition>, ItemModelMesher>(ItemModelMesher::class.java, modelMesher, "shapers", "field_178092_c")
+    }
 
-            return _stateToModelLocationMap!!
-        }
+    val missingModelLocation: ModelResourceLocation by lazy {
+        ReflectionHelper.getPrivateValue<ModelResourceLocation, ModelBakery>(ModelBakery::class.java, null, "MODEL_MISSING", "field_177604_a")
+    }
 
-    private var _itemModelLocationMap: Map<IRegistryDelegate<Item>, TIntObjectHashMap<ModelResourceLocation>>? = null
-    val itemModelLocations: Map<IRegistryDelegate<Item>, TIntObjectHashMap<ModelResourceLocation>>
-        get() {
-            if (_itemModelLocationMap == null)
-                _itemModelLocationMap = ReflectionHelper.getPrivateValue(ItemModelMesherForge::class.java, modelMesher as ItemModelMesherForge, "locations")
+    val modelManager: ModelManager by lazy { modelMesher.modelManager }
 
-            return _itemModelLocationMap!!
-        }
-
-    private var _vanillaModelWrapper: Class<out IModel>? = null
-    val vanillaModelWrapper: Class<out IModel>
-        get() {
-            if (_vanillaModelWrapper == null)
-                _vanillaModelWrapper = getModelLoaderClass("VanillaModelWrapper")
-
-            return _vanillaModelWrapper!!
-        }
-
-    private var _itemModelDefinitions: Map<IRegistryDelegate<Item>, ItemMeshDefinition>? = null
-    val itemModelDefinitions: Map<IRegistryDelegate<Item>, ItemMeshDefinition>
-        get() {
-            if (_itemModelDefinitions == null)
-                _itemModelDefinitions = ReflectionHelper.getPrivateValue(ItemModelMesher::class.java, modelMesher, "shapers", "field_178092_c")
-
-            return _itemModelDefinitions!!
-        }
-
-    private var _missingModelLocation: ModelResourceLocation? = null
-    val missingModelLocation: ModelResourceLocation
-        get() {
-            if (_missingModelLocation == null)
-                _missingModelLocation = ReflectionHelper.getPrivateValue<ModelResourceLocation, ModelBakery>(ModelBakery::class.java, null, "MODEL_MISSING", "field_177604_a")
-
-            return _missingModelLocation!!
-        }
-
-    private var _modelManager: ModelManager? = null
-    val modelManager: ModelManager
-        get() {
-            if (_modelManager == null)
-                _modelManager = modelMesher.modelManager
-
-            return _modelManager!!
-        }
-
-    private var _modelMesher: ItemModelMesher? = null
-    val modelMesher: ItemModelMesher
-        get() {
-            if (_modelMesher == null)
-                _modelMesher = Minecraft.getMinecraft().renderItem.itemModelMesher
-
-            return _modelMesher!!
-        }
+    val modelMesher: ItemModelMesher by lazy { Minecraft.getMinecraft().renderItem.itemModelMesher }
 
     fun <T> getModelLoaderClass(name: String): Class<T>? {
         val classes = ModelLoader::class.java.declaredClasses
@@ -189,17 +127,11 @@ object ModelHelpers {
         else output.toString()
     }
 
-    fun getPropertyString(state: IBlockState): String {
-        return getPropertyString(state.properties)
-    }
+    fun getPropertyString(state: IBlockState): String = getPropertyString(state.properties)
 
-    fun getLocationWithProperties(loc: ResourceLocation, properties: String): ModelResourceLocation {
-        return ModelResourceLocation(loc.resourceDomain + ":" + loc.resourcePath, properties)
-    }
+    fun getLocationWithProperties(loc: ResourceLocation, properties: String): ModelResourceLocation = ModelResourceLocation(loc.resourceDomain + ":" + loc.resourcePath, properties)
 
-    fun isGeneratedItemModel(stack: ItemStack): Boolean {
-        return isGeneratedItemModel(getLocationFromStack(stack))
-    }
+    fun isGeneratedItemModel(stack: ItemStack) = isGeneratedItemModel(getLocationFromStack(stack))
 
     fun isGeneratedItemModel(loc: ModelResourceLocation): Boolean {
         val missing = missingModelLocation
@@ -260,9 +192,8 @@ object ModelHelpers {
      * @return A duplicate of the original baked model with all faces mapped to the provided sprite,
      * each face projected from its cardinal direction.
      */
-    fun getCubeProjectedBakedModel(state: IBlockState, model: IBakedModel, texture: TextureAtlasSprite, pos: BlockPos): IBakedModel {
-        return SimpleBakedModel.Builder(state, model, texture, pos).makeBakedModel()
-    }
+    fun getCubeProjectedBakedModel(state: IBlockState, model: IBakedModel, texture: TextureAtlasSprite, pos: BlockPos): IBakedModel
+            = SimpleBakedModel.Builder(state, model, texture, pos).makeBakedModel()
 
 //    /**
 //     * @return A duplicate of the original baked model with all faces mapped to the provided sprite,

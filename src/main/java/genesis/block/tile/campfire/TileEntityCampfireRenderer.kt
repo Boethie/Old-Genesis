@@ -230,15 +230,13 @@ class TileEntityCampfireRenderer : TileEntitySpecialRenderer<TileEntityCampfire>
 
             val breakTexture = ModelHelpers.getDestroyBlockIcon(destroyStage)
 
-
             buff.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK)
             buff.noColor()
             buff.setTranslation((-pos.x).toDouble(), (-pos.y).toDouble(), (-pos.z).toDouble())
 
             ModelHelpers
                     .blockRenderer
-                    .renderModelFlat(world, ModelHelpers.getCubeProjectedBakedModel(state, ModelHelpers.getBakedBlockModel(state, world, pos), breakTexture, pos), state, pos, buff, true, MathHelper
-                            .getPositionRandom(pos))
+                    .renderModelFlat(world, ModelHelpers.getCubeProjectedBakedModel(state, ModelHelpers.getBakedBlockModel(state, world, pos), breakTexture, pos), state, pos, buff, true, MathHelper.getPositionRandom(pos))
 
             buff.setTranslation(0.0, 0.0, 0.0)
             GlStateManager.color(1f, 1f, 1f, 0.0f)
