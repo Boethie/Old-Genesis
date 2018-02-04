@@ -22,20 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.item;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.item.ItemLeaves;
-import net.minecraft.item.ItemStack;
+@MethodsReturnNonnullByDefault @ParametersAreNonnullByDefault
+package genesis.block;
 
-public class ItemGenesisLeaves extends ItemLeaves {
+import mcp.MethodsReturnNonnullByDefault;
 
-    public ItemGenesisLeaves(BlockLeaves block) {
-        super(block);
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName();
-    }
-}
+import javax.annotation.ParametersAreNonnullByDefault;

@@ -1,5 +1,7 @@
 {
     "variants": {
-        "normal": { "model": "genesis:red_clay" }
+        "normal": {
+            "model": "genesis:red_clay"
+        }
     }
 }

@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "axis=x": {
+            "model": "genesis:campfire_cooking_pot"
+        },
+        "axis=z": {
+            "model": "genesis:campfire_cooking_pot"
+        }
+    }
+}

@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"normal": { "model": "genesis:ficus_leaves" }
-	}
+    "variants": {
+        "normal": {
+            "model": "genesis:ficus_leaves"
+        }
+    }
 }

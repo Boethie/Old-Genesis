@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"normal": { "model": "genesis:tourmaline_ore" }
-	}
+    "variants": {
+        "normal": {
+            "model": "genesis:tourmaline_ore"
+        }
+    }
 }

@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"normal": { "model": "genesis:komatiite" }
-	}
+    "variants": {
+        "normal": {
+            "model": "genesis:komatiite"
+        }
+    }
 }

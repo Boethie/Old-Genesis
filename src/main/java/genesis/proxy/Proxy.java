@@ -24,10 +24,15 @@
  */
 package genesis.proxy;
 
-public class Proxy {
-    public void preInit() {}
+import genesis.block.tile.campfire.TileEntityCampfire;
+import net.minecraft.tileentity.TileEntity;
 
-    public void init() {}
+public class Proxy {
+    public void preInit() {
+        TileEntity.register("genesis:campfire", TileEntityCampfire.class);
+    }
+
+    public void init() { }
 
     public void postInit() {}
 }

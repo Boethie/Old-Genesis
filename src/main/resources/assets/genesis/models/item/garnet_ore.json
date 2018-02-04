@@ -1,3 +1,3 @@
 {
-	"parent": "genesis:block/garnet_ore"
+    "parent": "genesis:block/garnet_ore"
 }

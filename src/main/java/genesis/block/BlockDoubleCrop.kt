@@ -26,7 +26,6 @@
 package genesis.block
 
 import genesis.combo.variant.CropInfo
-import genesis.init.GenesisItems
 import net.minecraft.block.*
 import net.minecraft.block.BlockDoublePlant.EnumBlockHalf
 import net.minecraft.block.properties.PropertyEnum
@@ -145,9 +144,9 @@ class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
         } else {
             val diagonalNeighbors =
                     this === worldIn.getBlockState(west.north()).block ||
-                    this === worldIn.getBlockState(east.north()).block ||
-                    this === worldIn.getBlockState(east.south()).block ||
-                    this === worldIn.getBlockState(west.south()).block
+                            this === worldIn.getBlockState(east.north()).block ||
+                            this === worldIn.getBlockState(east.south()).block ||
+                            this === worldIn.getBlockState(west.south()).block
 
             if (diagonalNeighbors) chance /= 2.0f
         }
@@ -165,7 +164,7 @@ class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
         }
 
         //Prevent it from growing if there isn't room
-        if (crop.growthAge in (oldAge+1)..newAge && worldIn.getBlockState(pos.up()).block !== Blocks.AIR && worldIn.getBlockState(pos.up()).block !== this) {
+        if (crop.growthAge in (oldAge + 1)..newAge && worldIn.getBlockState(pos.up()).block !== Blocks.AIR && worldIn.getBlockState(pos.up()).block !== this) {
             newAge = crop.growthAge - 1
         }
 
@@ -185,7 +184,7 @@ class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
     }
 
     override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack {
-        return ItemStack(GenesisItems.ZINGIBEROPSIS_RHIZOME)
+        return ItemStack(crop.seed)
     }
 
     override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
@@ -211,8 +210,7 @@ class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
                 else
                     worldIn.setBlockState(pos.down(), defaultState.withProperty(AGE, crop.growthAge - 1), 2)
             }
-        }
-        else if (worldIn.getBlockState(pos.up()).block === this) {
+        } else if (worldIn.getBlockState(pos.up()).block === this) {
             if (player.isCreative)
                 worldIn.setBlockState(pos.up(), Blocks.AIR.defaultState, 2)
             else

@@ -24,7 +24,7 @@
  */
 
 buildscript {
-    ext.kotlin_version = '1.2.0'
+    ext.kotlin_version = '1.2.20'
     repositories {
         jcenter()
         maven {
@@ -54,7 +54,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 minecraft {
-    version = "1.12.2-14.23.1.2589"
+    version = "1.12.2-14.23.2.2611"
     runDir = "run"
     mappings = "snapshot_20171003"
     replaceIn "GenesisMod.java"
@@ -86,8 +86,7 @@ dependencies {
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version
 
     deobfCompile "mezz.jei:jei_1.12.2:4.8.5.138"
-    deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
-    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.19-11"
+    deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.19-11:api" //It uses incompatible mappings ¯\_(ツ)_/¯
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
 }
 

@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"normal": { "model": "genesis:dryophyllum_leaves" }
-	}
+    "variants": {
+        "normal": {
+            "model": "genesis:dryophyllum_leaves"
+        }
+    }
 }

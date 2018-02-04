@@ -1,0 +1,12 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "genesis:cross_tint"
+    },
+    "variants": {
+        "half": {
+            "upper": { "textures": { "cross": "genesis:blocks/double_cladophlebis_top" } },
+            "lower": { "textures": { "cross": "genesis:blocks/double_cladophlebis_bottom" } }
+        }
+    }
+}

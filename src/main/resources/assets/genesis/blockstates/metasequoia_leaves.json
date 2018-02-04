@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"normal": { "model": "genesis:metasequoia_leaves" }
-	}
+    "variants": {
+        "normal": {
+            "model": "genesis:metasequoia_leaves"
+        }
+    }
 }

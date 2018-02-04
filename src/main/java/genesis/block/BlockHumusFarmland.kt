@@ -41,8 +41,7 @@ import java.util.*
 
 class BlockHumusFarmland : BlockHumusPathBase() {
     companion object {
-        @JvmStatic
-        val MOISTURE: PropertyInteger = PropertyInteger.create("moisture", 0, 7)
+        @JvmField val MOISTURE: PropertyInteger = PropertyInteger.create("moisture", 0, 7)
     }
 
     init {

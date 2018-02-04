@@ -24,11 +24,20 @@
  */
 package genesis.proxy;
 
+import genesis.block.tile.campfire.TileEntityCampfire;
+import genesis.block.tile.campfire.TileEntityCampfireRenderer;
 import genesis.init.GenesisBlocks;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class ProxyClient extends Proxy {
     private final Minecraft minecraft = Minecraft.getMinecraft();
+
+    @Override
+    public void preInit() {
+        super.preInit();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCampfire.class, new TileEntityCampfireRenderer());
+    }
 
     @Override
     public void init() {

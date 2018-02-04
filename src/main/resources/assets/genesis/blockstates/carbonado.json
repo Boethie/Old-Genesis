@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"normal": { "model": "genesis:carbonado" }
-	}
+    "variants": {
+        "normal": {
+            "model": "genesis:carbonado"
+        }
+    }
 }

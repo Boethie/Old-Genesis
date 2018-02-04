@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"normal": { "model": "genesis:pegmatite" }
-	}
+    "variants": {
+        "normal": {
+            "model": "genesis:pegmatite"
+        }
+    }
 }
