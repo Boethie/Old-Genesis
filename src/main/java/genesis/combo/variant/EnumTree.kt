@@ -24,6 +24,7 @@
  */
 package genesis.combo.variant
 
+import genesis.init.GenesisBlocks
 import genesis.world.gen.feature.WorldGenAbstractGenesisTree
 import genesis.world.gen.feature.WorldGenTreeAraucarioxylon
 import genesis.world.gen.feature.WorldGenTreeDryophyllum
@@ -34,11 +35,11 @@ import java.util.*
 
 enum class EnumTree(private val leavesSupplier: () -> Block, private val logSupplier: () -> Block, private val saplingSupplier: () -> Block) {
 
-    ARAUCARIOXYLON({ ARAUCARIOXYLON_LEAVES }, { ARAUCARIOXYLON_LOG }, { ARAUCARIOXYLON_SAPLING }),
-    DRYOPHYLLUM({ DRYOPHYLLUM_LEAVES }, { DRYOPHYLLUM_LOG }, { DRYOPHYLLUM_SAPLING }),
-    FICUS({ FICUS_LEAVES }, { FICUS_LOG }, { FICUS_SAPLING }),
-    GINKGO({ GINKGO_LEAVES }, { GINKGO_LOG }, { GINKGO_SAPLING }),
-    METASEQUOIA({ METASEQUOIA_LEAVES }, { METASEQUOIA_LOG }, { METASEQUOIA_SAPLING });
+    ARAUCARIOXYLON({ GenesisBlocks.ARAUCARIOXYLON_LEAVES }, { GenesisBlocks.ARAUCARIOXYLON_LOG }, { GenesisBlocks.ARAUCARIOXYLON_SAPLING }),
+    DRYOPHYLLUM({ GenesisBlocks.DRYOPHYLLUM_LEAVES }, { GenesisBlocks.DRYOPHYLLUM_LOG }, { GenesisBlocks.DRYOPHYLLUM_SAPLING }),
+    FICUS({ GenesisBlocks.FICUS_LEAVES }, { GenesisBlocks.FICUS_LOG }, { GenesisBlocks.FICUS_SAPLING }),
+    GINKGO({ GenesisBlocks.GINKGO_LEAVES }, { GenesisBlocks.GINKGO_LOG }, { GenesisBlocks.GINKGO_SAPLING }),
+    METASEQUOIA({ GenesisBlocks.METASEQUOIA_LEAVES }, { GenesisBlocks.METASEQUOIA_LOG }, { GenesisBlocks.METASEQUOIA_SAPLING });
 
     val leaves: Block get() = leavesSupplier()
 
