@@ -49,7 +49,6 @@ open class Proxy {
     open fun init(event: FMLInitializationEvent) {
         FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "genesis.compat.top.PluginGenesis")
         BlockCampfire.addLighter(Items.FLINT_AND_STEEL)
-        GenesisNetwork.initialize()
 
         registerFurnaceRecipes()
     }
