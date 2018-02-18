@@ -1,10 +1,8 @@
 {
     "variants": {
-        "axis=x": {
-            "model": "genesis:campfire_cooking_pot"
-        },
-        "axis=z": {
-            "model": "genesis:campfire_cooking_pot"
-        }
+        "facing=north": { "model": "genesis:campfire_cooking_pot" },
+        "facing=east": { "model": "genesis:campfire_cooking_pot" },
+        "facing=south": { "model": "genesis:campfire_cooking_pot" },
+        "facing=west": { "model": "genesis:campfire_cooking_pot" }
     }
 }

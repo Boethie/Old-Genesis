@@ -26,27 +26,36 @@
 package genesis.block.tile
 
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.ItemStackHelper
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
+import net.minecraft.world.ILockableContainer
+import net.minecraft.world.LockCode
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.wrapper.InvWrapper
 
-abstract class TileEntityInventory(private val size: Int) : TileEntity(), IInventory {
+abstract class TileEntityInventory(private val size: Int) : TileEntity(), ILockableContainer {
     protected val inventory: NonNullList<ItemStack> = NonNullList.withSize(size, ItemStack.EMPTY)
 
-    override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
-        ItemStackHelper.saveAllItems(compound, inventory)
+    final override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
+        writeData(compound)
         return super.writeToNBT(compound)
     }
 
-    override fun readFromNBT(compound: NBTTagCompound) {
+    final override fun readFromNBT(compound: NBTTagCompound) {
+        readData(compound)
         super.readFromNBT(compound)
+    }
+
+    open fun writeData(compound: NBTTagCompound) {
+        ItemStackHelper.saveAllItems(compound, inventory)
+    }
+
+    open fun readData(compound: NBTTagCompound) {
         ItemStackHelper.loadAllItems(compound, inventory)
     }
 
@@ -98,12 +107,24 @@ abstract class TileEntityInventory(private val size: Int) : TileEntity(), IInven
 
     override fun setField(id: Int, value: Int) {}
 
-    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?) = capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+    private var code: LockCode = LockCode.EMPTY_CODE
+
+    override fun setLockCode(code: LockCode) {
+        this.code = code
+    }
+
+    override fun getLockCode(): LockCode = code
+
+    override fun isLocked() = !this.code.isEmpty
+
+    private val wrapper: InvWrapper by lazy { InvWrapper(this) }
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?) = capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing)
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         return if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            capability.cast(InvWrapper(this))
+            capability.cast(wrapper)
         else
-            null
+            super.getCapability(capability, facing)
     }
 }

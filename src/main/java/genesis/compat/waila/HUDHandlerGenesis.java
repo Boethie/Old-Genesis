@@ -45,8 +45,8 @@ public class HUDHandlerGenesis implements IWailaDataProvider {
     @Nonnull
     @Override
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        if (accessor.getBlock() == GenesisBlocks.ZINGIBEROPSIS) {
-            return new ItemStack(GenesisItems.ZINGIBEROPSIS_RHIZOME);
+        if (accessor.getBlock() == GenesisBlocks.INSTANCE.getZINGIBEROPSIS()) {
+            return new ItemStack(GenesisItems.INSTANCE.getZINGIBEROPSIS_RHIZOME());
         }
 
         return ItemStack.EMPTY;

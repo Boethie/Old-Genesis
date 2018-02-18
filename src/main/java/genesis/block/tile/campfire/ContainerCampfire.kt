@@ -30,15 +30,34 @@ import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.inventory.*
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.FurnaceRecipes
-import net.minecraft.tileentity.TileEntityFurnace
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 class ContainerCampfire(playerInventory: InventoryPlayer, private val campfire: IInventory) : Container() {
+
+    companion object {
+        private const val playerStartIndex: Int = 7
+        private const val playerHotBarIndex: Int = 34
+        private const val playerEndIndex: Int = 43
+
+        private val playerMain = playerStartIndex..playerHotBarIndex
+        private val playerHotBar = playerHotBarIndex..playerEndIndex
+        private val player = playerStartIndex..playerEndIndex
+
+        private val campfireInputs = 0..TileEntityCampfire.cookingSlot3+1
+        private val campfireIngredients = TileEntityCampfire.cookingSlot1..TileEntityCampfire.cookingSlot3+1
+    }
+
     init {
         this.addSlotToContainer(Slot(campfire, TileEntityCampfire.inputSlot, 47, 44))
         this.addSlotToContainer(SlotCampfireFuel(campfire, TileEntityCampfire.fuelSlot, 47, 80))
+
+        this.addSlotToContainer(SlotCampfireIngredients(campfire, TileEntityCampfire.cookingSlot1, 23, 18))
+        this.addSlotToContainer(SlotCampfireIngredients(campfire, TileEntityCampfire.cookingSlot2, 47, 18))
+        this.addSlotToContainer(SlotCampfireIngredients(campfire, TileEntityCampfire.cookingSlot3, 71, 18))
+
         this.addSlotToContainer(SlotFurnaceOutput(playerInventory.player, campfire, TileEntityCampfire.outputSlot, 135, 34))
+        this.addSlotToContainer(Slot(campfire, TileEntityCampfire.bowlOutputSlot, 135, 64))
 
         for (y in 0..2) {
             for (x in 0..8) {
@@ -52,7 +71,7 @@ class ContainerCampfire(playerInventory: InventoryPlayer, private val campfire: 
     }
 
     //Store fields in an array because we never need to access them directly
-    private val properties: Array<Int> = Array(6, { 0 })
+    private val properties: IntArray = IntArray(5, { 0 })
 
     override fun addListener(listener: IContainerListener) {
         super.addListener(listener)
@@ -62,7 +81,7 @@ class ContainerCampfire(playerInventory: InventoryPlayer, private val campfire: 
     override fun detectAndSendChanges() {
         super.detectAndSendChanges()
 
-        for (i in 0..5) {
+        for (i in 0 until 5) {
             val field = campfire.getField(i)
             if (properties[i] != field) {
                 for (listener in listeners) {
@@ -81,51 +100,57 @@ class ContainerCampfire(playerInventory: InventoryPlayer, private val campfire: 
     override fun canInteractWith(playerIn: EntityPlayer) = campfire.isUsableByPlayer(playerIn)
 
     override fun transferStackInSlot(playerIn: EntityPlayer, index: Int): ItemStack {
-        var itemstack = ItemStack.EMPTY
+        var outStack = ItemStack.EMPTY
         val slot = this.inventorySlots[index]
 
         if (slot != null && slot.hasStack) {
-            val stackInSlot = slot.stack
-            itemstack = stackInSlot.copy()
+            val stack = slot.stack
+            outStack = stack.copy()
 
-            if (index == 2) {
-                if (!this.mergeItemStack(stackInSlot, 3, 39, true))
-                    return ItemStack.EMPTY
+            if (index == TileEntityCampfire.outputSlot) {
+                if (!merge(stack, player)) return ItemStack.EMPTY
 
-                slot.onSlotChange(stackInSlot, itemstack)
-            } else if (index != 1 && index != 0) {
-                if (!FurnaceRecipes.instance().getSmeltingResult(stackInSlot).isEmpty) {
-                    if (!this.mergeItemStack(stackInSlot, 0, 1, false)) {
+                slot.onSlotChange(stack, outStack)
+            } else if (index !in campfireInputs) {
+                if (TileEntityCampfire.isItemFuel(stack))
+                    merge(stack, TileEntityCampfire.fuelSlot)
+
+                if (TileEntityCampfire.isItemCookingPot(stack) || !FurnaceRecipes.instance().getSmeltingResult(stack).isEmpty) {
+                    if (!merge(stack, TileEntityCampfire.inputSlot))
                         return ItemStack.EMPTY
-                    }
-                } else if (TileEntityFurnace.isItemFuel(stackInSlot)) {
-                    if (!this.mergeItemStack(stackInSlot, 1, 2, false)) {
+                } else if (TileEntityCampfire.hasCookingPot(campfire)) { //TODO: Proper testing for ingredients
+                    if (!merge(stack, campfireIngredients))
                         return ItemStack.EMPTY
-                    }
-                } else if (index in 3..29) {
-                    if (!this.mergeItemStack(stackInSlot, 30, 39, false)) {
+                } else if (index in playerMain) {
+                    if (!merge(stack, playerHotBar))
                         return ItemStack.EMPTY
-                    }
-                } else if (index in 30..38 && !this.mergeItemStack(stackInSlot, 3, 30, false)) {
+                } else if (index in playerHotBar && !merge(stack, playerMain))
                     return ItemStack.EMPTY
-                }
-            } else if (!this.mergeItemStack(stackInSlot, 3, 39, false)) {
+            } else if (!merge(stack, player))
                 return ItemStack.EMPTY
-            }
 
-            if (stackInSlot.isEmpty) slot.putStack(ItemStack.EMPTY)
+            if (stack.isEmpty) slot.putStack(ItemStack.EMPTY)
             else slot.onSlotChanged()
 
-            if (stackInSlot.count == itemstack.count) return ItemStack.EMPTY
+            if (stack.count == outStack.count) return ItemStack.EMPTY
 
-            slot.onTake(playerIn, stackInSlot)
+            slot.onTake(playerIn, stack)
         }
 
-        return itemstack
+        return outStack
     }
+
+    private fun merge(stack: ItemStack, slot: Int) = this.mergeItemStack(stack, slot, slot + 1, false)
+    private fun merge(stack: ItemStack, range: IntRange) = this.mergeItemStack(stack, range.start, range.endInclusive, false)
 
     class SlotCampfireFuel(inventoryIn: IInventory, slotIndex: Int, xPosition: Int, yPosition: Int)
         : Slot(inventoryIn, slotIndex, xPosition, yPosition) {
-        override fun isItemValid(stack: ItemStack) = TileEntityFurnace.isItemFuel(stack)
+        override fun isItemValid(stack: ItemStack) = TileEntityCampfire.isItemFuel(stack)
+    }
+
+    class SlotCampfireIngredients(inventoryIn: IInventory, slotIndex: Int, xPosition: Int, yPosition: Int)
+        : Slot(inventoryIn, slotIndex, xPosition, yPosition) {
+
+        override fun isEnabled() = TileEntityCampfire.hasCookingPot(inventory)
     }
 }

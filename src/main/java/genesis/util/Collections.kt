@@ -22,41 +22,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.combo.variant;
 
-import genesis.init.GenesisBlocks;
-import net.minecraft.block.Block;
+package genesis.util
 
-import java.util.function.Supplier;
+import net.minecraft.item.ItemStack
 
-public enum EnumRock {
-
-    GRANITE(1.4F, 10.0F, () -> GenesisBlocks.GRANITE),
-    MOSSY_GRANITE(1.4F, 10.0F, () -> GenesisBlocks.MOSSY_GRANITE),
-    KOMATIITE(1.25F, 10.0F, () -> GenesisBlocks.KOMATIITE),
-    ORTHOGNEISS(1.5F, 10.0F, () -> GenesisBlocks.ORTHOGNEISS),
-    PEGMATITE(1.5F, 10.0F, () -> GenesisBlocks.PEGMATITE),
-    CARBONADO(2.15F, 10.0F, () -> GenesisBlocks.CARBONADO);
-
-    private final float hardness;
-    private final float resistance;
-    private final Supplier<Block> blockSupplier;
-
-    EnumRock(float hardness, float resistance, Supplier<Block> blockSupplier) {
-        this.hardness = hardness;
-        this.resistance = resistance;
-        this.blockSupplier = blockSupplier;
+public inline fun <T> MutableIterable<T>.removeFirst(predicate: (T) -> Boolean): Boolean {
+    val each = this.iterator()
+    while (each.hasNext()) {
+        if (predicate(each.next())) {
+            each.remove()
+            return true
+        }
     }
+    return false
+}
 
-    public float getHardness() {
-        return hardness;
-    }
+public fun Iterable<ItemStack>.shrinkAll(n: Int) { this.forEach { it.shrink(n) } }
 
-    public float getResistance() {
-        return resistance;
-    }
-
-    public Block getBlock() {
-        return blockSupplier.get();
-    }
+public fun Iterable<ItemStack>.shrinkAllIf(n: Int, predicate: (ItemStack) -> Boolean) {
+    this.forEach { if (predicate(it)) it.shrink(n) }
 }

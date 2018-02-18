@@ -27,8 +27,10 @@ package genesis.block
 
 import genesis.GenesisMod
 import genesis.block.tile.campfire.TileEntityCampfire
+import genesis.init.GenesisCreativeTabs
 import genesis.proxy.GenesisGuiHandler
 import genesis.util.to
+import net.minecraft.block.Block
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.MapColor
@@ -41,6 +43,8 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
+import net.minecraft.inventory.IInventory
+import net.minecraft.inventory.InventoryHelper
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
@@ -60,37 +64,30 @@ import kotlin.collections.ArrayList
 class BlockCampfire : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WOOD) {
     companion object {
         @JvmField val FACING: PropertyDirection = BlockHorizontal.FACING
+
         @JvmField val PILLAR = AxisAlignedBB(0.4375, 0.0, 0.4375, 0.5625, 1.0, 0.5625)
         @JvmField val STONES = AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.1875, 1.0)
 
         private val LIGHTERS: MutableList<Pair<Ingredient, SoundEvent>> = ArrayList()
 
-        @JvmStatic fun addLighter(ingredient: Ingredient, soundEvent: SoundEvent) {
+        @JvmStatic fun addLighter(ingredient: Ingredient, soundEvent: SoundEvent = SoundEvents.ITEM_FLINTANDSTEEL_USE) {
             LIGHTERS.add(Pair(ingredient, soundEvent))
         }
 
-        @JvmStatic fun addLighter(ingredient: ItemStack, soundEvent: SoundEvent) {
+        @JvmStatic fun addLighter(ingredient: ItemStack, soundEvent: SoundEvent = SoundEvents.ITEM_FLINTANDSTEEL_USE) {
             LIGHTERS.add(Pair(Ingredient.fromStacks(ingredient), soundEvent))
         }
 
-        @JvmStatic fun addLighter(ingredient: Item, soundEvent: SoundEvent) {
+        @JvmStatic fun addLighter(ingredient: Item, soundEvent: SoundEvent = SoundEvents.ITEM_FLINTANDSTEEL_USE) {
             LIGHTERS.add(Pair(Ingredient.fromItem(ingredient), soundEvent))
-        }
-
-        @JvmStatic fun addLighter(ingredient: ItemStack): ItemStack {
-            LIGHTERS.add(Pair(Ingredient.fromStacks(ingredient), SoundEvents.ITEM_FLINTANDSTEEL_USE))
-            return ingredient
-        }
-
-        @JvmStatic fun addLighter(ingredient: Item) {
-            LIGHTERS.add(Pair(Ingredient.fromItem(ingredient), SoundEvents.ITEM_FLINTANDSTEEL_USE))
         }
     }
 
     init {
-        tickRandomly = true
         defaultState = blockState.baseState.withProperty(FACING, EnumFacing.NORTH)
         blockHardness = 1.3f
+
+        setCreativeTab(GenesisCreativeTabs.DECORATIONS)
     }
 
     override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: MutableList<AxisAlignedBB>, entityIn: Entity?, isActualState: Boolean) {
@@ -104,25 +101,21 @@ class BlockCampfire : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WOOD)
     override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         val held = playerIn.getHeldItem(hand)
 
-        val campfire = worldIn.getTileEntity(pos)
+        val campfire = worldIn.getTileEntity(pos) as? TileEntityCampfire ?: return true
 
-        if (campfire is TileEntityCampfire) {
-            if (campfire.hasFuel()) {
-                for ((lighter, sound) in LIGHTERS) {
-                    if (lighter.apply(held)) {
-                        if (campfire.tryLight()) {
-                            if (!playerIn.isCreative) held.damageItem(1, playerIn)
-                            worldIn.playSound(null, pos, sound, SoundCategory.BLOCKS, 1.0f, 1.0f)
-                        }
-                        return true
-                    }
-                }
+        if (campfire.hasFuel) {
+            val pair = LIGHTERS.firstOrNull { (lighter, _) -> lighter.apply(held) }
+
+            if (pair != null && campfire.tryLight()) {
+                if (!playerIn.isCreative) held.damageItem(1, playerIn)
+                worldIn.playSound(null, pos, pair.second, SoundCategory.BLOCKS, 1.0f, 1.0f)
+                return true
             }
-
-            if (douse(campfire, worldIn, pos, playerIn, held, hand)) return true
-
-            playerIn.openGui(GenesisMod.getInstance(), GenesisGuiHandler.CAMPFIRE, worldIn, pos.x, pos.y, pos.z)
         }
+
+        if (douse(campfire, worldIn, pos, playerIn, held, hand)) return true
+
+        playerIn.openGui(GenesisMod.getInstance(), GenesisGuiHandler.CAMPFIRE, worldIn, pos.x, pos.y, pos.z)
 
         return true
     }
@@ -130,7 +123,7 @@ class BlockCampfire : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WOOD)
     private fun douse(campfire: TileEntityCampfire, worldIn: World, pos: BlockPos, playerIn: EntityPlayer, held: ItemStack, hand: EnumHand): Boolean {
         val fluidHandler = FluidUtil.getFluidHandler(held)
 
-        if (fluidHandler != null && fluidHandler.drain(Fluid.BUCKET_VOLUME, false)?.fluid == FluidRegistry.WATER) {
+        if (fluidHandler != null && fluidHandler.drain(Fluid.BUCKET_VOLUME, false)?.fluid === FluidRegistry.WATER) {
             val rand = worldIn.rand
 
             //TODO: Maybe move these to the class scope and make others constant
@@ -170,36 +163,61 @@ class BlockCampfire : BlockGenesis(Material.WOOD, MapColor.WOOD, SoundType.WOOD)
         return false
     }
 
+    override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block, fromPos: BlockPos) {
+        if (!canBlockStay(worldIn, pos)) worldIn.destroyBlock(pos, true)
+    }
+
+    override fun canPlaceBlockAt(worldIn: World, pos: BlockPos) = canBlockStay(worldIn, pos) && super.canPlaceBlockAt(worldIn, pos)
+
+    private fun canBlockStay(worldIn: IBlockAccess, pos: BlockPos) = worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP)
+
+    override fun canPlaceTorchOnTop(state: IBlockState, world: IBlockAccess, pos: BlockPos) = false
+
+    override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
+        (worldIn.getTileEntity(pos) as? IInventory)?.let {
+            InventoryHelper.dropInventoryItems(worldIn, pos, it)
+            worldIn.updateComparatorOutputLevel(pos, this)
+        }
+
+        super.breakBlock(worldIn, pos, state)
+    }
+
     override fun randomDisplayTick(state: IBlockState, world: World, pos: BlockPos, rand: Random) {
-        val campfire = world.getTileEntity(pos)
+        val campfire = world.getTileEntity(pos) as? TileEntityCampfire ?: return
 
-        if (campfire is TileEntityCampfire) {
-            if (campfire.burnTime == 0) return
+        if (campfire.burnTime == 0) return
 
-            var rangeXZ = 0.25 to 0.75
-            var rangeY = 0.0 to 0.5
+        if (rand.nextDouble() < 0.1) {
+            world.playSound(null, pos, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0f, 1.0f)
+        }
 
-            for (i in 0..3) {
+        if (rand.nextDouble() < 0.1) {
+            world.playSound(pos.x + 0.5, pos.y.toDouble(), pos.x + 0.5, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0f, 1.0f, false)
+        }
+
+        var rangeXZ = 0.25 to 0.75
+        var rangeY = 0.0 to 0.5
+
+        for (i in 0..3) {
+            val x = pos.x + rangeXZ.get(rand)
+            val y = pos.y + rangeY.get(rand)
+            val z = pos.z + rangeXZ.get(rand)
+
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0.0, 0.0, 0.0)
+        }
+
+        val input = campfire.input
+
+        if (!input.isEmpty) {
+            rangeXZ = 0.4 to 0.6
+            rangeY = 0.9 to 1.0
+
+            for (i in 0..1) {
                 val x = pos.x + rangeXZ.get(rand)
                 val y = pos.y + rangeY.get(rand)
                 val z = pos.z + rangeXZ.get(rand)
 
                 world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0.0, 0.0, 0.0)
-            }
-
-            val input = campfire.input
-
-            if (!input.isEmpty) {
-                rangeXZ = 0.4 to 0.6
-                rangeY = 0.9 to 1.0
-
-                for (i in 0..1) {
-                    val x = pos.x + rangeXZ.get(rand)
-                    val y = pos.y + rangeY.get(rand)
-                    val z = pos.z + rangeXZ.get(rand)
-
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0.0, 0.0, 0.0)
-                }
             }
         }
     }

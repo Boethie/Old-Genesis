@@ -75,6 +75,10 @@ tile.genesis.red_siltstone.name=Red Siltstone
 tile.genesis.ooze.name=Ooze
 tile.genesis.red_clay.name=Red Clay
 
+# tiles
+tile.genesis.campfire.name=Campfire
+tile.genesis.storage_box.name=Storage Box
+
 #------------- Items -------------
 
 # ore drops
@@ -88,6 +92,10 @@ item.genesis.azurite.name=Azurite
 
 # foodstuffs
 item.genesis.zingiberopsis_rhizome.name=Zingiberopsis Rhizome
+
+# cooking
+item.genesis.ceramic_bowl.name=Ceramic Bowl
+item.genesis.ceramic_bowl_water.name=Ceramic Bowl of Water
 
 # other
 item.genesis.red_clay_ball.name=Red Clay Ball

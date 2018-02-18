@@ -22,10 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package genesis.combo.variant
 
-@MethodsReturnNonnullByDefault @ParametersAreNonnullByDefault
-package genesis.block;
+import genesis.init.GenesisBlocks
+import net.minecraft.block.Block
 
-import mcp.MethodsReturnNonnullByDefault;
+enum class EnumRock private constructor(val hardness: Float, val resistance: Float, private val blockSupplier: () -> Block) {
 
-import javax.annotation.ParametersAreNonnullByDefault;
+    GRANITE(1.4f, 10.0f, { GenesisBlocks.GRANITE }),
+    MOSSY_GRANITE(1.4f, 10.0f, { GenesisBlocks.MOSSY_GRANITE }),
+    KOMATIITE(1.25f, 10.0f, { GenesisBlocks.KOMATIITE }),
+    ORTHOGNEISS(1.5f, 10.0f, { GenesisBlocks.ORTHOGNEISS }),
+    PEGMATITE(1.5f, 10.0f, { GenesisBlocks.PEGMATITE }),
+    CARBONADO(2.15f, 10.0f, { GenesisBlocks.CARBONADO });
+
+    val block: Block get() = blockSupplier()
+}

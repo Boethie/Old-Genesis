@@ -24,9 +24,6 @@
  */
 package genesis.world.gen.feature;
 
-import static net.minecraft.block.BlockLeaves.CHECK_DECAY;
-import static net.minecraft.block.BlockLog.LOG_AXIS;
-
 import genesis.init.GenesisBlocks;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
@@ -38,10 +35,13 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
+import static net.minecraft.block.BlockLeaves.CHECK_DECAY;
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+
 public class WorldGenTreeDryophyllum extends WorldGenAbstractGenesisTree {
 
-    private static final IBlockState LOG = GenesisBlocks.DRYOPHYLLUM_LOG.getDefaultState();
-    private static final IBlockState LEAF = GenesisBlocks.DRYOPHYLLUM_LEAVES.getDefaultState().withProperty(CHECK_DECAY, false);
+    private static final IBlockState LOG = GenesisBlocks.INSTANCE.getDRYOPHYLLUM_LOG().getDefaultState();
+    private static final IBlockState LEAF = GenesisBlocks.INSTANCE.getDRYOPHYLLUM_LEAVES().getDefaultState().withProperty(CHECK_DECAY, false);
 
     private final DryophyllumVariant variant;
 

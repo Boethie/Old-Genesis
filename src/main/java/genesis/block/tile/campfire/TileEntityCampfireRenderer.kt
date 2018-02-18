@@ -131,9 +131,7 @@ class TileEntityCampfireRenderer : TileEntitySpecialRenderer<TileEntityCampfire>
         val pos = campfire.pos
         val state = world.getBlockState(pos)
 
-        if (state.block !is BlockCampfire) {
-            return
-        }
+        if (state.block !is BlockCampfire) return
 
         val facing = state.getValue(BlockCampfire.FACING)
 
@@ -145,7 +143,7 @@ class TileEntityCampfireRenderer : TileEntitySpecialRenderer<TileEntityCampfire>
         model.cookingItem.resetState()
         model.fuel.resetState()
 
-        val properties = "axis=" + facing.axis
+        val properties = "facing=" + facing.name2
 
         model.stick.setModel(ModelHelpers.getLocationWithProperties(STICK, properties), world, pos)
 
@@ -154,12 +152,12 @@ class TileEntityCampfireRenderer : TileEntitySpecialRenderer<TileEntityCampfire>
         model.stick.rotateAngleY += facing.horizontalAngle + 90
         model.cookingItem.rotateAngleY += facing.horizontalAngle + 90
 
-        val burning = campfire.isBurning()
+        val burning = campfire.isBurning
 
         // Set fire model location.
         if (burning) {
             model.fire.setModel(ModelHelpers.getLocationWithProperties(FIRE, "fire=uncovered"), world, pos)
-        } else if (campfire.isWet()) {
+        } else if (campfire.isWet) {
             if (fireModels.contains("wet"))
                 model.fire.setModel(ModelHelpers.getLocationWithProperties(FIRE, "fire=wet"), world, pos)
         } else {
@@ -167,7 +165,7 @@ class TileEntityCampfireRenderer : TileEntitySpecialRenderer<TileEntityCampfire>
                 model.fire.setModel(ModelHelpers.getLocationWithProperties(FIRE, "fire=none"), world, pos)
         }
 
-        if (false) { //TODO: Add functionality for cooking pot
+        if (campfire.hasCookingPot) {
             // Show only the cooking pot model.
             model.stickItem.showModel = false
             model.cookingPot.showModel = true
@@ -177,22 +175,19 @@ class TileEntityCampfireRenderer : TileEntitySpecialRenderer<TileEntityCampfire>
             val input = campfire.input
 
             if (!input.isEmpty && TileEntityCampfire.canBurnItem(input)) {
-                val variant = ModelHelpers.getStringIDInSetForStack(input, cookingItemModels)
-
-                if (variant != null) {
+                ModelHelpers.getStringIDInSetForStack(input, cookingItemModels)?.let { variant ->
                     // Change fire model to a "covered" version so that it doesn't clip through the cooking item.
-                    if (burning) {
+                    if (burning)
                         model.fire.setModel(ModelHelpers.getLocationWithProperties(FIRE, "fire=covered"), world, pos)
-                    }
 
                     model.cookingItem.setModel(ModelHelpers.getLocationWithProperties(COOKING_ITEM, "item=" + variant), world, pos)
-                } else {
+                } ?: run {
                     // Show only the impaled item.
                     model.stickItem.showModel = true
                     model.cookingPot.showModel = false
 
                     // Set the stack to render on the stick.
-                    model.stickItem.setStack(input)
+                    model.stickItem.render = input
                     // Reset item's transformations.
                     model.stickItem.rotateAngleX += 90f
 
@@ -280,6 +275,8 @@ class TileEntityCampfireRenderer : TileEntitySpecialRenderer<TileEntityCampfire>
             stickItem.setDefaultState()
 
             cookingPot.setDefaultState()
+
+            fire.setAmbientOcclusion(false)
         }
 
         fun renderAll() {

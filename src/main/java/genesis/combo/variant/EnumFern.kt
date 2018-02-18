@@ -22,26 +22,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.proxy;
+package genesis.combo.variant
 
-import genesis.block.tile.campfire.TileEntityCampfire;
-import genesis.block.tile.campfire.TileEntityCampfireRenderer;
-import genesis.init.GenesisBlocks;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import genesis.init.GenesisBlocks
+import net.minecraft.block.Block
 
-public class ProxyClient extends Proxy {
-    private final Minecraft minecraft = Minecraft.getMinecraft();
+enum class EnumFern(private val blockSupplier: () -> Block) {
 
-    @Override
-    public void preInit() {
-        super.preInit();
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCampfire.class, new TileEntityCampfireRenderer());
-    }
+    DRYOPTERIS({ GenesisBlocks.DRYOPTERIS }),
+    PHLEBOPTERIS({ GenesisBlocks.PHLEBOPTERIS }),
+    TODITES({ GenesisBlocks.TODITES });
 
-    @Override
-    public void init() {
-        super.init();
-        GenesisBlocks.registerColorHandlers(minecraft.getBlockColors(), minecraft.getItemColors());
-    }
+    val block: Block get() = blockSupplier()
 }

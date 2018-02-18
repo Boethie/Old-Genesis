@@ -24,9 +24,6 @@
  */
 package genesis.world.gen.feature;
 
-import static net.minecraft.block.BlockLeaves.CHECK_DECAY;
-import static net.minecraft.block.BlockLog.LOG_AXIS;
-
 import genesis.init.GenesisBlocks;
 import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.state.IBlockState;
@@ -35,11 +32,14 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
+import static net.minecraft.block.BlockLeaves.CHECK_DECAY;
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+
 
 public class WorldGenTreeAraucarioxylon extends WorldGenAbstractGenesisTree {
 
-    private static final IBlockState LOG = GenesisBlocks.ARAUCARIOXYLON_LOG.getDefaultState();
-    private static final IBlockState LEAF = GenesisBlocks.ARAUCARIOXYLON_LEAVES.getDefaultState().withProperty(CHECK_DECAY, false);
+    private static final IBlockState LOG = GenesisBlocks.INSTANCE.getARAUCARIOXYLON_LOG().getDefaultState();
+    private static final IBlockState LEAF = GenesisBlocks.INSTANCE.getARAUCARIOXYLON_LEAVES().getDefaultState().withProperty(CHECK_DECAY, false);
 
     public WorldGenTreeAraucarioxylon(int minHeight, int maxHeight) {
         super(minHeight, maxHeight, true);

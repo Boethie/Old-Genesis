@@ -22,26 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.combo.variant;
 
-import genesis.init.GenesisBlocks;
-import net.minecraft.block.Block;
+package genesis.recipes
 
-import java.util.function.Supplier;
+import net.minecraft.item.ItemStack
+import net.minecraft.util.NonNullList
 
-public enum EnumFern {
+interface CookingPotInventory {
 
-    DRYOPTERIS(() -> GenesisBlocks.DRYOPTERIS),
-    PHLEBOPTERIS(() -> GenesisBlocks.PHLEBOPTERIS),
-    TODITES(() -> GenesisBlocks.TODITES);
+    /**
+     * The ingredients in the three cooking pot slots in the Campfire.
+     * Should ALWAYS be length 3
+     */
+    val ingredients: NonNullList<ItemStack>
 
-    private final Supplier<Block> blockSupplier;
+    val cookingPotItem: ItemStack
+    val output: ItemStack
 
-    EnumFern(Supplier<Block> blockSupplier) {
-        this.blockSupplier = blockSupplier;
-    }
-
-    public Block getBlock() {
-        return blockSupplier.get();
-    }
+    val fuel: ItemStack
 }

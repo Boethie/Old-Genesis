@@ -22,21 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.proxy;
 
-import genesis.block.BlockCampfire;
-import genesis.block.tile.campfire.TileEntityCampfire;
-import net.minecraft.init.Items;
-import net.minecraft.tileentity.TileEntity;
+package genesis.recipes
 
-public class Proxy {
-    public void preInit() {
-        TileEntity.register("genesis:campfire", TileEntityCampfire.class);
-    }
+import net.minecraft.item.ItemStack
+import net.minecraft.world.World
+import net.minecraftforge.registries.IForgeRegistryEntry
 
-    public void init() {
-        BlockCampfire.addLighter(Items.FLINT_AND_STEEL);
-    }
+interface ICookingPotRecipe : IForgeRegistryEntry<ICookingPotRecipe> {
+    val output: ItemStack
 
-    public void postInit() {}
+    fun matches(pot: CookingPotInventory, world: World): Boolean
+
+    fun getCookingResult(pot: CookingPotInventory, world: World): ItemStack
+
+    fun consumeIngredients(pot: CookingPotInventory, world: World)
 }

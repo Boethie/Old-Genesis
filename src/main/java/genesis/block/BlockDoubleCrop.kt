@@ -270,7 +270,7 @@ class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
 
     override fun getStateFromMeta(meta: Int): IBlockState {
         return defaultState
-                .withProperty(AGE, meta and 0b111)
+                .withProperty(AGE, meta and 0b0111)
                 .withProperty(HALF, if ((meta and 0b1000) == 0) EnumBlockHalf.LOWER else EnumBlockHalf.UPPER)
     }
 }

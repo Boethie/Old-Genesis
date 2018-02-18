@@ -29,12 +29,15 @@ import genesis.GenesisMod
 import genesis.block.tile.campfire.ContainerCampfire
 import genesis.block.tile.campfire.TileEntityCampfire
 import net.minecraft.client.gui.inventory.GuiContainer
+import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.inventory.IInventory
 import net.minecraft.util.ResourceLocation
 
-class GuiCampfire(private val playerInv: InventoryPlayer, private val campfire: IInventory)
+class GuiCampfire(playerInv: InventoryPlayer, private val campfire: IInventory)
     : GuiContainer(ContainerCampfire(playerInv, campfire)) {
     init {
         ySize = 195
@@ -53,27 +56,40 @@ class GuiCampfire(private val playerInv: InventoryPlayer, private val campfire: 
     override fun drawGuiContainerBackgroundLayer(partialTicks: Float, mouseX: Int, mouseY: Int) {
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
         this.mc.textureManager.bindTexture(BACKGROUND)
-        val i = (this.width - this.xSize) / 2
-        val j = (this.height - this.ySize) / 2
-        this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize)
+        val x = (this.width - this.xSize) / 2
+        val y = (this.height - this.ySize) / 2
+
+        val tessellator = Tessellator.getInstance()
+        val buffer = tessellator.buffer
+
+        buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+
+        this.drawTexturedModalRectBatched(buffer, x, y, 0, 0, this.xSize, this.ySize)
 
         if (TileEntityCampfire.isWet(this.campfire)) {
             val k = this.getWetLeftScaled(13)
-            this.drawTexturedModalRect(i + 48, j + 63 + 12 - k, 190, 12 - k, 14, k + 1)
+            this.drawTexturedModalRectBatched(buffer, x + 48, y + 63 + 12 - k, 190, 12 - k, 14, k + 1)
         }
         else if (TileEntityCampfire.isBurning(this.campfire)) {
             val k = this.getBurnLeftScaled(13)
-            this.drawTexturedModalRect(i + 48, j + 63 + 12 - k, 176, 12 - k, 14, k + 1)
+            this.drawTexturedModalRectBatched(buffer, x + 48, y + 63 + 12 - k, 176, 12 - k, 14, k + 1)
         }
 
         val l = this.getCookProgressScaled(24)
-        this.drawTexturedModalRect(i + 99, j + 49, 176, 14, l, 16)
+        this.drawTexturedModalRectBatched(buffer, x + 99, y + 49, 176, 14, l, 16)
+
+        if (TileEntityCampfire.hasCookingPot(campfire)) {
+            this.drawTexturedModalRectBatched(buffer, x + 22, y + 17, 176, 30, 18, 18)
+            this.drawTexturedModalRectBatched(buffer, x + 46, y + 17, 176, 30, 18, 18)
+            this.drawTexturedModalRectBatched(buffer, x + 70, y + 17, 176, 30, 18, 18)
+        }
+
+        tessellator.draw()
     }
 
     private fun getCookProgressScaled(pixels: Int): Int {
-        val i = this.campfire.getField(4)
-        val j = this.campfire.getField(5)
-        return if (j != 0 && i != 0) i * pixels / j else 0
+        val i = this.campfire.getField(3)
+        return if (i != 0) i * pixels / TileEntityCampfire.maxCookTime else 0
     }
 
     private fun getBurnLeftScaled(pixels: Int): Int {
@@ -86,13 +102,12 @@ class GuiCampfire(private val playerInv: InventoryPlayer, private val campfire: 
         return this.campfire.getField(0) * pixels / i
     }
 
-    private fun getWetLeftScaled(pixels: Int): Int {
-        var i = this.campfire.getField(3)
+    private fun getWetLeftScaled(pixels: Int) = this.campfire.getField(2) * pixels / TileEntityCampfire.maxWetTime
 
-        if (i == 0) {
-            i = 200
-        }
-
-        return this.campfire.getField(2) * pixels / i
+    fun drawTexturedModalRectBatched(builder: BufferBuilder, x: Int, y: Int, textureX: Int, textureY: Int, width: Int, height: Int) {
+        builder.pos((x + 0).toDouble(), (y + height).toDouble(), this.zLevel.toDouble()).tex(((textureX + 0).toFloat() * 0.00390625f).toDouble(), ((textureY + height).toFloat() * 0.00390625f).toDouble()).endVertex()
+        builder.pos((x + width).toDouble(), (y + height).toDouble(), this.zLevel.toDouble()).tex(((textureX + width).toFloat() * 0.00390625f).toDouble(), ((textureY + height).toFloat() * 0.00390625f).toDouble()).endVertex()
+        builder.pos((x + width).toDouble(), (y + 0).toDouble(), this.zLevel.toDouble()).tex(((textureX + width).toFloat() * 0.00390625f).toDouble(), ((textureY + 0).toFloat() * 0.00390625f).toDouble()).endVertex()
+        builder.pos((x + 0).toDouble(), (y + 0).toDouble(), this.zLevel.toDouble()).tex(((textureX + 0).toFloat() * 0.00390625f).toDouble(), ((textureY + 0).toFloat() * 0.00390625f).toDouble()).endVertex()
     }
 }
