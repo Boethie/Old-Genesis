@@ -34,6 +34,7 @@ import net.minecraft.block.SoundType
 import net.minecraft.block.material.MapColor
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
+import net.minecraft.item.Item
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import java.util.*
@@ -78,7 +79,7 @@ class BlockOoze : BlockGenesis(Material.CLAY, MapColor.LIME, SoundType.GROUND) {
 class BlockSilt(private val mapColor: MapColor) : BlockFalling() {
     init {
         setHardness(0.5F)
-        setSoundType(SoundType.SAND)
+        soundType = SoundType.SAND
         setCreativeTab(GenesisCreativeTabs.BUILDING_BLOCKS)
         setHarvestLevel(Harvest.CLASS_SHOVEL, Harvest.LEVEL_WOOD)
     }
@@ -98,7 +99,7 @@ class BlockRedClay : BlockGenesis(Material.CLAY, MapColor.RED, SoundType.GROUND)
         setHarvestLevel(Harvest.CLASS_SHOVEL, Harvest.LEVEL_WOOD)
     }
 
-    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int) = GenesisItems.RED_CLAY_BALL
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = GenesisItems.RED_CLAY_BALL
 
     override fun quantityDropped(random: Random) = 4
 }

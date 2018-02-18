@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"normal": { "model": "genesis:ginkgo_leaves" }
-	}
+    "variants": {
+        "normal": {
+            "model": "genesis:ginkgo_leaves"
+        }
+    }
 }

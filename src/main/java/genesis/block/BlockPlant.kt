@@ -31,8 +31,8 @@ import net.minecraft.block.material.Material
 
 open class BlockPlant(material: Material = Material.PLANTS) : BlockBush(material) {
     init {
+        soundType = SoundType.PLANT
         setHardness(0.0F)
-        setSoundType(SoundType.PLANT)
         setCreativeTab(GenesisCreativeTabs.DECORATIONS)
     }
 }

@@ -1,0 +1,26 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "genesis:crop_cross",
+        "textures": {
+            "lower": "genesis:blocks/zingiberopsis_stage_5",
+            "upper": "genesis:blocks/zingiberopsis_stage_5_top"
+        }
+    },
+    "variants": {
+        "half": {
+            "upper": { "textures": { "cross": "#upper" } },
+            "lower": { "textures": { "cross": "#lower" } }
+        },
+        "age": {
+            "0": { "textures": { "lower": "genesis:blocks/zingiberopsis_stage_0" } },
+            "1": { "textures": { "lower": "genesis:blocks/zingiberopsis_stage_1" } },
+            "2": { "textures": { "lower": "genesis:blocks/zingiberopsis_stage_2" } },
+            "3": { "textures": { "lower": "genesis:blocks/zingiberopsis_stage_3" } },
+            "4": { "textures": { "lower": "genesis:blocks/zingiberopsis_stage_4" } },
+            "5": { "textures": { "lower": "genesis:blocks/zingiberopsis_stage_5", "upper": "genesis:blocks/zingiberopsis_stage_5_top" } },
+            "6": { "textures": { "lower": "genesis:blocks/zingiberopsis_stage_6", "upper": "genesis:blocks/zingiberopsis_stage_6_top" } },
+            "7": { "textures": { "lower": "genesis:blocks/zingiberopsis_stage_7", "upper": "genesis:blocks/zingiberopsis_stage_7_top" } }
+        }
+    }
+}

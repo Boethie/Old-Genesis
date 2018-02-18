@@ -1,3 +1,3 @@
 {
-	"parent": "genesis:block/zircon_ore"
+    "parent": "genesis:block/zircon_ore"
 }

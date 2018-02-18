@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"normal": { "model": "genesis:siderite_ore" }
-	}
+    "variants": {
+        "normal": {
+            "model": "genesis:siderite_ore"
+        }
+    }
 }

@@ -30,6 +30,7 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
@@ -38,7 +39,7 @@ import java.util.*
 
 
 class BlockGenesisFern : BlockPlant(Material.VINE), IGrowable, IShearable {
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = BoundingBoxes.FERN
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB = BoundingBoxes.FERN
 
     override fun isReplaceable(world: IBlockAccess, pos: BlockPos) = true
 
@@ -58,5 +59,5 @@ class BlockGenesisFern : BlockPlant(Material.VINE), IGrowable, IShearable {
 
     override fun isShearable(item: ItemStack, world: IBlockAccess, pos: BlockPos) = true
 
-    override fun onSheared(item: ItemStack, world: IBlockAccess, pos: BlockPos, fortune: Int) = NonNullList.withSize(1, ItemStack(this))
+    override fun onSheared(item: ItemStack, world: IBlockAccess, pos: BlockPos, fortune: Int): NonNullList<ItemStack> = NonNullList.withSize(1, ItemStack(this))
 }

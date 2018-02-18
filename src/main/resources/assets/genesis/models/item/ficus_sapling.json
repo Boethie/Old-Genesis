@@ -1,6 +1,6 @@
 {
-	"parent": "item/generated",
-	"textures": {
-		"layer0": "genesis:blocks/sapling_ficus"
-	}
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "genesis:blocks/sapling_ficus"
+    }
 }

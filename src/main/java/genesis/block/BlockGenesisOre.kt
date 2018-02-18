@@ -30,6 +30,7 @@ import genesis.util.Harvest
 import net.minecraft.block.BlockOre
 import net.minecraft.block.SoundType
 import net.minecraft.block.state.IBlockState
+import net.minecraft.item.Item
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
 import net.minecraft.world.IBlockAccess
@@ -41,12 +42,12 @@ class BlockGenesisOre(private val oreType: EnumOre) : BlockOre() {
     init {
         setHardness(oreType.hardness)
         setResistance(oreType.resistance)
-        setSoundType(SoundType.STONE)
+        soundType = SoundType.STONE
         setCreativeTab(GenesisCreativeTabs.BUILDING_BLOCKS)
         setHarvestLevel(Harvest.CLASS_PICKAXE, Harvest.LEVEL_STONE)
     }
 
-    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int) = oreType.item
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = oreType.item
 
     override fun quantityDropped(random: Random) = MathHelper.getInt(random, oreType.dropMin, oreType.dropMax)
 

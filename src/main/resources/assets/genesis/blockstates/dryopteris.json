@@ -1,11 +1,13 @@
 {
-	"forge_marker": 1,
-	"defaults": {
-		"model": "tinted_cross",
-		"smooth_lighting": false,
-		"transforms": "forge:default-block"
-	},
-	"variants": {
-		"normal":  [ { "textures": { "cross": "genesis:blocks/fern_dryopteris" } } ]
-	}
+    "forge_marker": 1,
+    "defaults": {
+        "model": "tinted_cross",
+        "smooth_lighting": false,
+        "transforms": "forge:default-block"
+    },
+    "variants": {
+        "normal": [
+            { "textures": { "cross": "genesis:blocks/fern_dryopteris" } }
+        ]
+    }
 }

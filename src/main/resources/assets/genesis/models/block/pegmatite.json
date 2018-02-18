@@ -1,6 +1,6 @@
 {
-	"parent": "block/cube_all",
-	"textures": {
-		"all": "genesis:blocks/pegmatite"
-	}
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "genesis:blocks/pegmatite"
+    }
 }
