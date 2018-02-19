@@ -151,7 +151,7 @@ object GenesisBlocks {
         registerBlock(registry, BlockGenesisFlower(), "palaeoaster")
         registerBlock(registry, BlockGenesisFlower(), "aquilapollenites")
 
-        for (crop in CropInfo.values()) if (crop.isDoubleCrop) registerBlock(registry, BlockDoubleCrop(crop), crop.cropName)
+        for (crop in EnumCrop.values()) if (crop.isDoubleCrop) registerBlock(registry, BlockDoubleCrop(crop), crop.cropName)
         //TODO: Add class for single crops when we need to and register them here
 
         // ferns

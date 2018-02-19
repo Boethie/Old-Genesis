@@ -44,9 +44,8 @@ class WorldGenTreeAraucarioxylon(minHeight: Int, maxHeight: Int) : WorldGenAbstr
     override fun generate(world: World, rand: Random, pos: BlockPos): Boolean {
         val height = getTreeHeight(rand)
 
-        val branchPos = pos.up(height - 1)
-
-        val leavesBase = branchPos.y - 2 - rand.nextInt(2)
+        val groundLevel = pos.y
+        val leavesBase = groundLevel + height - 3 - rand.nextInt(2)
         val alternate = true
         val irregular = true
         val inverted = false
@@ -58,35 +57,34 @@ class WorldGenTreeAraucarioxylon(minHeight: Int, maxHeight: Int) : WorldGenAbstr
         //            return false;
         //        }
 
+        val trunkPos = BlockPos.MutableBlockPos(pos)
         for (i in 0 until height) {
-            setBlockInWorld(world, pos.up(i), LOG.withProperty(LOG_AXIS, EnumAxis.Y))
+            setBlockInWorld(world, trunkPos, LOG.withProperty(LOG_AXIS, EnumAxis.Y), true)
+            trunkPos.y++
         }
 
         val base = 4 + rand.nextInt(4)
         var direction = rand.nextInt(8)
 
-        var lFactor: Int
+        val branchPos = BlockPos.MutableBlockPos(pos.x, pos.y + base, pos.z)
 
         for (i in base until height) {
-            ++direction
-            if (direction > 7) {
-                direction = 0
-            }
+            if (++direction > 7) direction = 0
 
-            lFactor = (6 * ((height - i) / height.toFloat())).toInt()
+            val lFactor = (6 * ((height - i) / height.toFloat())).toInt()
 
-            generateBranch(world, pos.up(i), rand, pos.y, direction + 1, lFactor)
+            val immutable = branchPos.toImmutable()
+            generateBranch(world, immutable, rand, groundLevel, direction + 1, lFactor)
 
             if (rand.nextInt(8) == 0) {
-                ++direction
-                if (direction > 7) {
-                    direction = 0
-                }
-                generateBranch(world, pos.up(i), rand, pos.y, direction + 1, lFactor)
+                if (++direction > 7) direction = 0
+
+                generateBranch(world, immutable, rand, groundLevel, direction + 1, lFactor)
             }
+            branchPos.y++
         }
 
-        generateTopLeaves(world, pos, branchPos, height, leavesBase, rand, alternate, maxLeavesLength, irregular, inverted, LEAF)
+        generateTopLeaves(world, pos, pos.up(height - 1), height, leavesBase, rand, alternate, maxLeavesLength, irregular, inverted, LEAF)
 
         //        if (treeType != TreeTypes.TYPE_3) {
         //            generateResin(world, pos, height);
@@ -98,7 +96,7 @@ class WorldGenTreeAraucarioxylon(minHeight: Int, maxHeight: Int) : WorldGenAbstr
     private fun generateBranch(world: World, pos: BlockPos, rand: Random, groundLevel: Int, direction: Int, lengthModifier: Int) {
         var fallX = 1
         var fallZ = 1
-        val upPos = BlockPos.MutableBlockPos(pos).move(EnumFacing.DOWN)
+        val pos = BlockPos.MutableBlockPos(pos).move(EnumFacing.DOWN)
         var woodAxis: EnumAxis
 
         when (direction) {
@@ -144,11 +142,11 @@ class WorldGenTreeAraucarioxylon(minHeight: Int, maxHeight: Int) : WorldGenAbstr
         var horizontalCount = 0
 
         for (i in 0 until lengthModifier) {
-            if (upPos.y < groundLevel + 3) {
+            if (pos.y < groundLevel + 3) {
                 return
             }
 
-            upPos.shift(fallX, 0, fallZ)
+            pos.shift(fallX, 0, fallZ)
 
             woodAxis = when {
                 fallX != 0 -> EnumAxis.X
@@ -160,26 +158,26 @@ class WorldGenTreeAraucarioxylon(minHeight: Int, maxHeight: Int) : WorldGenAbstr
                 ++horizontalCount
 
                 if (rand.nextInt(3) == 0 || fallX == 0 && fallZ == 0) {
-                    upPos.y--
+                    pos.y--
                 }
             } else {
                 horizontalCount = 0
 
                 woodAxis = EnumAxis.Y
-                upPos.y--
+                pos.y--
             }
 
-            setBlockInWorld(world, upPos, LOG.withProperty(LOG_AXIS, woodAxis))
+            setBlockInWorld(world, pos, LOG.withProperty(LOG_AXIS, woodAxis), true)
 
             if (leaves && rand.nextInt(6) == 0) {
-                generateBranchLeaves(world, upPos, LEAF, rand, 3, true, true)
-                generateBranchLeaves(world, upPos.down(), LEAF, rand, 2, true, true)
+                generateBranchLeaves(world, pos, LEAF, rand, 3, true, true)
+                generateBranchLeaves(world, pos.down(), LEAF, rand, 2, true, true)
             }
 
             leaves = !leaves
 
             if (i == lengthModifier - 1) {
-                generateBranchLeaves(world, upPos, LEAF, rand, 1 + rand.nextInt(2), false, true)
+                generateBranchLeaves(world, pos, LEAF, rand, 1 + rand.nextInt(2), false, true)
             }
         }
     }

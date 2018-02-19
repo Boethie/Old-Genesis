@@ -30,7 +30,7 @@ import genesis.init.GenesisItems
 import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
 
-enum class CropInfo(
+enum class EnumCrop(
         val cropName: String,
         private val cropF: () -> Item,
         private val seedF: () -> Item,
@@ -50,7 +50,7 @@ enum class CropInfo(
             { GenesisBlocks.ZINGIBEROPSIS.defaultState },
             growthMultiplier = 0.625f,
             seedDropMultiplier = 0.5f,
-            width = 0.75,
+            width = 0.5,
             heightFunc = {
                 when (it) {
                     0 -> 0.125

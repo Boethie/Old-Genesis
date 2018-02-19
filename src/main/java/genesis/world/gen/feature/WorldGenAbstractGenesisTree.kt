@@ -24,6 +24,8 @@
  */
 package genesis.world.gen.feature
 
+import net.minecraft.block.Block
+import net.minecraft.block.BlockBush
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
@@ -31,7 +33,7 @@ import net.minecraft.world.World
 import net.minecraft.world.gen.feature.WorldGenAbstractTree
 import java.util.*
 
-abstract class WorldGenAbstractGenesisTree(private val minHeight: Int, private val maxHeight: Int, notify: Boolean) : WorldGenAbstractTree(notify) {
+abstract class WorldGenAbstractGenesisTree(protected var minHeight: Int, protected var maxHeight: Int, notify: Boolean) : WorldGenAbstractTree(notify) {
 
     protected fun getTreeHeight(rand: Random): Int {
         return MathHelper.getInt(rand, minHeight, maxHeight)
@@ -117,4 +119,45 @@ abstract class WorldGenAbstractGenesisTree(private val minHeight: Int, private v
             setBlockInWorld(world, pos.up(2), leaves)
         }
     }
+
+    /**
+     * @return The position the sapling would be at above the soil, or null if the tree cannot grow there.
+     */
+    fun getTreePos(world: World, pos: BlockPos, distance: Int, sapling: IBlockState): BlockPos? {
+        if (world.getBlockState(pos).block === sapling.block) return pos
+
+        val soilPos = BlockPos.MutableBlockPos(pos)
+        var checkState: IBlockState
+
+        do {
+            if (distance != -1 && pos.y - soilPos.y > distance) return null
+
+            checkState = world.getBlockState(soilPos)
+
+            if (!checkState.block.isAir(checkState, world, soilPos) && !checkState.block.isLeaves(checkState, world, soilPos)) break
+
+            soilPos.y--
+        } while (soilPos.y > 0)
+
+        // Begin checking whether tree can grow here.
+        val saplingPos = soilPos.up()
+
+        if (!(sapling.block as BlockBush).canBlockStay(world, saplingPos, sapling)) return null
+
+        val replacing = world.getBlockState(saplingPos)
+
+        return if (!replacing.block.isReplaceable(world, saplingPos)) null else saplingPos
+    }
+
+    protected fun isTwoByTwoOfType(worldIn: World, pos: BlockPos, xOff: Int, zOff: Int, state: Block): Boolean {
+        return  isTypeAt(worldIn, pos.add(xOff, 0, zOff), state) &&
+                isTypeAt(worldIn, pos.add(xOff + 1, 0, zOff), state) &&
+                isTypeAt(worldIn, pos.add(xOff, 0, zOff + 1), state) &&
+                isTypeAt(worldIn, pos.add(xOff + 1, 0, zOff + 1), state)
+    }
+
+    /**
+     * Check whether the given BlockPos has a Sapling of the given type
+     */
+    protected fun isTypeAt(worldIn: World, pos: BlockPos, state: Block) = worldIn.getBlockState(pos).block === state
 }

@@ -60,8 +60,8 @@ class WorldGenTreeGinkgo(minHeight: Int, maxHeight: Int) : WorldGenAbstractGenes
     }
 
     private fun branchUp(world: World, pos: BlockPos, rand: Random, height: Int, base: Int) {
-        val fallX = 1 - rand.nextInt(3)
-        val fallZ = 1 - rand.nextInt(3)
+        val xShift = 1 - rand.nextInt(3)
+        val zShift = 1 - rand.nextInt(3)
         var fallCount = 0
         val upPos = BlockPos.MutableBlockPos(pos).move(EnumFacing.DOWN)
         var woodAxis: EnumAxis
@@ -70,15 +70,15 @@ class WorldGenTreeGinkgo(minHeight: Int, maxHeight: Int) : WorldGenAbstractGenes
             if (rand.nextInt(3) == 0 && i > base && fallCount < 3) {
                 fallCount++
 
-                upPos.shift(fallX, 0, fallZ)
+                upPos.shift(xShift, 0, zShift)
 
                 woodAxis = when {
-                    fallX != 0 -> EnumAxis.X
-                    fallZ != 0 -> EnumAxis.Z
+                    xShift != 0 -> EnumAxis.X
+                    zShift != 0 -> EnumAxis.Z
                     else -> EnumAxis.Y
                 }
 
-                if (rand.nextInt(3) == 0 || fallX == 0 && fallZ == 0) {
+                if (rand.nextInt(3) == 0 || xShift == 0 && zShift == 0) {
                     upPos.y++
                 }
             } else {

@@ -1,11 +1,9 @@
 {
     "forge_marker": 1,
     "defaults": {
+        "smooth_lighting": false,
         "model": "genesis:crop_cross",
-        "textures": {
-            "lower": "genesis:blocks/zingiberopsis_stage_5",
-            "upper": "genesis:blocks/zingiberopsis_stage_5_top"
-        }
+        "textures": { "lower": "genesis:blocks/zingiberopsis_stage_5", "upper": "genesis:blocks/zingiberopsis_stage_5_top" }
     },
     "variants": {
         "half": {
