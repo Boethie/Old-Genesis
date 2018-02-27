@@ -57,7 +57,7 @@ import java.util.*
 object GenesisBlocks {
 
     // humus
-    val HUMUS: Block by name("hummus")
+    val HUMUS: Block by name("humus")
     val HUMUS_FARMLAND: Block by name("humus_farmland")
     val HUMUS_PATH: Block by name("humus_path")
 
@@ -68,9 +68,10 @@ object GenesisBlocks {
     val ZINGIBEROPSIS: Block by name("zingiberopsis")
 
     // ferns
-    val DRYOPTERIS: Block by name("dryopteris")
+    val GLEICHENIIDITES: Block by name("gleicheniidites")
     val PHLEBOPTERIS: Block by name("phlebopteris")
     val TODITES: Block by name("todites")
+    val ZYGOPTERIS: Block by name("zygopteris")
 
     // leaves
     val ARAUCARIOXYLON_LEAVES: Block by name("araucarioxylon_leaves")
@@ -99,7 +100,6 @@ object GenesisBlocks {
     val FICUS_WATTLE_FENCE: Block by name("ficus_wattle_fence")
     val GINKGO_WATTLE_FENCE: Block by name("ginkgo_wattle_fence")
     val METASEQUOIA_WATTLE_FENCE: Block by name("metasequoia_wattle_fence")
-    val LAUROPHYLLUM_WATTLE_FENCE: Block by name("laurophyllum_wattle_fence")
 
     // rocks
     val GRANITE: Block by name("granite")
@@ -151,7 +151,7 @@ object GenesisBlocks {
         registerBlock(registry, BlockGenesisFlower(), "palaeoaster")
         registerBlock(registry, BlockGenesisFlower(), "aquilapollenites")
 
-        for (crop in CropInfo.values()) if (crop.isDoubleCrop) registerBlock(registry, BlockDoubleCrop(crop), crop.cropName)
+        for (crop in EnumCrop.values()) if (crop.isDoubleCrop) registerBlock(registry, BlockDoubleCrop(crop), crop.cropName)
         //TODO: Add class for single crops when we need to and register them here
 
         // ferns

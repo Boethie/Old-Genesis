@@ -29,9 +29,10 @@ import net.minecraft.block.Block
 
 enum class EnumFern(private val blockSupplier: () -> Block) {
 
-    DRYOPTERIS({ GenesisBlocks.DRYOPTERIS }),
+    GLEICHENIIDITES({ GenesisBlocks.GLEICHENIIDITES }),
     PHLEBOPTERIS({ GenesisBlocks.PHLEBOPTERIS }),
-    TODITES({ GenesisBlocks.TODITES });
+    TODITES({ GenesisBlocks.TODITES }),
+    ZYGOPTERIS({ GenesisBlocks.ZYGOPTERIS }),;
 
     val block: Block get() = blockSupplier()
 }

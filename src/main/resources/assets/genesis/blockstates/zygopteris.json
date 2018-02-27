@@ -7,7 +7,7 @@
     },
     "variants": {
         "normal": [
-            { "textures": { "cross": "genesis:blocks/fern_dryopteris" } }
+            { "textures": { "cross": "genesis:blocks/fern_zygopteris" } }
         ]
     }
 }

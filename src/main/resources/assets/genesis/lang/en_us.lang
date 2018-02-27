@@ -11,9 +11,10 @@ tile.genesis.palaeoaster.name=Palaeoaster
 tile.genesis.aquilapollenites.name=Aquilapollenites
 
 # ferns
-tile.genesis.dryopteris.name=Dryopteris
+tile.genesis.gleicheniidites.name=Gleicheniidites
 tile.genesis.phlebopteris.name=Phlebopteris
 tile.genesis.todites.name=Todites
+tile.genesis.zygopteris.name=Zygopteris
 
 # crops
 tile.genesis.zingiberopsis.name=Zingiberopsis
