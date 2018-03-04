@@ -27,6 +27,10 @@ package genesis.util
 
 import net.minecraft.item.ItemStack
 
+/**
+ * Removes the first item that satisfies the [predicate] and returns true
+ * Returns false if none
+ */
 public inline fun <T> MutableIterable<T>.removeFirst(predicate: (T) -> Boolean): Boolean {
     val each = this.iterator()
     while (each.hasNext()) {
@@ -38,7 +42,24 @@ public inline fun <T> MutableIterable<T>.removeFirst(predicate: (T) -> Boolean):
     return false
 }
 
-public fun Iterable<ItemStack>.shrinkAll(n: Int) { this.forEach { it.shrink(n) } }
+/**
+ * Returns true if [n] members of the collection satisfy the [predicate]
+ */
+public inline fun <T> Iterable<T>.atLeast(n: Int, predicate: (T) -> Boolean): Boolean {
+    val each = this.iterator()
+    var count = 0
+    while (each.hasNext()) {
+        if (predicate(each.next()) && ++count >= n) {
+            return true
+        }
+    }
+    return false
+}
+
+/**
+ * Shrinks all the [ItemStack]s in the collection by [n]
+ */
+public inline fun Iterable<ItemStack>.shrinkAll(n: Int) { this.forEach { it.shrink(n) } }
 
 public fun Iterable<ItemStack>.shrinkAllIf(n: Int, predicate: (ItemStack) -> Boolean) {
     this.forEach { if (predicate(it)) it.shrink(n) }

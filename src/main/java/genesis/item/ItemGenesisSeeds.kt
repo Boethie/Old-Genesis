@@ -25,7 +25,7 @@
 
 package genesis.item
 
-import genesis.combo.variant.CropInfo
+import genesis.combo.variant.EnumCrop
 import genesis.init.GenesisCreativeTabs
 import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.block.state.IBlockState
@@ -43,12 +43,12 @@ import net.minecraft.world.World
 import net.minecraftforge.common.EnumPlantType
 import net.minecraftforge.common.IPlantable
 
-class ItemGenesisSeeds(private val crop: CropInfo, amount: Int, saturation: Float) : ItemFood(amount, saturation, false), IPlantable {
+class ItemGenesisSeeds(private val crop: EnumCrop, amount: Int, saturation: Float) : ItemFood(amount, saturation, false), IPlantable {
     init {
         creativeTab = GenesisCreativeTabs.FOOD
     }
 
-    constructor(crop: CropInfo): this(crop, 0, 0.0f) {
+    constructor(crop: EnumCrop): this(crop, 0, 0.0f) {
         creativeTab = GenesisCreativeTabs.MISC
     }
 

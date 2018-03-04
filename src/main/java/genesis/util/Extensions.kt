@@ -31,3 +31,8 @@ public fun BlockPos.MutableBlockPos.shift(x: Int, y: Int, z: Int): BlockPos.Muta
     this.setPos(this.x + x, this.y + y, this.z + z)
     return this
 }
+
+public fun BlockPos.southEast(): BlockPos = BlockPos(this.x + 1, this.y, this.z + 1)
+public fun BlockPos.southWest(): BlockPos = BlockPos(this.x - 1, this.y, this.z + 1)
+public fun BlockPos.northEast(): BlockPos = BlockPos(this.x + 1, this.y, this.z - 1)
+public fun BlockPos.northWest(): BlockPos = BlockPos(this.x - 1, this.y, this.z - 1)

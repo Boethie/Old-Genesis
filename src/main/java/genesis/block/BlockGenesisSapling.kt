@@ -85,7 +85,7 @@ class BlockGenesisSapling(private val treeType: EnumTree) : BlockBush(), IGrowab
             val x = 0
             val z = 0
 
-            clearArea(world, pos, x, z)
+            //clearArea(world, pos, x, z)
 
             if (!generator.generate(world, rand, pos.add(x, 0, z))) {
                 clearArea(world, pos, x, z)

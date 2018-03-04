@@ -25,11 +25,8 @@
 package genesis.combo.variant
 
 import genesis.init.GenesisBlocks
-import genesis.world.gen.feature.WorldGenAbstractGenesisTree
-import genesis.world.gen.feature.WorldGenTreeAraucarioxylon
-import genesis.world.gen.feature.WorldGenTreeDryophyllum
+import genesis.world.gen.feature.*
 import genesis.world.gen.feature.WorldGenTreeDryophyllum.DryophyllumVariant
-import genesis.world.gen.feature.WorldGenTreeGinkgo
 import net.minecraft.block.Block
 import java.util.*
 
@@ -50,12 +47,15 @@ enum class EnumTree(private val leavesSupplier: () -> Block, private val logSupp
     fun growsIntoLargeTree() = false
 
     fun getTreeGenerator(random: Random): WorldGenAbstractGenesisTree? {
-        when (this) {
-            ARAUCARIOXYLON -> return WorldGenTreeAraucarioxylon(25, 30)
-            DRYOPHYLLUM -> return if (random.nextInt(6) != 0) WorldGenTreeDryophyllum(DryophyllumVariant.TYPE_1, 11, 15)
-            else WorldGenTreeDryophyllum(DryophyllumVariant.TYPE_2, 13, 19)
-            GINKGO -> return WorldGenTreeGinkgo(10, 13)
+        return when (this) {
+            ARAUCARIOXYLON -> WorldGenTreeAraucarioxylon(25, 30)
+            DRYOPHYLLUM -> {
+                if (random.nextInt(6) != 0) WorldGenTreeDryophyllum(DryophyllumVariant.TYPE_1, 11, 15)
+                else WorldGenTreeDryophyllum(DryophyllumVariant.TYPE_2, 13, 19)
+            }
+            GINKGO -> WorldGenTreeGinkgo(10, 13)
+            FICUS -> WorldGenTreeFicus(6, 8)
+            METASEQUOIA -> WorldGenTreeMetasequoia()
         }
-        return null
     }
 }

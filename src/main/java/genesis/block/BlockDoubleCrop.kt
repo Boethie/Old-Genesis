@@ -25,7 +25,7 @@
 
 package genesis.block
 
-import genesis.combo.variant.CropInfo
+import genesis.combo.variant.EnumCrop
 import net.minecraft.block.*
 import net.minecraft.block.BlockDoublePlant.EnumBlockHalf
 import net.minecraft.block.properties.PropertyEnum
@@ -53,35 +53,32 @@ import java.util.*
 //This doesn't extend BlockCrop because it has too much in common with both BlockCrop and BlockDoublePlant
 //It makes more sense to fall back to the common superclass
 @Suppress("OverridingDeprecatedMember")
-class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
+class BlockDoubleCrop(private val crop: EnumCrop) : BlockBush(), IGrowable {
     companion object {
         @JvmField val HALF: PropertyEnum<EnumBlockHalf> = BlockDoublePlant.HALF
         @JvmField val AGE: PropertyInteger = BlockCrops.AGE
     }
 
-    private val boxes: Array<AxisAlignedBB>
+    private val boxes: Array<AxisAlignedBB> = Array(16, { i ->
+        val height = crop.getHeight(i and 0b111)
+
+        val nearCorner = 0.5 - crop.width * 0.5
+        val farCorner = 0.5 + crop.width * 0.5
+
+        return@Array when {
+            (i and 0b1000) == 0 -> AxisAlignedBB(nearCorner, 0.0, nearCorner, farCorner, height - 0.0625, farCorner)    //Lower half, always breaks the top half
+            crop.breakTogether -> AxisAlignedBB(nearCorner, -1.0, nearCorner, farCorner, height - 1.0625, farCorner)    //Upper half, when it breaks the bottom with it
+            else -> AxisAlignedBB(nearCorner, 0.0, nearCorner, farCorner, height - 1.0625, farCorner)                   //Upper half when it can break independently
+        }
+    })
 
     init {
-
         tickRandomly = true
         setCreativeTab(null)
         setHardness(0.0f)
         soundType = SoundType.PLANT
         disableStats()
         defaultState = blockState.baseState.withProperty(HALF, EnumBlockHalf.LOWER).withProperty(AGE, 0)
-
-        boxes = Array(16, { i ->
-            val height = crop.getHeight(i and 0b111)
-
-            val nearCorner = 0.5 - crop.width * 0.5
-            val farCorner = 0.5 + crop.width * 0.5
-
-            when {
-                (i and 0b1000) == 0 -> AxisAlignedBB(nearCorner, 0.0, nearCorner, farCorner, height - 0.0625, farCorner)    //Lower half, always breaks the top half
-                crop.breakTogether -> AxisAlignedBB(nearCorner, -1.0, nearCorner, farCorner, height - 1.0625, farCorner)    //Upper half, when it breaks the bottom with it
-                else -> AxisAlignedBB(nearCorner, 0.0, nearCorner, farCorner, height - 1.0625, farCorner)                   //Upper half when it can break independently
-            }
-        })
     }
 
     fun getMaxAge() = crop.growthStages
@@ -257,15 +254,12 @@ class BlockDoubleCrop(private val crop: CropInfo) : BlockBush(), IGrowable {
 
     override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand): IBlockState = defaultState
 
-    override fun createBlockState(): BlockStateContainer {
-
-        return BlockStateContainer(this, AGE, HALF)
-    }
+    override fun createBlockState(): BlockStateContainer = BlockStateContainer(this, AGE, HALF)
 
     //Store the age in the first three bits and the half in the fourth
     override fun getMetaFromState(state: IBlockState): Int {
-        val half = if (state.getValue(HALF) === EnumBlockHalf.LOWER) 0 else 1
-        return getAge(state) or (half shl 3)
+        val half = if (state.getValue(HALF) === EnumBlockHalf.LOWER) 0 else 0b1000
+        return getAge(state) or half
     }
 
     override fun getStateFromMeta(meta: Int): IBlockState {

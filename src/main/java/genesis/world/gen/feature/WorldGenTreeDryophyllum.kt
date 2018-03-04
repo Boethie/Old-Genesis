@@ -55,7 +55,7 @@ class WorldGenTreeDryophyllum(private val variant: DryophyllumVariant, minHeight
         //            return false;
 
         for (i in 0 until trunkHeight) {
-            setBlockInWorld(world, pos.up(i), LOG.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y))
+            setBlockInWorld(world, pos.up(i), LOG.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y), true)
         }
 
         generateTreeLeavesAndBranches(world, pos.add(0, trunkHeight, 0), pos, rand)
@@ -220,12 +220,10 @@ class WorldGenTreeDryophyllum(private val variant: DryophyllumVariant, minHeight
             val dx = dir.x * dir.x
             val dy = dir.y * dir.y
             val dz = dir.z * dir.z
-            if (dx > dy + dz) {
-                axis = BlockLog.EnumAxis.X
-            } else if (dy > dx + dz) {
-                axis = BlockLog.EnumAxis.Y
-            } else if (dz > dx + dy) {
-                axis = BlockLog.EnumAxis.Z
+            when {
+                dx > dy + dz -> axis = BlockLog.EnumAxis.X
+                dy > dx + dz -> axis = BlockLog.EnumAxis.Y
+                dz > dx + dy -> axis = BlockLog.EnumAxis.Z
             }
         }
         return axis

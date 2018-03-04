@@ -25,7 +25,7 @@
 package genesis.init
 
 import genesis.GenesisMod
-import genesis.combo.variant.CropInfo
+import genesis.combo.variant.EnumCrop
 import genesis.combo.variant.EnumOre
 import genesis.item.ItemCeramicBowl
 import genesis.item.ItemGenesis
@@ -79,7 +79,7 @@ object GenesisItems {
 
         // other
         registerItem(registry, ItemGenesis(), "red_clay_ball")
-        registerItem(registry, ItemGenesisSeeds(CropInfo.ZINGIBEROPSIS, 2, 1.4f), "zingiberopsis_rhizome")
+        registerItem(registry, ItemGenesisSeeds(EnumCrop.ZINGIBEROPSIS, 2, 1.4f), "zingiberopsis_rhizome")
         registerItem(registry, ItemCeramicBowl(), "ceramic_bowl")
         registerItem(registry, ItemCeramicBowl(), "ceramic_bowl_water")
     }
@@ -100,5 +100,4 @@ object GenesisItems {
     }
 
     private fun name(name: String) : Lazy<Item> = lazy { Item.REGISTRY.getObject(ResourceLocation(GenesisMod.MOD_ID, name)) ?: Items.AIR }
-
 }
