@@ -26,11 +26,15 @@
 package genesis.world.gen.feature
 
 import genesis.init.GenesisBlocks
+import genesis.util.BranchDirection
 import genesis.util.shift
 import net.minecraft.block.BlockLeaves
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.MathHelper
 import net.minecraft.world.World
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.math.min
 
 class WorldGenTreeMetasequoia(var variant: Variant = Variant.SINGLE) : WorldGenAbstractGenesisTree(variant.minHeight, variant.maxHeight, true) {
     companion object {
@@ -53,13 +57,9 @@ class WorldGenTreeMetasequoia(var variant: Variant = Variant.SINGLE) : WorldGenA
     }
 
     override fun generate(world: World, rand: Random, pos: BlockPos): Boolean {
-        val pos = BlockPos.MutableBlockPos(pos)
-        val height = getTreeHeight(rand)
-
-        val trunkHeight = 2 + rand.nextInt(3)
-        val leavesBase = pos.y + trunkHeight
 
         val block = GenesisBlocks.METASEQUOIA_SAPLING
+        val pos = BlockPos.MutableBlockPos(pos)
 
         pos.toImmutable().let {
             for (x in 0 downTo -1) {
@@ -74,53 +74,131 @@ class WorldGenTreeMetasequoia(var variant: Variant = Variant.SINGLE) : WorldGenA
         }
 
         if (variant == Variant.TYPE_2) {
-            for (cornerPos in BlockPos.getAllInBoxMutable(pos, pos.add(1, 0, 1))) {
-                if (cornerPos == pos) continue
-
-                val groundPos = getTreePos(world, cornerPos, -1, SAPLING) ?: return false
-
-                pos.y = Math.min(pos.y, groundPos.y)
-            }
+            return generateBigTree(world, rand, pos);
         }
 
+        val height = getTreeHeight(rand)
+
+        val trunkHeight = 2 + rand.nextInt(3)
+        val leavesBase = pos.y + trunkHeight
+
         for (i in 0 until height) {
-            when (variant) {
-                Variant.TYPE_2 -> {
-                    setBlockInWorld(world, pos.add(1, i, 0), LOG, true)
-                    setBlockInWorld(world, pos.add(0, i, 1), LOG, true)
-                    setBlockInWorld(world, pos.add(1, i, 1), LOG, true)
-                    setBlockInWorld(world, pos.add(0, i, 0), LOG, true)
-                }
-                else -> setBlockInWorld(world, pos.up(i), LOG, true)
-            }
+            setBlockInWorld(world, pos.up(i), LOG, true)
         }
 
         val branchPos = pos.up(height - 1)
 
-        when (variant) {
-            Variant.TYPE_2 -> {
-                generateTopLeaves(world, pos, branchPos.add(0, 0, 0), height, leavesBase, rand, false, 4, true, false, LEAVES)
-                generateTopLeaves(world, pos, branchPos.add(1, 0, 1), height, leavesBase, rand, false, 4, true, false, LEAVES)
-                generateTopLeaves(world, pos, branchPos.add(1, 0, 0), height, leavesBase, rand, false, 4, true, false, LEAVES)
-                generateTopLeaves(world, pos, branchPos.add(0, 0, 1), height, leavesBase, rand, false, 4, true, false, LEAVES)
-            }
-            else -> generateTopLeaves(world, pos, branchPos, height, leavesBase, rand, false, 4, true, false, LEAVES)
-        }
+        generateTopLeaves(world, pos, branchPos, height, leavesBase, rand, false, 4, true, false, LEAVES)
 
-//        when (treeType) {
-//            TYPE_2 -> {
-//                generateResin(world, pos.add(1, 0, 0), height)
-//                generateResin(world, pos.add(0, 0, 1), height)
-//                generateResin(world, pos.add(1, 0, 1), height)
-//                generateResin(world, pos.add(0, 0, 0), height)
-//            }
-//            else -> generateResin(world, pos, height)
-//        }
+
+//      generateResin(world, pos, height)
 
         return true
     }
 
+    // TODO: Big one in separate class
+
+
+    private fun generateBigTree(world: World, rand: Random, pos: BlockPos.MutableBlockPos): Boolean {
+        // find the lowest Y with a sapling in the 2x2 area (so no part of the tree floats in the air)
+        for (cornerPos in BlockPos.getAllInBoxMutable(pos, pos.add(1, 0, 1))) {
+            if (cornerPos == pos) continue
+
+            val groundPos = getTreePos(world, cornerPos, -1, SAPLING) ?: return false
+
+            pos.y = Math.min(pos.y, groundPos.y)
+        }
+
+        val height = getTreeHeight(rand)
+
+        val trunkHeight = 2 + rand.nextInt(3)
+
+        // generate the 2x2 trunk
+        for (dy in 0 until height) {
+            for (dx in -1..1) {
+                for (dz in -1..1) {
+                    // 2/3th of the way to the top, only generate the center
+                    if (dy > 2 * height / 3 && (dx != 0 || dz != 0)) {
+                        continue
+                    }
+                    if (dx == 0 || dz == 0) {
+                        setBlockInWorld(world, pos.add(dx, dy, dz), LOG, true)
+                    }
+                }
+            }
+        }
+
+        var branchY = trunkHeight + 1.0
+
+        // create shuffled list of random directions, and iterator (this ensures the tree is more or less the same in all directions)
+        val directions: ArrayList<BranchDirection> = getShuffledDirections()
+        var directionsIt = directions.iterator()
+
+        val branchYPosList = ArrayList<Int>()
+
+        while (branchY < height) {
+            branchYPosList.add(branchY.toInt())
+            branchY += MathHelper.getInt(rand, 1, 3) * 0.5
+        }
+
+        val branchLengths = ArrayList<Int>()
+
+        for (i in 0 until branchYPosList.size) {
+            branchLengths.add(MathHelper.getInt(rand, 1, 7))
+        }
+        branchLengths.sort()
+
+        val lengthsIt = branchLengths.asReversed().iterator()
+        for(y in branchYPosList) {
+            // if we run out of directions, shuffle and restart
+            if (!directionsIt.hasNext()) {
+                directions.shuffle()
+                directionsIt = directions.iterator()
+            }
+            // start from random block in the 2x2 trunk
+            generateBranch(world, rand, pos.add(0, y, 0), directionsIt.next(), lengthsIt.next())
+        }
+
+        return true
+    }
+
+    private fun generateBranch(world: World, rand: Random, start: BlockPos, dir: BranchDirection, branchLength: Int) {
+        val length = branchLength
+        var dy = 0
+        for (i in 0..length) {
+            val straightPos = dir.shiftPos(start, i + 1) // skip the first because it's in the trunk
+            // about halfway through the branch, start going up (with a bit of randomness)
+            if (i > (length + rand.nextInt(3)) / 2) {
+                dy++
+            }
+            val pos = straightPos.add(0, dy, 0)
+            setBlockInWorld(world, pos, LOG, true)
+            // 2/3rd of the way along the branch, start adding leaves
+            if (i >= 2 * length / 3) {
+                val leavesSize = when (i) {
+                    length -> min(length + 1, 3) // less leaves right at the top
+                    length - 1 -> min(length, 2)
+                    else -> 1
+                }
+                generateBranchLeaves(world, pos, LEAVES, rand, leavesSize, i == length, true)
+            }
+        }
+    }
+
+    private fun getShuffledDirections(): ArrayList<BranchDirection> {
+        val dirs = ArrayList<BranchDirection>()
+        for (dx in -2..2) {
+            for (dz in -2..2) {
+                if (dx != 0 && dz != 0) {
+                    dirs.add(BranchDirection(dx, 0, dz))
+                }
+            }
+        }
+        dirs.shuffle()
+        return dirs
+    }
+
     enum class Variant(val minHeight: Int, val maxHeight: Int) {
-        SINGLE(17, 23), TYPE_2(22, 27)
+        SINGLE(17, 23), TYPE_2(25, 30)
     }
 }

@@ -34,7 +34,6 @@ enum class EnumTree(private val leavesSupplier: () -> Block, private val logSupp
 
     ARAUCARIOXYLON({ GenesisBlocks.ARAUCARIOXYLON_LEAVES }, { GenesisBlocks.ARAUCARIOXYLON_LOG }, { GenesisBlocks.ARAUCARIOXYLON_SAPLING }),
     DRYOPHYLLUM({ GenesisBlocks.DRYOPHYLLUM_LEAVES }, { GenesisBlocks.DRYOPHYLLUM_LOG }, { GenesisBlocks.DRYOPHYLLUM_SAPLING }),
-    FICUS({ GenesisBlocks.FICUS_LEAVES }, { GenesisBlocks.FICUS_LOG }, { GenesisBlocks.FICUS_SAPLING }),
     GINKGO({ GenesisBlocks.GINKGO_LEAVES }, { GenesisBlocks.GINKGO_LOG }, { GenesisBlocks.GINKGO_SAPLING }),
     METASEQUOIA({ GenesisBlocks.METASEQUOIA_LEAVES }, { GenesisBlocks.METASEQUOIA_LOG }, { GenesisBlocks.METASEQUOIA_SAPLING });
 
@@ -54,7 +53,6 @@ enum class EnumTree(private val leavesSupplier: () -> Block, private val logSupp
                 else WorldGenTreeDryophyllum(DryophyllumVariant.TYPE_2, 13, 19)
             }
             GINKGO -> WorldGenTreeGinkgo(10, 13)
-            FICUS -> WorldGenTreeFicus(6, 8)
             METASEQUOIA -> WorldGenTreeMetasequoia()
         }
     }

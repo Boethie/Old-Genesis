@@ -33,6 +33,8 @@ import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.Vec3i
 import net.minecraft.world.World
+import java.lang.Math.pow
+import java.lang.Math.abs
 import java.util.*
 
 class WorldGenTreeDryophyllum(private val variant: DryophyllumVariant, minHeight: Int, maxHeight: Int) : WorldGenAbstractGenesisTree(minHeight, maxHeight, true) {
@@ -123,7 +125,8 @@ class WorldGenTreeDryophyllum(private val variant: DryophyllumVariant, minHeight
             for (dy in -leavesRadius..leavesRadius) {
                 for (dz in -leavesRadius..leavesRadius) {
                     // lower value of p makes it closer to diamond shape, higher value makes it closer to cube, value p=2 is perfect sphere.
-                    if (Math.pow(Math.abs(dx).toDouble(), expConst) + Math.pow(Math.abs(dy).toDouble(), expConst) + Math.pow(Math.abs(dz).toDouble(), expConst) - rand.nextFloat().toDouble() * variant.leavesShapeRandomization * Math.pow(leavesRadius.toDouble(), expConst) <= Math.pow(leavesRadius.toDouble(), expConst)) {
+                    if (pow(abs(dx).toDouble(), expConst) + pow(abs(dy).toDouble(), expConst) + pow(abs(dz).toDouble(), expConst)
+                            - rand.nextDouble() * variant.leavesShapeRandomization * pow(leavesRadius.toDouble(), expConst) <= pow(leavesRadius.toDouble(), expConst)) {
                         setBlockInWorld(world, BlockPos(pos.addVector(dx.toDouble(), dy.toDouble(), dz.toDouble())), LEAF)
                     }
                 }

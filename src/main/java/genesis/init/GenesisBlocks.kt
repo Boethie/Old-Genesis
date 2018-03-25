@@ -76,28 +76,24 @@ object GenesisBlocks {
     // leaves
     val ARAUCARIOXYLON_LEAVES: Block by name("araucarioxylon_leaves")
     val DRYOPHYLLUM_LEAVES: Block by name("dryophyllum_leaves")
-    val FICUS_LEAVES: Block by name("ficus_leaves")
     val GINKGO_LEAVES: Block by name("ginkgo_leaves")
     val METASEQUOIA_LEAVES: Block by name("metasequoia_leaves")
 
     // logs
     val ARAUCARIOXYLON_LOG: Block by name("araucarioxylon_log")
     val DRYOPHYLLUM_LOG: Block by name("dryophyllum_log")
-    val FICUS_LOG: Block by name("ficus_log")
     val GINKGO_LOG: Block by name("ginkgo_log")
     val METASEQUOIA_LOG: Block by name("metasequoia_log")
 
     // saplings
     val ARAUCARIOXYLON_SAPLING: Block by name("araucarioxylon_sapling")
     val DRYOPHYLLUM_SAPLING: Block by name("dryophyllum_sapling")
-    val FICUS_SAPLING: Block by name("ficus_sapling")
     val GINKGO_SAPLING: Block by name("ginkgo_sapling")
     val METASEQUOIA_SAPLING: Block by name("metasequoia_sapling")
 
     // fences
     val ARAUCARIOXYLON_WATTLE_FENCE: Block by name("araucarioxylon_wattle_fence")
     val DRYOPHYLLUM_WATTLE_FENCE: Block by name("dryophyllum_wattle_fence")
-    val FICUS_WATTLE_FENCE: Block by name("ficus_wattle_fence")
     val GINKGO_WATTLE_FENCE: Block by name("ginkgo_wattle_fence")
     val METASEQUOIA_WATTLE_FENCE: Block by name("metasequoia_wattle_fence")
 
