@@ -69,12 +69,6 @@
             { "model": "genesis:campfire_cooking_billet", "y": 180, "textures": { "end": "genesis:blocks/log_dryophyllum_top",  "side": "genesis:blocks/log_dryophyllum"} },
             { "model": "genesis:campfire_cooking_billet", "y": 270, "textures": { "end": "genesis:blocks/log_dryophyllum_top",  "side": "genesis:blocks/log_dryophyllum"} }
         ],
-		"item=genesis__ficus_log": [
-            { "model": "genesis:campfire_cooking_billet", "y": 0, "textures": { "end": "genesis:blocks/log_ficus_top",  "side": "genesis:blocks/log_ficus"} },
-            { "model": "genesis:campfire_cooking_billet", "y": 90, "textures": { "end": "genesis:blocks/log_ficus_top",  "side": "genesis:blocks/log_ficus"} },
-            { "model": "genesis:campfire_cooking_billet", "y": 180, "textures": { "end": "genesis:blocks/log_ficus_top",  "side": "genesis:blocks/log_ficus"} },
-            { "model": "genesis:campfire_cooking_billet", "y": 270, "textures": { "end": "genesis:blocks/log_ficus_top",  "side": "genesis:blocks/log_ficus"} }
-        ],
         "item=genesis__ginkgo_log": [
             { "model": "genesis:campfire_cooking_billet", "y": 0, "textures": { "end": "genesis:blocks/log_ginkgo_top",  "side": "genesis:blocks/log_ginkgo"} },
             { "model": "genesis:campfire_cooking_billet", "y": 90, "textures": { "end": "genesis:blocks/log_ginkgo_top",  "side": "genesis:blocks/log_ginkgo"} },
