@@ -57,18 +57,20 @@ class WorldGenTreeMetasequoia(var variant: Variant = Variant.SINGLE) : WorldGenA
     }
 
     override fun generate(world: World, rand: Random, pos: BlockPos): Boolean {
-
-        val block = GenesisBlocks.METASEQUOIA_SAPLING
         val pos = BlockPos.MutableBlockPos(pos)
 
+        // TODO: move this out of generator and let generator assume the sapling type given is correct?
         pos.toImmutable().let {
-            for (x in 0 downTo -1) {
-                for (z in 0 downTo -1) {
-                    if (isTwoByTwoOfType(world, it, x, z, block)) {
-                        pos.shift(x, 0, z)
-                        setVariant(Variant.TYPE_2)
-                        return@let
-                    }
+            for (x in -1..1) {
+                if (isCrossShapeSaplings(world, pos.add(x, 0, 0)) ) {
+                    setVariant(Variant.TYPE_2)
+                    pos.shift(x, 0, 0)
+                    break
+                }
+                if (isCrossShapeSaplings(world, pos.add(0, 0, x))) {
+                    setVariant(Variant.TYPE_2)
+                    pos.shift(0, 0, x)
+                    break
                 }
             }
         }
@@ -96,10 +98,24 @@ class WorldGenTreeMetasequoia(var variant: Variant = Variant.SINGLE) : WorldGenA
         return true
     }
 
+    private fun isCrossShapeSaplings(world: World, pos: BlockPos): Boolean {
+        val block = GenesisBlocks.METASEQUOIA_SAPLING
+        for (x in -1..1) {
+            if (!isTypeAt(world, pos.add(x, 0, 0), block) || !isTypeAt(world, pos.add(0, 0, x), block)) {
+                return false
+            }
+        }
+        return true
+    }
+
     // TODO: Big one in separate class
 
 
     private fun generateBigTree(world: World, rand: Random, pos: BlockPos.MutableBlockPos): Boolean {
+        if (BlockPos.getAllInBoxMutable(pos.add(-4, 2, -4), pos.add(4, 15, 4))
+                .any { world.getBlockState(it).material.isSolid }) {
+            return false
+        }
         // find the lowest Y with a sapling in the 2x2 area (so no part of the tree floats in the air)
         for (cornerPos in BlockPos.getAllInBoxMutable(pos, pos.add(1, 0, 1))) {
             if (cornerPos == pos) continue
@@ -130,19 +146,23 @@ class WorldGenTreeMetasequoia(var variant: Variant = Variant.SINGLE) : WorldGenA
 
         var branchY = trunkHeight + 1.0
 
-        // create shuffled list of random directions, and iterator (this ensures the tree is more or less the same in all directions)
+        // create shuffled list of random directions, and iterator
+        // this makes sure that for tall enough tree, all possible branch directions are used
+        // with no chance to make the tree look too different in any direction
         val directions: ArrayList<BranchDirection> = getShuffledDirections()
         var directionsIt = directions.iterator()
 
         val branchYPosList = ArrayList<Int>()
 
-        while (branchY < height) {
+        while (branchY < height - 2) { // no branches very close to the top -> more spiky
             branchYPosList.add(branchY.toInt())
             branchY += MathHelper.getInt(rand, 1, 3) * 0.5
         }
 
         val branchLengths = ArrayList<Int>()
 
+        // generate random branch lengths, and sort them. They will be used in that order for "random" branch length
+        // this makes the branches predictably longest at the bottom and shortest at the top, but keeps some randomness
         for (i in 0 until branchYPosList.size) {
             branchLengths.add(MathHelper.getInt(rand, 1, 7))
         }
@@ -159,6 +179,13 @@ class WorldGenTreeMetasequoia(var variant: Variant = Variant.SINGLE) : WorldGenA
             generateBranch(world, rand, pos.add(0, y, 0), directionsIt.next(), lengthsIt.next())
         }
 
+        val topLeavesHeight = 4;
+        // generate leaves at the top
+        for(y in height-topLeavesHeight until height) {
+            // the bottom part of the top leaves should be "bigger", makes the tree more spiky near the top
+            val size = if((y - height + topLeavesHeight) < 2) 2 else 1
+            generateBranchLeaves(world, pos.add(0, y, 0), LEAVES, rand, size, y == height-1, true)
+        }
         return true
     }
 
@@ -185,6 +212,7 @@ class WorldGenTreeMetasequoia(var variant: Variant = Variant.SINGLE) : WorldGenA
         }
     }
 
+    // generates array of all branch directions we want to use, shuffled
     private fun getShuffledDirections(): ArrayList<BranchDirection> {
         val dirs = ArrayList<BranchDirection>()
         for (dx in -2..2) {
@@ -199,6 +227,6 @@ class WorldGenTreeMetasequoia(var variant: Variant = Variant.SINGLE) : WorldGenA
     }
 
     enum class Variant(val minHeight: Int, val maxHeight: Int) {
-        SINGLE(17, 23), TYPE_2(25, 30)
+        SINGLE(17, 23), TYPE_2(28, 31)
     }
 }
