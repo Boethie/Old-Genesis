@@ -22,35 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.util;
+package genesis.util.noise;
 
-public class Coords {
-    public static final int CHUNK_BITS = 4;
-    public static final int CHUNK_SIZE = 1 << CHUNK_BITS;
+public class NoiseBuffer2D {
 
-    public static int chunkToMinBlock(int chunkCoord) {
-        return chunkCoord << CHUNK_BITS;
+    private final int sizeX;
+    private final int sizeZ;
+
+    private final int strideZ;
+
+    // the values in the array go first bottom-up, then increasing Z, then increasing X
+    private double[] data;
+
+    public NoiseBuffer2D(int sizeX, int sizeZ) {
+        this.data = new double[sizeX * sizeZ];
+        //noinspection SuspiciousNameCombination
+        this.strideZ = sizeX;
+
+        this.sizeX = sizeX;
+        this.sizeZ = sizeZ;
     }
 
-    public static int packLocalXZ(int localX, int localZ) {
-        return localZ * CHUNK_SIZE + localX;
+    public double get(int x, int z) {
+        return data[idx(x, z)];
     }
 
-    public static int localToBlock(int local, int chunk) {
-        return chunkToMinBlock(chunk) + local;
+    public void set(int x, int z, double value) {
+        data[idx(x, z)] = value;
     }
 
-    public static long pack(int x, int y) {
-        return ((long) x) << 32 | (y & 0xFFFFFFFFL);
+    private int idx(int x, int z) {
+        return z + x * strideZ;
     }
-
-    public static int unpackX(long pos) {
-        return (int) (pos >>> 32);
-    }
-
-    public static int unpackY(long pos) {
-        return (int) (pos & 0xFFFFFFFFL);
-    }
-
-    // TODO: add util methods for converting between local, chunk and block coords
 }

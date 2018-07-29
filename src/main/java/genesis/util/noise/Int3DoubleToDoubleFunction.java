@@ -22,35 +22,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis.util;
+package genesis.util.noise;
 
-public class Coords {
-    public static final int CHUNK_BITS = 4;
-    public static final int CHUNK_SIZE = 1 << CHUNK_BITS;
-
-    public static int chunkToMinBlock(int chunkCoord) {
-        return chunkCoord << CHUNK_BITS;
-    }
-
-    public static int packLocalXZ(int localX, int localZ) {
-        return localZ * CHUNK_SIZE + localX;
-    }
-
-    public static int localToBlock(int local, int chunk) {
-        return chunkToMinBlock(chunk) + local;
-    }
-
-    public static long pack(int x, int y) {
-        return ((long) x) << 32 | (y & 0xFFFFFFFFL);
-    }
-
-    public static int unpackX(long pos) {
-        return (int) (pos >>> 32);
-    }
-
-    public static int unpackY(long pos) {
-        return (int) (pos & 0xFFFFFFFFL);
-    }
-
-    // TODO: add util methods for converting between local, chunk and block coords
+@FunctionalInterface
+public interface Int3DoubleToDoubleFunction {
+    double applyAsDouble(int x, int y, int z, double d);
 }
