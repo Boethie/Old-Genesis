@@ -24,26 +24,62 @@
  */
 package genesis;
 
-import static genesis.GenesisMod.MOD_ID;
-import static genesis.GenesisMod.MOD_VERSION;
-
 import genesis.command.TeleportGenesis;
 import genesis.config.Config;
+import genesis.proxy.GenesisGuiHandler;
+import genesis.proxy.Proxy;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@Mod(modid = MOD_ID, version = MOD_VERSION, guiFactory = Config.GUI_FACTORY)
+import static genesis.GenesisMod.*;
+
+@Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, guiFactory = Config.GUI_FACTORY)
 public class GenesisMod {
 
     public static final String MOD_ID = "genesis";        // Cannot change.
     public static final String MOD_NAME = "Genesis";    // Cannot change.
     public static final String MOD_VERSION = "@VERSION@";
 
+    public static final String CLIENT_PROXY_NAME = "genesis.proxy.ProxyClient";
+    public static final String SERVER_PROXY_NAME = "genesis.proxy.Proxy";
+
+    public static final Logger logger = LogManager.getLogger(MOD_ID);
+
+    @Mod.Instance(MOD_ID)
+    private static GenesisMod instance;
+
+    public static GenesisMod getInstance() {
+        return instance;
+    }
+
+    @SidedProxy(clientSide = CLIENT_PROXY_NAME, serverSide = SERVER_PROXY_NAME)
+    private static Proxy proxy;
+
+    public static Proxy getProxy() {
+        return proxy;
+    }
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        Config.init(event.getSuggestedConfigurationFile());
-        Dimensions.register();
+        proxy.preInit(event);
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GenesisGuiHandler());
+        proxy.init(event);
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        proxy.postInit(event);
     }
 
     @Mod.EventHandler

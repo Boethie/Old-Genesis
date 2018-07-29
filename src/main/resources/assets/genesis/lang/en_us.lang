@@ -1,2 +1,108 @@
+#------------- Blocks -------------
+
+# humus
+tile.genesis.humus.name=Humus
+tile.genesis.humus_farmland.name=Humus Farmland
+tile.genesis.humus_path.name=Humus Path
+
+# plants
+tile.genesis.sanmiguelia.name=Sanmiguelia
+tile.genesis.palaeoaster.name=Palaeoaster
+tile.genesis.aquilapollenites.name=Aquilapollenites
+
+# ferns
+tile.genesis.gleicheniidites.name=Gleicheniidites
+tile.genesis.phlebopteris.name=Phlebopteris
+tile.genesis.todites.name=Todites
+tile.genesis.zygopteris.name=Zygopteris
+
+# crops
+tile.genesis.zingiberopsis.name=Zingiberopsis
+
+# leaves
+tile.genesis.araucarioxylon_leaves.name=Araucarioxylon Leaves
+tile.genesis.dryophyllum_leaves.name=Dryophyllum Leaves
+tile.genesis.ginkgo_leaves.name=Ginkgo Leaves
+tile.genesis.metasequoia_leaves.name=Metasequoia Leaves
+
+# logs
+tile.genesis.araucarioxylon_log.name=Araucarioxylon Log
+tile.genesis.dryophyllum_log.name=Dryophyllum Log
+tile.genesis.ginkgo_log.name=Ginkgo Log
+tile.genesis.metasequoia_log.name=Metasequoia Log
+
+# saplings
+tile.genesis.araucarioxylon_sapling.name=Araucarioxylon Sapling
+tile.genesis.dryophyllum_sapling.name=Dryophyllum Sapling
+tile.genesis.ginkgo_sapling.name=Ginkgo Sapling
+tile.genesis.metasequoia_sapling.name=Metasequoia Sapling
+
+# wattle fences
+tile.genesis.araucarioxylon_wattle_fence.name=Araucarioxylon Wattle Fence
+tile.genesis.dryophyllum_wattle_fence.name=Dryophyllum Wattle Fence
+tile.genesis.ginkgo_wattle_fence.name=Ginkgo Wattle Fence
+tile.genesis.metasequoia_wattle_fence.name=Metasequoia Wattle Fence
+
+# rocks
+tile.genesis.granite.name=Granite
+tile.genesis.mossy_granite.name=Mossy Granite
+tile.genesis.komatiite.name=Komatiite
+tile.genesis.orthogneiss.name=Orthogneiss
+tile.genesis.pegmatite.name=Pegmatite
+tile.genesis.carbonado.name=Carbonado
+
+# ores
+tile.genesis.zircon_ore.name=Zircon Ore
+tile.genesis.garnet_ore.name=Garnet Ore
+tile.genesis.siderite_ore.name=Siderite Ore
+tile.genesis.tourmaline_ore.name=Tourmaline Ore
+tile.genesis.aquamarine_ore.name=Aquamarine Ore
+tile.genesis.pyrite_ore.name=Pyrite Ore
+tile.genesis.azurite_ore.name=Azurite Ore
+
+# silt
+tile.genesis.silt.name=Silt
+tile.genesis.red_silt.name=Red Silt
+tile.genesis.cracked_silt.name=Cracked Silt
+tile.genesis.red_cracked_silt.name=Red Cracked Silt
+tile.genesis.siltstone.name=Siltstone
+tile.genesis.red_siltstone.name=Red Siltstone
+
+# other
+tile.genesis.ooze.name=Ooze
+tile.genesis.red_clay.name=Red Clay
+
+# tiles
+tile.genesis.campfire.name=Campfire
+tile.genesis.storage_box.name=Storage Box
+
+#------------- Items -------------
+
+# ore drops
+item.genesis.zircon.name=Zircon
+item.genesis.garnet.name=Garnet
+item.genesis.siderite.name=Siderite
+item.genesis.tourmaline.name=Tourmaline
+item.genesis.aquamarine.name=Aquamarine
+item.genesis.pyrite.name=Pyrite
+item.genesis.azurite.name=Azurite
+
+# foodstuffs
+item.genesis.zingiberopsis_rhizome.name=Zingiberopsis Rhizome
+
+# cooking
+item.genesis.ceramic_bowl.name=Ceramic Bowl
+item.genesis.ceramic_bowl_water.name=Ceramic Bowl of Water
+
+# other
+item.genesis.red_clay_ball.name=Red Clay Ball
+
+#------------- Creative Tabs -------------
+itemGroup.genesis.buildingBlocks=Genesis Building Blocks
+itemGroup.genesis.decorations=Genesis Decoration Blocks
+itemGroup.genesis.food=Genesis Foodstuffs
+itemGroup.genesis.misc=Genesis Miscellaneous
+
+#------------- Config GUI -------------
 genesis.configgui.config_title=Genesis configuration
 genesis.configgui.dimension_id=Genesis dimension ID

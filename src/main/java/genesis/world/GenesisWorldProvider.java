@@ -42,12 +42,11 @@ public class GenesisWorldProvider extends WorldProvider {
 
     @Override
     public DimensionType getDimensionType() {
-        return Dimensions.GENESIS_DIMENSION;
+        return Dimensions.GENESIS;
     }
 
     @Override
     public IChunkGenerator createChunkGenerator() {
         return new GenesisChunkGenerator(world);
     }
-
 }

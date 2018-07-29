@@ -1,0 +1,14 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "genesis:cracked_silt"
+    },
+    "variants": {
+        "normal": [
+            { "y": 0 },
+            { "y": 90 },
+            { "y": 180 },
+            { "y": 270 }
+        ]
+    }
+}

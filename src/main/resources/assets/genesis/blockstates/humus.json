@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [
+            { "model": "genesis:humus" },
+            { "model": "genesis:humus", "y": 90 },
+            { "model": "genesis:humus", "y": 180 },
+            { "model": "genesis:humus", "y": 270 }
+        ]
+    }
+}

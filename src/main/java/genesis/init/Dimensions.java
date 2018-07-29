@@ -22,8 +22,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package genesis;
+package genesis.init;
 
+import genesis.GenesisMod;
 import genesis.config.Config;
 import genesis.world.GenesisTeleporter;
 import genesis.world.GenesisWorldProvider;
@@ -38,11 +39,11 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class Dimensions {
 
-    public static final DimensionType GENESIS_DIMENSION = DimensionType.register(GenesisMod.MOD_ID, "_" + GenesisMod.MOD_ID, Config.dimensionId,
+    public static final DimensionType GENESIS = DimensionType.register(GenesisMod.MOD_ID, "_" + GenesisMod.MOD_ID, Config.dimensionId,
             GenesisWorldProvider.class, false);
 
     public static void register() {
-        DimensionManager.registerDimension(GENESIS_DIMENSION.getId(), GENESIS_DIMENSION);
+        DimensionManager.registerDimension(GENESIS.getId(), GENESIS);
     }
 
     public static boolean teleportToDimension(Entity entity, DimensionType dim) {

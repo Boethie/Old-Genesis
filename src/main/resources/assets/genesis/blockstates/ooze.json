@@ -1,0 +1,13 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "genesis:ooze"
+    },
+    "variants": {
+        "normal": [
+            { "textures": { "all": "genesis:blocks/ooze_0" } },
+            { "textures": { "all": "genesis:blocks/ooze_1" } },
+            { "textures": { "all": "genesis:blocks/ooze_2" } }
+        ]
+    }
+}

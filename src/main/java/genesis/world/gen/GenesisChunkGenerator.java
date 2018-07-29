@@ -26,7 +26,7 @@ package genesis.world.gen;
 
 import static genesis.util.Coords.CHUNK_SIZE;
 
-import genesis.util.Blockstates;
+import genesis.util.BlockStates;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
@@ -67,24 +67,23 @@ public class GenesisChunkGenerator implements IChunkGenerator {
         // TODO: replace with some actual non-superflat terrain generation
         for (int localX = 0; localX < CHUNK_SIZE; localX++) {
             for (int localZ = 0; localZ < CHUNK_SIZE; localZ++) {
-                primer.setBlockState(localX, 0, localZ, Blockstates.BEDROCK);
+                primer.setBlockState(localX, 0, localZ, BlockStates.BEDROCK);
                 for (int blockY = 1; blockY < 64; blockY++) {
-                    IBlockState state = Blockstates.STONE;
+                    IBlockState state = BlockStates.STONE;
                     if (blockY == 63) {
-                        state = Blockstates.GRASS;
+                        state = BlockStates.GRASS;
                     } else if (blockY >= 60) {
-                        state = Blockstates.DIRT;
+                        state = BlockStates.DIRT;
                     }
                     primer.setBlockState(localX, blockY, localZ, state);
                 }
             }
         }
-
-
     }
 
-    @Override public void populate(int x, int z) {
 
+    @Override
+    public void populate(int x, int z) {
     }
 
     @Override
@@ -105,7 +104,6 @@ public class GenesisChunkGenerator implements IChunkGenerator {
 
     @Override
     public void recreateStructures(Chunk chunkIn, int x, int z) {
-
     }
 
     @Override

@@ -1,0 +1,12 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "genesis:ginkgo_sapling"
+    },
+    "variants": {
+        "stage": {
+            "0": {},
+            "1": {}
+        }
+    }
+}

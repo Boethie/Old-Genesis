@@ -35,7 +35,6 @@ public class ConfigGuiFactory implements IModGuiFactory {
 
     @Override
     public void initialize(Minecraft minecraftInstance) {
-
     }
 
     @Override
@@ -52,6 +51,4 @@ public class ConfigGuiFactory implements IModGuiFactory {
     public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
         return Collections.emptySet();
     }
-
-
 }
