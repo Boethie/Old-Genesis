@@ -88,6 +88,8 @@ dependencies {
     deobfCompile "mezz.jei:jei_1.12.2:4.8.5.138"
     deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.19-11:api" //It uses incompatible mappings ¯\_(ツ)_/¯
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.23-B38_1.12"
+
+    testCompile "junit:junit:4.11"
 }
 
 shadowJar {

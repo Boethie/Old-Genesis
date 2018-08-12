@@ -1,6 +1,6 @@
 package genesis.world.gen
 
-import genesis.util.Blockstates
+import genesis.util.BlockStates
 import genesis.util.Coords
 import genesis.util.Coords.*
 import genesis.util.noise.*
@@ -57,7 +57,7 @@ class BaseTerrainGenerator(private val world: World, private val biomeProvider: 
         val startZ = chunkToMinBlock(chunkZ)
         interpolate(density, startX, 0, startZ, DensityConsumer({ v, x, y, z ->
             if (v - y > 0) {
-                primer.setBlockState(x - startX, y, z - startZ, Blockstates.STONE)
+                primer.setBlockState(x - startX, y, z - startZ, BlockStates.STONE)
             } else if (y < SEA_LEVEL) {
                 primer.setBlockState(x - startX, y, z - startZ, Blocks.WATER.defaultState)
             }

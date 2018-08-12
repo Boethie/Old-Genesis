@@ -24,12 +24,11 @@
  */
 package genesis.world;
 
-import genesis.Dimensions;
+import genesis.init.Dimensions;
 import genesis.world.gen.GenesisBiomeProvider;
 import genesis.world.gen.GenesisChunkGenerator;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 
 public class GenesisWorldProvider extends WorldProvider {
